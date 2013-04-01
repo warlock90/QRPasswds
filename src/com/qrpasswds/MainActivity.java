@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -20,8 +18,7 @@ public class MainActivity extends Activity {
 	private ScrollView scroll = null;
 	
 	private int id_counter = 0;
-	private Button add_btn= null;
-	
+		
 	private ArrayList<Credential> list = null;
 	
 	
@@ -32,25 +29,7 @@ public class MainActivity extends Activity {
 	
 		scroll = (ScrollView) findViewById(R.id.scroll_view);
 		main = (LinearLayout) findViewById(R.id.main);
-		
-		add_btn = (Button) findViewById(R.id.add_button);
-		add_btn.setOnClickListener( new OnClickListener(){
-
-			@Override
-			public void onClick(View v) {
-				
-				add_credential();
-
-				scroll.post(new Runnable() {            
-				    @Override
-				    public void run() {
-				           scroll.scrollTo(0, main.getBottom()); 
-				    }
-				});
-							
-			}
-		});
-		
+			
 		list = new ArrayList<Credential>();
 		
 		add_credential();
@@ -74,6 +53,19 @@ public class MainActivity extends Activity {
 		Credential cred = new Credential(this,id_counter);
 		list.add(cred);
 		main.addView(cred);
+	}
+	
+	public void add_pressed(View v){
+		
+		add_credential();
+
+		scroll.post(new Runnable() {            
+		    @Override
+		    public void run() {
+		           scroll.scrollTo(0, main.getBottom()); 
+		    }
+		});
+		
 	}
 	
 	private class Credential extends LinearLayout{
