@@ -1,8 +1,10 @@
 package com.qrpasswds;
 
-import android.app.Activity;
+import java.io.File;
+
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -10,7 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
@@ -32,6 +34,14 @@ public class MainActivity extends Activity {
 	
 	public void onResume(){
 		super.onResume();
+		
+		File keyfile = this.getFileStreamPath("key");
+		
+		if (!keyfile.exists()){
+			KeyMissingDialog dialog = new KeyMissingDialog();
+			dialog.setCancelable(false);
+			dialog.show(getSupportFragmentManager(), "Dialog");
+		}
 			
 	}
 	
@@ -61,7 +71,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void create_pressed(View v){
-		get_input();
+		System.out.println(get_input());
 	}
 	
 	public String get_input(){

@@ -8,5 +8,9 @@
     <string name="password">Password</string>
     <string name="add_button">Add</string>
     <string name="create_button">Create</string>
+    <string name="alert_title">Key file missing</string>
+    <string name="alert_message">Cannot find key file. Do you want to create a new one or import an existing one?</string>
+    <string name="alert_import">Import</string>
+    <string name="alert_create">Create</string>
 
 </resources>
