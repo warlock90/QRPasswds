@@ -1,13 +1,12 @@
 package com.qrpasswds;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
@@ -19,9 +18,6 @@ public class MainActivity extends Activity {
 	
 	private int id_counter = 0;
 		
-	private ArrayList<Credential> list = null;
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,17 +25,14 @@ public class MainActivity extends Activity {
 	
 		scroll = (ScrollView) findViewById(R.id.scroll_view);
 		main = (LinearLayout) findViewById(R.id.main);
-			
-		list = new ArrayList<Credential>();
-		
+
 		add_credential();
 	
 	}
 	
 	public void onResume(){
 		super.onResume();
-		
-		
+			
 	}
 	
 	@Override
@@ -51,7 +44,6 @@ public class MainActivity extends Activity {
 	
 	public void add_credential(){
 		Credential cred = new Credential(this,id_counter);
-		list.add(cred);
 		main.addView(cred);
 	}
 	
@@ -68,11 +60,37 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	public void create_pressed(View v){
+		get_input();
+	}
+	
+	public String get_input(){
+		
+		String input = "";
+		
+		for (int f=0;f<id_counter;f++){
+			
+			LinearLayout cred_view = (LinearLayout)main.findViewWithTag("cred"+f);
+			LinearLayout cred_wrapper = (LinearLayout)cred_view.getChildAt(0);
+			
+			EditText cred_type = (EditText)cred_wrapper.getChildAt(0);
+			
+			LinearLayout user_pass_wrapper = (LinearLayout)cred_wrapper.getChildAt(1);
+			
+			EditText user = (EditText)user_pass_wrapper.getChildAt(0);
+			EditText pass = (EditText)user_pass_wrapper.getChildAt(1);
+			
+			input += cred_type.getText().toString()+"\n"+user.getText().toString()+"\t"+pass.getText().toString()+"\n";
+		}
+		
+		return input;
+	}
+	
 	private class Credential extends LinearLayout{
 
 		public Credential(Context context, int viewId) {
 			super(context);
-			this.setId(viewId);
+			this.setTag("cred"+viewId);
 			id_counter++;
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	
