@@ -15,6 +15,8 @@ import android.widget.ScrollView;
 
 public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
+	private final String filename = "QRPass.key";
+	
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
 	private ScrollView scroll = null;
@@ -38,7 +40,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	public void onResume(){
 		super.onResume();
 		
-		File keyfile = this.getFileStreamPath("key");
+		File keyfile = this.getFileStreamPath(filename);
 		
 		if (!keyfile.exists()){
 			KeyMissingDialog dialog = new KeyMissingDialog();

@@ -3,6 +3,7 @@ package com.aes;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.KeyGenerator;
 
@@ -12,11 +13,13 @@ public class AES_random_key {
 
 	private final String algorithm = "AES";
     private final int keysize = 128;
-    private final String filename = "key";
+    private final String filename = "QRPass.key";
+    private final byte[] validate_data = "CorrectQRPassKey".getBytes();
+    
     private Context context;
     
-    public AES_random_key(Context refContext){
-    	context = refContext;
+    public AES_random_key(Context refContext) throws UnsupportedEncodingException{
+    	context = refContext;	
     }
     	
 	public void generate_key() throws NoSuchAlgorithmException, IOException {
@@ -33,17 +36,31 @@ public class AES_random_key {
 	public void store_key(byte[] key, Context ctx) throws IOException {
 		
 		FileOutputStream fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
-		fos.write(key);
+		fos.write(validate_data);
+		fos.write(key, validate_data.length, key.length);
 		fos.close();
 	}
 	
 	public byte[] get_key() throws IOException{
 		
 		FileInputStream fis = context.openFileInput(filename);
-		byte[] buffer = null;
-		fis.read(buffer);
+		byte[] buffer = new byte[keysize/8];
+		fis.read(buffer,validate_data.length,buffer.length);
 		
 		return buffer;	
+	}
+	
+	public boolean validate_key(String key_file) throws IOException{
+		
+		FileInputStream fis = context.openFileInput(key_file);
+		byte[] buffer = new byte[validate_data.length];
+		fis.read(buffer,0,buffer.length);
+		
+		if(buffer.equals(validate_data)){
+			return true;
+		}
+		
+		return false;		
 	}
 	
 }
