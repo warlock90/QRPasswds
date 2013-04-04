@@ -4,12 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import com.aes.AES_random_key;
-import com.google.zxing.WriterException;
-import com.qr.QR_encoder;
-
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -20,14 +17,20 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.aes.AES_random_key;
+import com.google.zxing.WriterException;
+import com.qr.QR_encoder;
+
 
 public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
 	private final String filename = "QRPass.key";
 	
 	private LinearLayout main = null;
+
 	private LayoutInflater inflater = null;
 	private ScrollView scroll = null;
+
 	
 	private int id_counter = 0;
 	
@@ -55,7 +58,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 			KeyMissingDialog dialog = new KeyMissingDialog();
 			dialog.setCancelable(false);
 			dialog.show(getSupportFragmentManager(), "Dialog");
-		}	
+		}
 	}
 	
 	@Override
@@ -80,25 +83,10 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		           scroll.scrollTo(0, main.getBottom()); 
 		    }
 		});
-		
 	}
 	
 	public void create_pressed(View v){
-		
-		QR_encoder encoder = new QR_encoder();
-		
-		try {
-			encoder.create_QR(encoder.encode(get_input()));
-			Toast qr_created = Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT);
-			qr_created.show();
-			
-		} catch (IOException e) {
-			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
-			error_creating_qr.show();
-		} catch (WriterException e) {
-			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
-			error_creating_qr.show();
-		}
+		new Encrypt_Encode().execute();
 	}
 	
 	public String get_input(){
@@ -184,6 +172,18 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		}
 	}
 	
+	public void encryption_encoding_finished(boolean success){
+		
+		if (success){		
+			Toast qr_created = Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT);
+			qr_created.show();
+		}
+		else {
+			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
+			error_creating_qr.show();
+		}
+	}
+	
 	private class Credential extends LinearLayout{
 
 		public Credential(Context context, int viewId) {
@@ -195,6 +195,26 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		}
 		
 	}
-
 	
+	private class Encrypt_Encode extends AsyncTask<Void, Void, Boolean >{
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			QR_encoder encoder = new QR_encoder();
+			
+			try {
+				encoder.create_QR(encoder.encode(get_input()));
+				return true;
+			} catch (IOException e) {
+				return false;
+			} catch (WriterException e) {
+				return false;
+			}		
+		}
+		
+		public void onPostExecute(Boolean result){
+			encryption_encoding_finished(result);
+		}
+	}
 }

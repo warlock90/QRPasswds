@@ -3,7 +3,8 @@
    android:layout_height="fill_parent"
    android:layout_marginLeft="8dp"
    android:layout_marginRight="8dp"
-   android:orientation="vertical">
+   android:orientation="vertical"
+   android:id="@+id/activity_layout">
     
 <ScrollView 
     android:id="@+id/scroll_view"
