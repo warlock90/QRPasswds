@@ -1,6 +1,10 @@
 package com.qrpasswds;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
+import com.aes.AES_random_key;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
@@ -24,6 +29,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	private int id_counter = 0;
 	
 	private final int find_file = 1;
+	private AES_random_key ran_key = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +110,20 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	
 	@Override
 	public void onCreateClick() {
+		ran_key = new AES_random_key(this);
 		
+		try {
+			ran_key.generate_key();
+			Toast key_file_created = Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_SHORT);
+			key_file_created.show();
+			
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException();
+		
+		} catch (IOException e) {
+			Toast error_creating_file = Toast.makeText(this, R.string.error_creating_file, Toast.LENGTH_LONG);
+			error_creating_file.show();
+		}
 	}
 
 	@Override
@@ -118,8 +137,27 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
+		
 		if ( requestCode == find_file && resultCode == RESULT_OK ){
-			System.out.println(result.getData().getPath());
+			
+			ran_key = new AES_random_key(this);
+			String result_file = result.getData().getPath();
+			
+			try{
+				boolean flag = ran_key.validate_key(result_file);
+				
+				if (flag) {
+					ran_key.copy_key(result_file);
+				}
+				else {
+					Toast not_valid_file = Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG );
+					not_valid_file.show();
+				}
+				
+			} catch(IOException e){ 
+				Toast error = Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG);
+				error.show();
+				}
 		}
 	}
 	

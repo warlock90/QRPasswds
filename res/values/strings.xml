@@ -12,5 +12,9 @@
     <string name="alert_message">Cannot find key file. Do you want to create a new one or import an existing one?</string>
     <string name="alert_import">Import</string>
     <string name="alert_create">Create</string>
+    <string name="error_reading_file">There was an error reading the file, please try again</string>
+    <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file, please choose a valid file</string>
+    <string name="error_creating_file">There was an error creating the key file, please try again</string>
+    <string name="key_file_created">The QRPasswords key file has been created</string>
 
 </resources>
