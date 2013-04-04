@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">QRPasswds</string>
@@ -15,6 +14,8 @@
     <string name="error_reading_file">There was an error reading the file, please try again</string>
     <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file, please choose a valid file</string>
     <string name="error_creating_file">There was an error creating the key file, please try again</string>
-    <string name="key_file_created">The QRPasswords key file has been created</string>
+    <string name="key_file_created">The QRPasswords key file has been succesfully created</string>
+    <string name="error_creating_qr">There was an error creating the QR file, please try again</string>
+    <string name="qr_created">QR image has been succesfully created</string>
 
 </resources>

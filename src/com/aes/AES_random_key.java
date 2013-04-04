@@ -49,7 +49,8 @@ public class AES_random_key {
 		
 		FileInputStream fis = context.openFileInput(filename);
 		byte[] buffer = new byte[keysize_bytes];
-		fis.read(buffer,validate_data.length,buffer.length);
+		fis.skip(validate_data.length);
+		fis.read(buffer);
 		fis.close();
 		
 		return buffer;	
@@ -59,11 +60,12 @@ public class AES_random_key {
 		
 		File key = new File(key_file);
 		FileInputStream fis = new FileInputStream(key);
-		byte[] buffer = new byte[validate_data.length];
-		fis.read(buffer,0,buffer.length);
+		byte[] buffer = new byte[keysize_bytes];
+		fis.skip(validate_data.length);
+		fis.read(buffer);
 		fis.close();
 		
-		if(buffer.equals(validate_data)){
+		if(buffer.length == keysize_bytes){
 			return true;
 		}
 		

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
 import com.aes.AES_random_key;
+import com.google.zxing.WriterException;
+import com.qr.QR_encoder;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
+
 
 public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
@@ -52,9 +55,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 			KeyMissingDialog dialog = new KeyMissingDialog();
 			dialog.setCancelable(false);
 			dialog.show(getSupportFragmentManager(), "Dialog");
-
-		}
-			
+		}	
 	}
 	
 	@Override
@@ -83,7 +84,21 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	}
 	
 	public void create_pressed(View v){
-		System.out.println(get_input());
+		
+		QR_encoder encoder = new QR_encoder();
+		
+		try {
+			encoder.create_QR(encoder.encode(get_input()));
+			Toast qr_created = Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT);
+			qr_created.show();
+			
+		} catch (IOException e) {
+			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
+			error_creating_qr.show();
+		} catch (WriterException e) {
+			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
+			error_creating_qr.show();
+		}
 	}
 	
 	public String get_input(){
@@ -99,10 +114,18 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 			
 			LinearLayout user_pass_wrapper = (LinearLayout)cred_wrapper.getChildAt(1);
 			
-			EditText user = (EditText)user_pass_wrapper.getChildAt(0);
-			EditText pass = (EditText)user_pass_wrapper.getChildAt(1);
+			EditText cred_user = (EditText)user_pass_wrapper.getChildAt(0);
+			EditText cred_pass = (EditText)user_pass_wrapper.getChildAt(1);
 			
-			input += cred_type.getText().toString()+"\n"+user.getText().toString()+"\t"+pass.getText().toString()+"\n";
+			String type = cred_type.getText().toString().trim();
+			String user = cred_user.getText().toString().trim();
+			String pass = cred_pass.getText().toString().trim();
+			
+			if (type.equals("")) type = "empty";
+			if (user.equals("")) user = "empty";
+			if (pass.equals("")) pass = "empty";			
+			
+			input += type+"\n"+user+"\n"+pass+"\n";
 		}
 		
 		return input;
