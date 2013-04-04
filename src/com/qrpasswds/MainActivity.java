@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
@@ -41,6 +41,7 @@ public class MainActivity extends FragmentActivity {
 			KeyMissingDialog dialog = new KeyMissingDialog();
 			dialog.setCancelable(false);
 			dialog.show(getSupportFragmentManager(), "Dialog");
+
 		}
 			
 	}
@@ -96,6 +97,16 @@ public class MainActivity extends FragmentActivity {
 		return input;
 	}
 	
+	@Override
+	public void onCreateClick() {
+		
+	}
+
+	@Override
+	public void onImportClick() {
+		
+	}
+	
 	private class Credential extends LinearLayout{
 
 		public Credential(Context context, int viewId) {
@@ -107,4 +118,6 @@ public class MainActivity extends FragmentActivity {
 		}
 		
 	}
+
+	
 }
