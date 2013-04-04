@@ -9,6 +9,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.apache.commons.codec.binary.Base64;
 
 import android.content.Context;
@@ -19,7 +20,7 @@ public class AES_Encryption {
     private final String charset = "utf-8";        
     private AES_random_key ran_key = null;
     
-    public AES_Encryption(Context refContext){
+    public AES_Encryption(Context refContext) {
     	ran_key = new AES_random_key(refContext);
     }
 	

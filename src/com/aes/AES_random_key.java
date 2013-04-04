@@ -3,8 +3,8 @@ package com.aes;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+
 import javax.crypto.KeyGenerator;
 
 import android.content.Context;
@@ -18,7 +18,7 @@ public class AES_random_key {
     
     private Context context;
     
-    public AES_random_key(Context refContext) throws UnsupportedEncodingException{
+    public AES_random_key(Context refContext) {
     	context = refContext;	
     }
     	
