@@ -3,6 +3,7 @@ package com.qrpasswds;
 import java.io.File;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	private ScrollView scroll = null;
 	
 	private int id_counter = 0;
-		
+	
+	private final int find_file = 1;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,7 +30,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	
 		scroll = (ScrollView) findViewById(R.id.scroll_view);
 		main = (LinearLayout) findViewById(R.id.main);
-
+		
 		add_credential();
 	
 	}
@@ -105,6 +108,17 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	@Override
 	public void onImportClick() {
 		
+		Intent intent = new Intent();
+        intent.setType("file/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, find_file);
+  
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent result){
+		if ( requestCode == find_file && resultCode == RESULT_OK ){
+			System.out.println(result.getData().getPath());
+		}
 	}
 	
 	private class Credential extends LinearLayout{
