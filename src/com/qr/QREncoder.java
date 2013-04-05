@@ -13,12 +13,12 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-public class QR_encoder {
+public class QREncoder {
 
-	private static int width = 600;
-	private static int height = 600;
-	private static String folder = "QRPasswds";
-	private static String filename = "QR_passwords.png";
+	private final int WIDTH = 1600;
+	private final int HEIGHT = 1600;
+	private final String FOLDER = "QRPasswds";
+	private final String FILENAME = "QR_passwords.png";
 	
 	public Bitmap encode(String text) throws WriterException{
 		
@@ -26,7 +26,7 @@ public class QR_encoder {
 		BitMatrix mtx;
 		Bitmap bm;
 		
-        mtx = writer.encode(text, BarcodeFormat.QR_CODE, width, height);
+        mtx = writer.encode(text, BarcodeFormat.QR_CODE, WIDTH, HEIGHT);
         bm = Bitmap.createBitmap(mtx.getWidth(), mtx.getHeight(), Bitmap.Config.ARGB_8888);
             
         for (int x = 0; x < mtx.getWidth(); x++) {
@@ -38,14 +38,14 @@ public class QR_encoder {
         return bm;
 	}
 	
-	public void create_QR(Bitmap qr) throws IOException{
+	public void createQR(Bitmap qr) throws IOException{
 		
 		String state = Environment.getExternalStorageState();
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			File QR_directory = new File(Environment.getExternalStorageDirectory().toString()+"/"+folder);
-			QR_directory.mkdir();
-			FileOutputStream out = new FileOutputStream(QR_directory+"/"+filename);
+			File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+"/"+FOLDER);
+			QRDirectory.mkdir();
+			FileOutputStream out = new FileOutputStream(QRDirectory+"/"+FILENAME);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
 		} else {
 		    throw new IOException();

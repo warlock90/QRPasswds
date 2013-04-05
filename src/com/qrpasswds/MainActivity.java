@@ -6,8 +6,10 @@ import java.security.NoSuchAlgorithmException;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,25 +19,24 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.aes.AES_random_key;
+import com.aes.AESRandomKey;
 import com.google.zxing.WriterException;
-import com.qr.QR_encoder;
+import com.qr.QREncoder;
 
 
 public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
 	
-	private final String filename = "QRPass.key";
+	private final String FILENAME = "QRPass.key";
 	
 	private LinearLayout main = null;
 
 	private LayoutInflater inflater = null;
 	private ScrollView scroll = null;
 
+	private int idCounter = 0;
 	
-	private int id_counter = 0;
-	
-	private final int find_file = 1;
-	private AES_random_key ran_key = null;
+	private final int FIND_FILE = 1;
+	private AESRandomKey ranKey = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,14 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		scroll = (ScrollView) findViewById(R.id.scroll_view);
 		main = (LinearLayout) findViewById(R.id.main);
 		
-		add_credential();
+		addCredential();
 	
 	}
 	
 	public void onResume(){
 		super.onResume();
 		
-		File keyfile = this.getFileStreamPath(filename);
+		File keyfile = this.getFileStreamPath(FILENAME);
 		
 		if (!keyfile.exists()){
 			KeyMissingDialog dialog = new KeyMissingDialog();
@@ -68,14 +69,14 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		return true;
 	}
 	
-	public void add_credential(){
-		Credential cred = new Credential(this,id_counter);
+	public void addCredential(){
+		Credential cred = new Credential(this,idCounter);
 		main.addView(cred);
 	}
 	
-	public void add_pressed(View v){
+	public void addPressed(View v){
 		
-		add_credential();
+		addCredential();
 
 		scroll.post(new Runnable() {            
 		    @Override
@@ -85,29 +86,29 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		});
 	}
 	
-	public void create_pressed(View v){
-		new Encrypt_Encode().execute();
+	public void createPressed(View v){
+		new EncryptEncode().execute();
 	}
 	
-	public String get_input(){
+	public String getInput(){
 		
 		String input = "";
 		
-		for (int f=0;f<id_counter;f++){
+		for (int f=0;f<idCounter;f++){
 			
-			LinearLayout cred_view = (LinearLayout)main.findViewWithTag("cred"+f);
-			LinearLayout cred_wrapper = (LinearLayout)cred_view.getChildAt(0);
+			LinearLayout credView = (LinearLayout)main.findViewWithTag("cred"+f);
+			LinearLayout credWrapper = (LinearLayout)credView.getChildAt(0);
 			
-			EditText cred_type = (EditText)cred_wrapper.getChildAt(0);
+			EditText credType = (EditText)credWrapper.getChildAt(0);
 			
-			LinearLayout user_pass_wrapper = (LinearLayout)cred_wrapper.getChildAt(1);
+			LinearLayout userPassWrapper = (LinearLayout)credWrapper.getChildAt(1);
 			
-			EditText cred_user = (EditText)user_pass_wrapper.getChildAt(0);
-			EditText cred_pass = (EditText)user_pass_wrapper.getChildAt(1);
+			EditText credUser = (EditText)userPassWrapper.getChildAt(0);
+			EditText credPass = (EditText)userPassWrapper.getChildAt(1);
 			
-			String type = cred_type.getText().toString().trim();
-			String user = cred_user.getText().toString().trim();
-			String pass = cred_pass.getText().toString().trim();
+			String type = credType.getText().toString().trim();
+			String user = credUser.getText().toString().trim();
+			String pass = credPass.getText().toString().trim();
 			
 			if (type.equals("")) type = "empty";
 			if (user.equals("")) user = "empty";
@@ -121,10 +122,10 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	
 	@Override
 	public void onCreateClick() {
-		ran_key = new AES_random_key(this);
+		ranKey = new AESRandomKey(this);
 		
 		try {
-			ran_key.generate_key();
+			ranKey.generateKey();
 			Toast key_file_created = Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_SHORT);
 			key_file_created.show();
 			
@@ -143,22 +144,22 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		Intent intent = new Intent();
         intent.setType("file/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, find_file);
+        startActivityForResult(intent, FIND_FILE);
   
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
 		
-		if ( requestCode == find_file && resultCode == RESULT_OK ){
+		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			
-			ran_key = new AES_random_key(this);
-			String result_file = result.getData().getPath();
+			ranKey = new AESRandomKey(this);
+			String resultFile = result.getData().getPath();
 			
 			try{
-				boolean flag = ran_key.validate_key(result_file);
+				boolean flag = ranKey.validateKey(resultFile);
 				
 				if (flag) {
-					ran_key.copy_key(result_file);
+					ranKey.copyKey(resultFile);
 				}
 				else {
 					Toast not_valid_file = Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG );
@@ -172,11 +173,12 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		}
 	}
 	
-	public void encryption_encoding_finished(boolean success){
+	public void encryptionEncodingFinished(boolean success){
 		
 		if (success){		
 			Toast qr_created = Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT);
 			qr_created.show();
+			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
 		}
 		else {
 			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
@@ -189,22 +191,22 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		public Credential(Context context, int viewId) {
 			super(context);
 			this.setTag("cred"+viewId);
-			id_counter++;
+			idCounter++;
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	
 		}
 		
 	}
 	
-	private class Encrypt_Encode extends AsyncTask<Void, Void, Boolean >{
+	private class EncryptEncode extends AsyncTask<Void, Void, Boolean >{
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
-			QR_encoder encoder = new QR_encoder();
+			QREncoder encoder = new QREncoder();
 			
 			try {
-				encoder.create_QR(encoder.encode(get_input()));
+				encoder.createQR(encoder.encode(getInput()));
 				return true;
 			} catch (IOException e) {
 				return false;
@@ -214,7 +216,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		}
 		
 		public void onPostExecute(Boolean result){
-			encryption_encoding_finished(result);
+			encryptionEncodingFinished(result);
 		}
 	}
 }

@@ -14,43 +14,43 @@ import org.apache.commons.codec.binary.Base64;
 
 import android.content.Context;
 
-public class AES_Encryption {
+public class AESEncryption {
 
-	private final String algorithm = "AES";
-    private final String charset = "utf-8";        
-    private AES_random_key ran_key = null;
+	private final String ALGORITHM = "AES";
+    private final String CHARSET = "utf-8";        
+    private AESRandomKey ranKey = null;
     
-    public AES_Encryption(Context refContext) {
-    	ran_key = new AES_random_key(refContext);
+    public AESEncryption(Context refContext) {
+    	ranKey = new AESRandomKey(refContext);
     }
 	
 	public String aes_encrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException{
         
-        SecretKeySpec key = new SecretKeySpec(ran_key.get_key(),algorithm);
-        byte[] encrypted_bytes;
-        String encrypted_data = "";
+        SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
+        byte[] encryptedBytes;
+        String encryptedData = "";
         Cipher aes;
         
-        aes = Cipher.getInstance(algorithm);
+        aes = Cipher.getInstance(ALGORITHM);
         aes.init(Cipher.ENCRYPT_MODE,key);
-        encrypted_bytes = aes.doFinal(Data.getBytes(charset));
-        encrypted_data = new Base64().encodeToString(encrypted_bytes);
+        encryptedBytes = aes.doFinal(Data.getBytes(CHARSET));
+        encryptedData = new Base64().encodeToString(encryptedBytes);
         
-        return encrypted_data;
+        return encryptedData;
 	}
 
 	public String aes_decrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
     
-		String decrypted_data = "";
+		String decryptedData = "";
    
-		SecretKeySpec key = new SecretKeySpec(ran_key.get_key(),algorithm);
-		Cipher aes = Cipher.getInstance(algorithm);
+		SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
+		Cipher aes = Cipher.getInstance(ALGORITHM);
 		aes.init(Cipher.DECRYPT_MODE, key);
 		byte[] decordedValue = new Base64().decode(Data);
-		byte[] decrypted_bytes = aes.doFinal(decordedValue);
-    	decrypted_data = new String(decrypted_bytes,charset); 
+		byte[] decryptedBytes = aes.doFinal(decordedValue);
+    	decryptedData = new String(decryptedBytes,CHARSET); 
     	
-    	return decrypted_data;    
+    	return decryptedData;    
 	}
 
 }
