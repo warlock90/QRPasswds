@@ -14,8 +14,15 @@
     <string name="error_reading_file">There was an error reading the file, please try again</string>
     <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file, please choose a valid file</string>
     <string name="error_creating_file">There was an error creating the key file, please try again</string>
-    <string name="key_file_created">The QRPasswords key file has been succesfully created</string>
+    <string name="key_file_created">The QRPasswords key file has been successfully created</string>
     <string name="error_creating_qr">There was an error creating the QR file, please try again</string>
-    <string name="qr_created">QR image has been succesfully created</string>
+    <string name="qr_created">QR image has been successfully created</string>
+    <string name="preferences_keysize_title">AES key size</string>
+    <string name="preferences_keysize_summary">The size of AES key in bits</string>
+    <string name="settings">Settings</string>
+    <string name="preferences_encryption">Encryption</string>
+    <string name="preferences_encoding">Encoding</string>
+    <string name="preferences_qr_dimensions_title">QR dimensions</string>
+    <string name="preferences_qr_dimensions_summary">The size of the QR side dimension in pixels</string>
 
 </resources>
