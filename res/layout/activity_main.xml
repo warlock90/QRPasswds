@@ -32,7 +32,7 @@
             android:text="@string/add_button"
             android:layout_marginTop="3dp"
         	android:layout_marginBottom="10dp"
-            android:onClick="add_pressed"/>
+            android:onClick="addPressed"/>
 		
     </LinearLayout>
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/create_button"
-            android:onClick="create_pressed" />
+            android:onClick="createPressed" />
     
 </LinearLayout>
 
