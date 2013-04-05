@@ -126,15 +126,13 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		
 		try {
 			ranKey.generateKey();
-			Toast key_file_created = Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_SHORT);
-			key_file_created.show();
+			Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_SHORT).show();
 			
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException();
 		
 		} catch (IOException e) {
-			Toast error_creating_file = Toast.makeText(this, R.string.error_creating_file, Toast.LENGTH_LONG);
-			error_creating_file.show();
+			Toast.makeText(this, R.string.error_creating_file, Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -162,13 +160,11 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 					ranKey.copyKey(resultFile);
 				}
 				else {
-					Toast not_valid_file = Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG );
-					not_valid_file.show();
+					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
 				}
 				
 			} catch(IOException e){ 
-				Toast error = Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG);
-				error.show();
+				Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG).show();
 				}
 		}
 	}
@@ -176,13 +172,11 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	public void encryptionEncodingFinished(boolean success){
 		
 		if (success){		
-			Toast qr_created = Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT);
-			qr_created.show();
+			Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT).show();
 			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
 		}
 		else {
-			Toast error_creating_qr = Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG);
-			error_creating_qr.show();
+			Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG).show();
 		}
 	}
 	
