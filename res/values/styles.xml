@@ -1,0 +1,7 @@
+<resources>
+	<!-- API 10 theme customizations can go here. -->
+    <style name="QRTheme" parent="android:Theme.Dialog">
+ 
+    </style>
+
+</resources>

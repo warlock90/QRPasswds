@@ -9,6 +9,13 @@
         android:entries="@array/keysize_list_human"
         android:entryValues="@array/keysize_list"
         android:defaultValue="128" />    
+        
+    <Preference
+    	android:title="@string/preferences_export_key_title" >
+    		<intent
+        		android:targetPackage="com.qrpasswds"
+        		android:targetClass="com.qrpasswds.ExportKey"/>
+	</Preference>
     
     <PreferenceCategory android:title="@string/preferences_encoding" />
     

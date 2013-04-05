@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	
 		scroll = (ScrollView) findViewById(R.id.scroll_view);
 		main = (LinearLayout) findViewById(R.id.main);
-		
+		 
 		addCredential();
 	
 	}
