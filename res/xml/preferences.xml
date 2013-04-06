@@ -16,6 +16,13 @@
         		android:targetPackage="com.qrpasswds"
         		android:targetClass="com.qrpasswds.ExportKey"/>
 	</Preference>
+	
+    <Preference
+    	android:title="@string/import_key_title" >
+    		<intent
+        		android:targetPackage="com.qrpasswds"
+        		android:targetClass="com.qrpasswds.ImportKey"/>
+	</Preference>
     
     <PreferenceCategory android:title="@string/preferences_encoding" />
     

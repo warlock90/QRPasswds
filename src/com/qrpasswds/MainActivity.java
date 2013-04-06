@@ -2,15 +2,14 @@ package com.qrpasswds;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.aes.AESRandomKey;
 import com.google.zxing.WriterException;
 import com.qr.QREncoder;
 
 
-public class MainActivity extends FragmentActivity implements KeyMissingDialog.NoticeDialogListener {
+public class MainActivity extends Activity {
 	
 	private final String FILENAME = "QRPass.key";
 	
@@ -35,9 +33,6 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 	private ScrollView scroll = null;
 
 	private int idCounter = 0;
-	
-	private final int FIND_FILE = 1;
-	private AESRandomKey ranKey = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +52,9 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		File keyfile = this.getFileStreamPath(FILENAME);
 		
 		if (!keyfile.exists()){
-			KeyMissingDialog dialog = new KeyMissingDialog();
-			dialog.setCancelable(false);
-			dialog.show(getSupportFragmentManager(), "Dialog");
+			/*KeyMissingDialog dialog = new KeyMissingDialog();
+			dialog.setCancelable(false);							TO BE REMOVED
+			dialog.show(getSupportFragmentManager(), "Dialog");*/
 		}
 	}
 	
@@ -133,55 +128,6 @@ public class MainActivity extends FragmentActivity implements KeyMissingDialog.N
 		}
 		
 		return input;
-	}
-	
-	@Override
-	public void onCreateClick() {
-		ranKey = new AESRandomKey(this);
-		
-		try {
-			ranKey.generateKey();
-			Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_SHORT).show();
-			
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException();
-		
-		} catch (IOException e) {
-			Toast.makeText(this, R.string.error_creating_file, Toast.LENGTH_LONG).show();
-		}
-	}
-
-	@Override
-	public void onImportClick() {
-		
-		Intent intent = new Intent();
-        intent.setType("file/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, FIND_FILE);
-  
-	}
-	
-	public void onActivityResult(int requestCode, int resultCode, Intent result){
-		
-		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
-			
-			ranKey = new AESRandomKey(this);
-			String resultFile = result.getData().getPath();
-			
-			try{
-				boolean flag = ranKey.validateKey(resultFile);
-				
-				if (flag) {
-					ranKey.copyKey(resultFile);
-				}
-				else {
-					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
-				}
-				
-			} catch(IOException e){ 
-				Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG).show();
-				}
-		}
 	}
 	
 	public void encryptionEncodingFinished(boolean success){

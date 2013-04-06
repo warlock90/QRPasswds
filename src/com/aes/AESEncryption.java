@@ -10,9 +10,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.apache.commons.codec.binary.Base64;
-
 import android.content.Context;
+import android.util.Base64;
 
 public class AESEncryption {
 
@@ -34,7 +33,7 @@ public class AESEncryption {
         aes = Cipher.getInstance(ALGORITHM);
         aes.init(Cipher.ENCRYPT_MODE,key);
         encryptedBytes = aes.doFinal(Data.getBytes(CHARSET));
-        encryptedData = new Base64().encodeToString(encryptedBytes);
+        encryptedData = Base64.encodeToString(encryptedBytes, Base64.DEFAULT);
         
         return encryptedData;
 	}
@@ -46,7 +45,7 @@ public class AESEncryption {
 		SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
 		Cipher aes = Cipher.getInstance(ALGORITHM);
 		aes.init(Cipher.DECRYPT_MODE, key);
-		byte[] decordedValue = new Base64().decode(Data);
+		byte[] decordedValue = Base64.decode(Data, Base64.DEFAULT);
 		byte[] decryptedBytes = aes.doFinal(decordedValue);
     	decryptedData = new String(decryptedBytes,CHARSET); 
     	

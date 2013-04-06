@@ -43,9 +43,9 @@ public class QREncoder {
 		String state = Environment.getExternalStorageState();
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+"/"+FOLDER);
+			File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
 			QRDirectory.mkdir();
-			FileOutputStream out = new FileOutputStream(QRDirectory+"/"+FILENAME);
+			FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+FILENAME);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
 		} else {
 		    throw new IOException();

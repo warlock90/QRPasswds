@@ -1,9 +1,14 @@
 package com.qrpasswds;
 
+import java.io.IOException;
+
+import com.aes.AESRandomKey;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 public class ExportKey extends FragmentActivity {
 	
@@ -16,7 +21,16 @@ public class ExportKey extends FragmentActivity {
         	   .setMessage(R.string.export_key_message)
                .setPositiveButton(R.string.export_key_export, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
-                       //todo export key
+                       
+                	   AESRandomKey ran_key = new AESRandomKey(ExportKey.this);
+                       
+                	   try {
+                		   ran_key.exportKey();
+                		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
+                		   
+                       } catch (IOException e) {
+                    	   
+                       }
                 	   finish();
                 	   
                    }

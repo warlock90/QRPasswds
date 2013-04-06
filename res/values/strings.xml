@@ -14,7 +14,7 @@
     <string name="error_reading_file">There was an error reading the file, please try again</string>
     <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file, please choose a valid file</string>
     <string name="error_creating_file">There was an error creating the key file, please try again</string>
-    <string name="key_file_created">The QRPasswords key file has been successfully created</string>
+    <string name="key_file_created">The key file has been successfully created</string>
     <string name="error_creating_qr">There was an error creating the QR image, please try again</string>
     <string name="qr_created">QR image has been successfully created</string>
     <string name="preferences_keysize_title">AES key size</string>
@@ -26,8 +26,13 @@
     <string name="preferences_qr_dimensions_summary">The size of the QR image side dimension in pixels</string>
     <string name="preferences_export_key_title">Export key</string>
     <string name="export_key_title">Export key</string>
-    <string name="export_key_message">The QRPasswords exported key file will be public, delete it after use</string>
+    <string name="import_key_title">Import key</string>
+    <string name="export_key_message">The exported key file will be public, move it in a safe place</string>
     <string name="export_key_export">Export</string>
     <string name="cancel">Cancel</string>
+    <string name="key_exported">Key file has been successfully exported</string>
+    <string name="key_imported">Key file has been successfully imported</string>
+    <string name="error_exporting_key">There was an error exporting the key file, please try again</string>
+
 
 </resources>
