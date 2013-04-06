@@ -77,6 +77,8 @@ public class MainActivity extends Activity {
             case R.id.scan:
             	IntentIntegrator integrator = new IntentIntegrator(this);
             	integrator.initiateScan();
+            case R.id.actionbar_create_qr:
+            	createPressed(new View(this));
             default:
                 return super.onOptionsItemSelected(item);
         }
