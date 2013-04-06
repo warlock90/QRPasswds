@@ -33,6 +33,7 @@
     <string name="key_exported">Key file has been successfully exported</string>
     <string name="key_imported">Key file has been successfully imported</string>
     <string name="error_exporting_key">There was an error exporting the key file, please try again</string>
+    <string name="scan">Scan</string>
 
 
 </resources>

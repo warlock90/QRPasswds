@@ -20,8 +20,9 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.zxing.WriterException;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.qr.QREncoder;
-
 
 public class MainActivity extends Activity {
 	
@@ -73,11 +74,21 @@ public class MainActivity extends Activity {
             	Intent intent = new Intent(this, Preferences.class);
                 this.startActivity(intent);
                 break;
+            case R.id.scan:
+            	IntentIntegrator integrator = new IntentIntegrator(this);
+            	integrator.initiateScan();
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
     }
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		  if (scanResult != null) {
+		    System.out.println(scanResult.getContents());
+		  }
+	}
 	
 	public void addCredential(){
 		Credential cred = new Credential(this,idCounter);
