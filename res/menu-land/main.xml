@@ -11,11 +11,12 @@
         android:orderInCategory="90"
         android:showAsAction="ifRoom|withText"
         android:title="@string/scan"
-        android:icon="@android:drawable/ic_menu_camera" />
+        android:icon="@drawable/ic_menu_camera" />
     
     <item 
         android:id="@+id/actionbar_create_qr"
         android:orderInCategory="95"
         android:showAsAction="ifRoom|withText"
         android:title="@string/create_button" />
+    
 </menu>
