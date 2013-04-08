@@ -3,20 +3,16 @@ package com.qrpasswds;
 import java.io.File;
 import java.io.IOException;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.zxing.WriterException;
@@ -24,27 +20,14 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.qr.QREncoder;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 	
 	private final String FILENAME = "QRPass.key";
-	
-	private LinearLayout main = null;
 
-	private LayoutInflater inflater = null;
-	private ScrollView scroll = null;
-
-	private int idCounter = 0;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-	
-		scroll = (ScrollView) findViewById(R.id.scroll_view);
-		main = (LinearLayout) findViewById(R.id.main);
-		 
-		addCredential();
-	
 	}
 	
 	public void onResume(){
@@ -92,56 +75,11 @@ public class MainActivity extends Activity {
 		  }
 	}
 	
-	public void addCredential(){
-		Credential cred = new Credential(this,idCounter);
-		main.addView(cred);
-	}
-	
-	public void addPressed(View v){
-		
-		addCredential();
-
-		scroll.post(new Runnable() {            
-		    @Override
-		    public void run() {
-		           scroll.scrollTo(0, main.getBottom()); 
-		    }
-		});
-	}
-	
 	public void createPressed(View v){
 		new EncryptEncode().execute();
 	}
 	
-	public String getInput(){
-		
-		String input = "";
-		
-		for (int f=0;f<idCounter;f++){
-			
-			LinearLayout credView = (LinearLayout)main.findViewWithTag("cred"+f);
-			LinearLayout credWrapper = (LinearLayout)credView.getChildAt(0);
-			
-			EditText credType = (EditText)credWrapper.getChildAt(0);
-			
-			LinearLayout userPassWrapper = (LinearLayout)credWrapper.getChildAt(1);
-			
-			EditText credUser = (EditText)userPassWrapper.getChildAt(0);
-			EditText credPass = (EditText)userPassWrapper.getChildAt(1);
-			
-			String type = credType.getText().toString().trim();
-			String user = credUser.getText().toString().trim();
-			String pass = credPass.getText().toString().trim();
-			
-			if (type.equals("")) type = "empty";
-			if (user.equals("")) user = "empty";
-			if (pass.equals("")) pass = "empty";			
-			
-			input += type+"\n"+user+"\n"+pass+"\n";
-		}
-		
-		return input;
-	}
+	
 	
 	public void encryptionEncodingFinished(boolean success){
 		
@@ -153,28 +91,17 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG).show();
 		}
 	}
-	
-	private class Credential extends LinearLayout{
-
-		public Credential(Context context, int viewId) {
-			super(context);
-			this.setTag("cred"+viewId);
-			idCounter++;
-			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			inflater.inflate(R.layout.credentials, this);	
-		}
 		
-	}
-	
 	private class EncryptEncode extends AsyncTask<Void, Void, Boolean >{
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
+			Scroll scroll = (Scroll) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 			QREncoder encoder = new QREncoder();
 			
 			try {
-				encoder.createQR(encoder.encode(getInput()));
+				encoder.createQR(encoder.encode(scroll.getInput()));
 				return true;
 			} catch (IOException e) {
 				return false;
