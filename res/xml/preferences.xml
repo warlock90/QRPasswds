@@ -11,14 +11,16 @@
         android:defaultValue="128" />    
         
     <Preference
-    	android:title="@string/preferences_export_key_title" >
+    	android:title="@string/preferences_export_key_title"
+    	android:summary="@string/export_key_summary" >
     		<intent
         		android:targetPackage="com.qrpasswds"
         		android:targetClass="com.qrpasswds.ExportKey"/>
 	</Preference>
 	
     <Preference
-    	android:title="@string/import_key_title" >
+    	android:title="@string/import_key_title"
+    	android:summary="@string/import_key_summary" >
     		<intent
         		android:targetPackage="com.qrpasswds"
         		android:targetClass="com.qrpasswds.ImportKey"/>

@@ -3,12 +3,13 @@ package com.qrpasswds;
 import java.io.File;
 import java.io.IOException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,9 +37,16 @@ public class MainActivity extends FragmentActivity {
 		File keyfile = this.getFileStreamPath(FILENAME);
 		
 		if (!keyfile.exists()){
-			/*KeyMissingDialog dialog = new KeyMissingDialog();
-			dialog.setCancelable(false);							TO BE REMOVED
-			dialog.show(getSupportFragmentManager(), "Dialog");*/
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        builder.setTitle(R.string.key_file_missing_title)
+	        	   .setMessage(R.string.key_file_missing_message)
+	               .setNeutralButton(R.string.open_settings, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       Intent intent = new Intent(MainActivity.this,Preferences.class);
+	                       startActivity(intent);
+	                   }
+	               }).show();
 		}
 	}
 	
