@@ -16,6 +16,7 @@ public class CredentialsFragment extends Fragment {
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
+	private MainActivity mAc = null;
 		
 	public int idCounter = 0;
 	private String data = null;
@@ -24,15 +25,23 @@ public class CredentialsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		System.out.println("Create");
+		System.out.println("Create Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
 		
 		View fragView = inflater.inflate(R.layout.scroll, container, false);
 		main = (LinearLayout) fragView.findViewById(R.id.main);
-
-		System.out.println("CreateView");
+		
+		mAc = (MainActivity) getActivity();
+		mAc.main = main;
+		
+		System.out.println("Create View Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
+		
 		addButton = (Button) fragView.findViewById(R.id.add_button);
 		addButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
@@ -44,7 +53,6 @@ public class CredentialsFragment extends Fragment {
 			
 			idCounter = 0;
 			String[] retainedData = data.split("\n");
-			
 			for (int f=0;f<retainedData.length;f+=3) addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
 			
 		}
@@ -54,10 +62,18 @@ public class CredentialsFragment extends Fragment {
 	
 	public void onStop(){
 		super.onStop();
+		System.out.println("Stop Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
+		
 		data= getInput();
 	}
 	
 	public void addCredential(String type, String user, String pass){
+		
+		System.out.println("Add Credential Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
 		
 		Credential cred = null;
 		if (type!=null)	cred = new Credential(this.getActivity(),idCounter,type,user,pass);
@@ -65,12 +81,28 @@ public class CredentialsFragment extends Fragment {
 
 		main.addView(cred);
 		
-		MainActivity mAc = (MainActivity) getActivity();
-		mAc.scrollToBottom();
-		
+		if(type==null){		
+			mAc.scrollToBottom();
+		}
+	}
+
+	public void onStart(){
+		super.onStart();
+		System.out.println("Started Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
+	}
+	
+	public void onResume(){
+		super.onResume();
+		System.out.println("Resume Frag");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");		
 	}
 	
 	public String getInput(){
+		
+		System.out.println("Get Input Frag");
 		
 		String input = "";
 		

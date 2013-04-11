@@ -8,8 +8,14 @@
     
     <item 
         android:id="@+id/scan"
-        android:orderInCategory="100"
+        android:orderInCategory="90"
         android:showAsAction="ifRoom"
         android:title="@string/scan"
         android:icon="@drawable/ic_device_access_camera" />
+    
+    <item android:id="@+id/clear"
+        android:orderInCategory="96"
+        android:showAsAction="ifRoom"
+        android:title="@string/clear"
+        android:icon="@drawable/ic_content_discard"/>
 </menu>

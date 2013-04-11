@@ -20,4 +20,10 @@
         android:icon="@drawable/ic_navigation_accept"
         android:title="@string/create_button" />
     
+       <item android:id="@+id/clear"
+        android:orderInCategory="96"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/clear"
+        android:icon="@drawable/ic_content_discard"/>
+    
 </menu>

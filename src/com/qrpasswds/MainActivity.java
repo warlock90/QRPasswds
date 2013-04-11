@@ -27,7 +27,7 @@ public class MainActivity extends FragmentActivity {
 	private final String FILENAME = "QRPass.key";
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
-	private LinearLayout main = null;
+	public LinearLayout main;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +36,17 @@ public class MainActivity extends FragmentActivity {
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
 		
+		System.out.println("Create Activity");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
+		
 	}
 	
 	public void onResume(){
 		super.onResume();
-		
+		System.out.println("Resume Activity");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
 		File keyfile = this.getFileStreamPath(FILENAME);
 		
 		if (!keyfile.exists()){
@@ -63,6 +69,7 @@ public class MainActivity extends FragmentActivity {
 	               .setCancelable(false)
 	               .show();
 		}
+		//scrollToBottom();
 	}
 	
 	@Override
@@ -85,6 +92,8 @@ public class MainActivity extends FragmentActivity {
             	integrator.initiateScan();
             case R.id.actionbar_create_qr:
             	createPressed(new View(this));
+            case R.id.clear:
+            	
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -110,12 +119,15 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void scrollToBottom(){
+		System.out.println("Scroll Activity");
+		if (main!=null) System.out.println("Not null");
+		else System.out.println("Null");
 		if(main!=null){
-			
+			System.out.println(main.getId());
 			scrollView.post(new Runnable() {            
             @Override
             public void run() {
-                   scrollView.scrollTo(0, main.getBottom()); 
+            	scrollView.scrollTo(0, main.getBottom());
             }
         });
 		} 
