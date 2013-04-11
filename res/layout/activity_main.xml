@@ -21,19 +21,26 @@
 </ScrollView>
 
 <LinearLayout
-	android:layout_width="match_parent"
+        android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" 
     android:id="@+id/button_wrapper"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    style="@style/QRButtonBar"
+    android:clickable="true"
+    android:onClick="createPressed" >
     
     <Button
             android:id="@+id/create_button"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/create_button"
-            android:onClick="createPressed" />
+            android:clickable="false"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_navigation_accept" />
     
 </LinearLayout>
+
+
 
 </LinearLayout>

@@ -5,8 +5,7 @@
         QRTheme from BOTH res/values/styles.xml and
         res/values-v11/styles.xml on API 11+ devices.
     -->
-    <style name="QRTheme" parent="android:Theme.Holo.Dialog">
-        <!-- API 11 theme customizations can go here. -->
-    </style>
+    <style name="QRTheme" parent="android:Theme.Holo.Dialog"></style>
 
+    <style name="QRButtonBar" parent="android:Widget.Holo.Button"></style>
 </resources>
