@@ -13,7 +13,7 @@
     android:layout_weight="1" >
     
     
-<fragment class="com.qrpasswds.Scroll"
+<fragment class="com.qrpasswds.CredentialsFragment"
     android:id="@+id/scroll_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />

@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-public class Scroll extends Fragment {
+public class CredentialsFragment extends Fragment {
 
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
-	
-	private int idCounter = 0;
+		
+	public int idCounter = 0;
 	private String data = null;
 			
 	@Override
@@ -64,6 +64,10 @@ public class Scroll extends Fragment {
 		else	cred = new Credential(this.getActivity(),idCounter);
 
 		main.addView(cred);
+		
+		MainActivity mAc = (MainActivity) getActivity();
+		mAc.scrollToBottom();
+		
 	}
 	
 	public String getInput(){

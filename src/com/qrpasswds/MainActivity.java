@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.zxing.WriterException;
@@ -24,11 +25,17 @@ import com.qr.QREncoder;
 public class MainActivity extends FragmentActivity {
 	
 	private final String FILENAME = "QRPass.key";
-
+	private CredentialsFragment scroll = null;
+	private View scrollView = null;
+	private LinearLayout main = null;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
+		scrollView = findViewById(R.id.scroll_view);
+		
 	}
 	
 	public void onResume(){
@@ -92,10 +99,23 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void createPressed(View v){
-		new EncryptEncode().execute();
+		if (scroll.idCounter > 0)	new EncryptEncode().execute();
+		else {
+			Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
+		}
 	}
 	
-	
+	public void scrollToBottom(){
+		if(main!=null){
+			
+			scrollView.post(new Runnable() {            
+            @Override
+            public void run() {
+                   scrollView.scrollTo(0, main.getBottom()); 
+            }
+        });
+		} 
+	}
 	
 	public void encryptionEncodingFinished(boolean success){
 		
@@ -113,7 +133,6 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
-			Scroll scroll = (Scroll) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 			QREncoder encoder = new QREncoder();
 			
 			try {
@@ -123,7 +142,8 @@ public class MainActivity extends FragmentActivity {
 				return false;
 			} catch (WriterException e) {
 				return false;
-			}		
+			}
+			
 		}
 		
 		public void onPostExecute(Boolean result){

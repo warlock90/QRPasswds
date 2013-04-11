@@ -38,6 +38,7 @@
     <string name="generate_key_summary">Generate and store a random key</string>
     <string name="generate">Generate</string>
     <string name="import_dialog">Import</string>
+    <string name="no_credential_error">Please add at least one credential</string>
 
 
 </resources>
