@@ -8,7 +8,7 @@
     <string name="add_button">Add</string>
     <string name="create_button">Create</string>
     <string name="key_file_missing_title">Key file missing</string>
-    <string name="key_file_missing_message">Cannot find key file. Open QRPasswds settings to create or import one</string>
+    <string name="key_file_missing_message">Generate a new key file or import an existing one</string>
     <string name="error_reading_file">There was an error reading the file, please try again</string>
     <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file, please choose a valid file</string>
     <string name="error_creating_file">There was an error creating the key file, please try again</string>
@@ -22,11 +22,10 @@
     <string name="preferences_encoding">Encoding</string>
     <string name="preferences_qr_dimensions_title">QR dimensions</string>
     <string name="preferences_qr_dimensions_summary">The size of the QR image side dimension in pixels</string>
-    <string name="preferences_export_key_title">Export key</string>
     <string name="export_key_title">Export key</string>
     <string name="import_key_title">Import key</string>
     <string name="export_key_message">The exported key file will be public, move it in a safe place</string>
-    <string name="export_key_export">Export</string>
+    <string name="export">Export</string>
     <string name="cancel">Cancel</string>
     <string name="key_exported">Key file has been successfully exported</string>
     <string name="key_imported">Key file has been successfully imported</string>
@@ -35,6 +34,10 @@
     <string name="open_settings">Settings</string>
     <string name="import_key_summary">Import a key file from SD card</string>
     <string name="export_key_summary">Export the key file to SD card</string>
+    <string name="generate_key_title">Generate Key</string>
+    <string name="generate_key_summary">Generate and store a random key</string>
+    <string name="generate">Generate</string>
+    <string name="import_dialog">Import</string>
 
 
 </resources>

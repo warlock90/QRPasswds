@@ -19,7 +19,7 @@ public class ExportKey extends FragmentActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.export_key_title)
         	   .setMessage(R.string.export_key_message)
-               .setPositiveButton(R.string.export_key_export, new DialogInterface.OnClickListener() {
+               .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
                        
                 	   AESRandomKey ran_key = new AESRandomKey(ExportKey.this);
@@ -29,7 +29,7 @@ public class ExportKey extends FragmentActivity {
                 		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
                 		   
                        } catch (IOException e) {
-                    	   
+                    	   Toast.makeText(ExportKey.this, R.string.error_exporting_key, Toast.LENGTH_LONG).show();
                        }
                 	   finish();
                 	   

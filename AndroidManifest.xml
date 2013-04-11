@@ -34,6 +34,10 @@
             android:name="com.qrpasswds.ImportKey"
             android:theme="@style/QRTheme">
         </activity>
+        <activity
+            android:name="com.qrpasswds.GenerateKey"
+            android:theme="@style/QRTheme">
+        </activity>
     </application>
 
 </manifest>

@@ -41,12 +41,20 @@ public class MainActivity extends FragmentActivity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	        builder.setTitle(R.string.key_file_missing_title)
 	        	   .setMessage(R.string.key_file_missing_message)
-	               .setNeutralButton(R.string.open_settings, new DialogInterface.OnClickListener() {
+	               .setPositiveButton(R.string.generate, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
-	                       Intent intent = new Intent(MainActivity.this,Preferences.class);
+	                       Intent intent = new Intent(MainActivity.this,GenerateKey.class);
 	                       startActivity(intent);
 	                   }
-	               }).show();
+	               })
+	               .setNegativeButton(R.string.import_dialog, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                       Intent intent = new Intent(MainActivity.this,ImportKey.class);
+	                       startActivity(intent);
+	                   }
+	               })
+	               .setCancelable(false)
+	               .show();
 		}
 	}
 	
