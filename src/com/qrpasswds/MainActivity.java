@@ -94,7 +94,11 @@ public class MainActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) {
-		    System.out.println(scanResult.getContents());
+			  scroll.idCounter = 0;
+			  String[] retainedData = scanResult.getContents().split("\n");
+			
+			  for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+		    //System.out.println(scanResult.getContents());
 		  }
 	}
 	

@@ -45,7 +45,7 @@ public class CredentialsFragment extends Fragment {
 			idCounter = 0;
 			String[] retainedData = data.split("\n");
 			
-			for (int f=0;f<retainedData.length;f+=3) addCredential(retainedData[f],retainedData[f],retainedData[f]);
+			for (int f=0;f<retainedData.length;f+=3) addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
 			
 		}
 		
