@@ -6,7 +6,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="add_button">Add</string>
-    <string name="create_button">Create</string>
+    <string name="create_button">Create QR</string>
     <string name="key_file_missing_title">Key file missing</string>
     <string name="key_file_missing_message">Generate a new key file or import an existing one</string>
     <string name="error_reading_file">There was an error reading the file, please try again</string>
