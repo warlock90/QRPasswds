@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class CredentialsFragment extends Fragment {
-
+	
 	private LinearLayout main = null;
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
@@ -87,11 +87,12 @@ public class CredentialsFragment extends Fragment {
 			String user = credUser.getText().toString().trim();
 			String pass = credPass.getText().toString().trim();
 			
-			if (type.equals("")) type = "empty";
-			if (user.equals("")) user = "empty";
-			if (pass.equals("")) pass = "empty";			
+			if (type.length()==0) type = "empty";
+			if (user.length()==0) user = "empty";
+			if (pass.length()==0) pass = "empty";			
 			
 			input += type+"\n"+user+"\n"+pass+"\n";
+						
 		}
 		
 		return input;

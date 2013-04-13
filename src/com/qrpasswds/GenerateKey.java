@@ -3,11 +3,11 @@ package com.qrpasswds;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import com.aes.AESRandomKey;
-
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
+
+import com.aes.AESRandomKey;
 
 public class GenerateKey extends FragmentActivity {
 	

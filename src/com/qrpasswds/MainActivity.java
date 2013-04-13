@@ -77,10 +77,6 @@ public class MainActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_settings:
-            	Intent intent = new Intent(this, Preferences.class);
-                this.startActivity(intent);
-                break;
             case R.id.scan:
             	IntentIntegrator integrator = new IntentIntegrator(this);
             	integrator.initiateScan();
@@ -88,6 +84,14 @@ public class MainActivity extends FragmentActivity {
             	createPressed(new View(this));
             case R.id.clear:
             	
+            case R.id.import_key:
+            	Intent importKey = new Intent(this, ImportKey.class);
+                this.startActivity(importKey);
+                break;
+            case R.id.export_key:
+            	Intent exportKey = new Intent(this, ExportKey.class);
+                this.startActivity(exportKey);
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
