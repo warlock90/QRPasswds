@@ -19,15 +19,10 @@ public class CredentialsFragment extends Fragment {
 	private MainActivity mAc = null;
 		
 	public int idCounter = 0;
-	private String data = null;
 			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-		System.out.println("Create Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
@@ -38,10 +33,6 @@ public class CredentialsFragment extends Fragment {
 		mAc = (MainActivity) getActivity();
 		mAc.main = main;
 		
-		System.out.println("Create View Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
-		
 		addButton = (Button) fragView.findViewById(R.id.add_button);
 		addButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v){
@@ -49,35 +40,28 @@ public class CredentialsFragment extends Fragment {
 			}
 	     });
 		
-		if (idCounter>0) {
+		if (savedInstanceState!=null && savedInstanceState.getInt("idCounter")>0){
 			
-			idCounter = 0;
-			String[] retainedData = data.split("\n");
-			for (int f=0;f<retainedData.length;f+=3) addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
-			
+			String[] retainedData = savedInstanceState.getString("data").split("\n");
+			for (int f=0;f<retainedData.length;f+=3) {
+				addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+			}
 		}
 		
 		return fragView;
 	}
 	
-	public void onStop(){
-		super.onStop();
-		System.out.println("Stop Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
-		
-		data= getInput();
-	}
+	 @Override
+	    public void onSaveInstanceState(Bundle outState) {
+	        super.onSaveInstanceState(outState);
+	        outState.putString("data", getInput());
+	        outState.putInt("idCounter", idCounter);
+	    }
+
 	
 	public void addCredential(String type, String user, String pass){
-		
-		System.out.println("Add Credential Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
-		
-		Credential cred = null;
-		if (type!=null)	cred = new Credential(this.getActivity(),idCounter,type,user,pass);
-		else	cred = new Credential(this.getActivity(),idCounter);
+
+		Credential cred = new Credential(this.getActivity(),idCounter,type,user,pass);
 
 		main.addView(cred);
 		
@@ -85,24 +69,8 @@ public class CredentialsFragment extends Fragment {
 			mAc.scrollToBottom();
 		}
 	}
-
-	public void onStart(){
-		super.onStart();
-		System.out.println("Started Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
-	}
-	
-	public void onResume(){
-		super.onResume();
-		System.out.println("Resume Frag");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");		
-	}
 	
 	public String getInput(){
-		
-		System.out.println("Get Input Frag");
 		
 		String input = "";
 		
@@ -131,30 +99,23 @@ public class CredentialsFragment extends Fragment {
 	
 	private class Credential extends LinearLayout{
 		
-		public Credential(Context context, int viewId) {
-			super(context);
-			this.setTag("cred"+viewId);
-			this.setId(idCounter);
-			idCounter++;
-			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			inflater.inflate(R.layout.credentials, this);	
-		}
-		
 		public Credential(Context context, int viewId, String type, String user, String pass) {
 			super(context);
 			this.setTag("cred"+viewId);
-			this.setId(idCounter);
 			idCounter++;
+
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	
-			if (type!=null){			
-				EditText cred_type = (EditText)this.findViewById(R.id.credential_type);
-				cred_type.setText(type);
-				EditText cred_user = (EditText)this.findViewById(R.id.user);
-				cred_user.setText(user);
-				EditText cred_pass = (EditText)this.findViewById(R.id.pass);
-				cred_pass.setText(pass);
-			}
+
+			EditText credType = (EditText) this.findViewById(R.id.credential_type);
+			EditText credUser = (EditText) this.findViewById(R.id.user);
+			EditText credPass = (EditText) this.findViewById(R.id.pass);
+			
+			credType.setText(type);
+			credUser.setText(user);
+			credPass.setText(pass);
+	
+			
 		}
 	}
 

@@ -36,17 +36,11 @@ public class MainActivity extends FragmentActivity {
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
 		
-		System.out.println("Create Activity");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
-		
 	}
 	
 	public void onResume(){
 		super.onResume();
-		System.out.println("Resume Activity");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
+
 		File keyfile = this.getFileStreamPath(FILENAME);
 		
 		if (!keyfile.exists()){
@@ -119,11 +113,8 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void scrollToBottom(){
-		System.out.println("Scroll Activity");
-		if (main!=null) System.out.println("Not null");
-		else System.out.println("Null");
+
 		if(main!=null){
-			System.out.println(main.getId());
 			scrollView.post(new Runnable() {            
             @Override
             public void run() {
