@@ -41,8 +41,13 @@ public class ExportKey extends FragmentActivity {
                    }
                
                })
+               .setOnCancelListener(new DialogInterface.OnCancelListener() {         
+            	   	@Override
+            	   	public void onCancel(DialogInterface dialog) {
+            	   		finish();
+            	   	}})
                .show();
         
-    }
+	}
 
 }
