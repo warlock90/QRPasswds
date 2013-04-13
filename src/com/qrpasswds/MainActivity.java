@@ -80,10 +80,26 @@ public class MainActivity extends FragmentActivity {
             case R.id.scan:
             	IntentIntegrator integrator = new IntentIntegrator(this);
             	integrator.initiateScan();
+            	break;
             case R.id.actionbar_create_qr:
             	createPressed(new View(this));
+            	break;
             case R.id.clear:
-            	
+            	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	        builder.setTitle(R.string.clear_dialog_title)
+    	        	   .setMessage(R.string.clear_message)
+    	               .setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
+    	                   public void onClick(DialogInterface dialog, int id) {
+    	                	   main.removeAllViews();
+    	                   }
+    	               })
+    	               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+    	                   public void onClick(DialogInterface dialog, int id) {
+    	                    
+    	                   }
+    	               })
+    	               .show();
+            	break;
             case R.id.import_key:
             	Intent importKey = new Intent(this, ImportKey.class);
                 this.startActivity(importKey);

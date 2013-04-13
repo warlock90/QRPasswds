@@ -40,6 +40,8 @@
     <string name="import_dialog">Import</string>
     <string name="no_credential_error">Please add at least one credential</string>
     <string name="clear">Clear</string>
+    <string name="clear_message">All inserted credentials will be lost</string>
+    <string name="clear_dialog_title">Clear screen?</string>
 
 
 </resources>
