@@ -24,7 +24,7 @@ public class EncryptEncode extends IntentService {
 		Intent broadcast = new Intent();
 		broadcast.setAction("com.QRPasswds.MESSAGE_PROCESSED");
 		broadcast.putExtra("Executed", executed);
-		sendBroadcast(broadcast);
+		sendOrderedBroadcast(broadcast,null);
 	}
 	
 	@Override
@@ -47,35 +47,3 @@ public class EncryptEncode extends IntentService {
 		}	
 	}
 }
-
-
-
-/*
-private class EncryptEncode extends AsyncTask<Void, Void, Boolean >{
-
-	protected void onPreExecute() {
-		loading(true);
-     }
-
-	
-	@Override
-	protected Boolean doInBackground(Void... params) {
-
-		QREncoder encoder = new QREncoder();
-		
-		try {
-			encoder.createQR(encoder.encode(scroll.getInput()));
-			return true;
-		} catch (IOException e) {
-			return false;
-		} catch (WriterException e) {
-			return false;
-		}
-		
-	}
-	
-	public void onPostExecute(Boolean result){
-		loading(false);
-		encryptionEncodingFinished(result);
-	}
-}*/

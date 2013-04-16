@@ -42,12 +42,13 @@ public class MainActivity extends FragmentActivity {
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
 		loadingView = (LinearLayout) findViewById(R.id.loading);
-		
+				
 		if (savedInstanceState!=null && savedInstanceState.getBoolean("isLoading")){
 			loading(true);
 		}
 		
 		filter = new IntentFilter(ACTION_RESP);
+		filter.setPriority(1);
 		receiver = new EncryptEncodeReceiver();
 		
 	}
@@ -103,45 +104,49 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.scan:
-            	IntentIntegrator integrator = new IntentIntegrator(this);
-            	integrator.initiateScan();
-            	break;
-            case R.id.actionbar_create_qr:
-            	createPressed(new View(this));
-            	break;
-            case R.id.clear:
-            	if (scroll.getIdCounter()>0){
-            		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            		builder.setTitle(R.string.clear_dialog_title)
-    	        	   	.setMessage(R.string.clear_message)
-    	        	   	.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
-    	                   public void onClick(DialogInterface dialog, int id) {
-    	                	   scroll.setIdCounter(0);
-    	                	   main.removeAllViews();
-    	                   }
-    	               })
-    	               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-    	                   public void onClick(DialogInterface dialog, int id) {
+        
+		if (!isLoading){
+		
+			switch (item.getItemId()) {
+            	case R.id.scan:
+            		IntentIntegrator integrator = new IntentIntegrator(this);
+            		integrator.initiateScan();
+            		break;
+            	case R.id.actionbar_create_qr:
+            		createPressed(new View(this));
+            		break;
+            	case R.id.clear:
+            		if (scroll.getIdCounter()>0){
+            			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            			builder.setTitle(R.string.clear_dialog_title)
+    	        	   		.setMessage(R.string.clear_message)
+    	        	   		.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
+    	        	   			public void onClick(DialogInterface dialog, int id) {
+    	        	   				scroll.setIdCounter(0);
+    	        	   				main.removeAllViews();
+    	        	   			}
+    	        	   		})
+    	        	   		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+    	        	   			public void onClick(DialogInterface dialog, int id) {
     	                    
-    	                   }
-    	               })
-    	               .show();
-    	        }
-            	break;
-            case R.id.import_key:
-            	Intent importKey = new Intent(this, ImportKey.class);
-                this.startActivity(importKey);
-                break;
-            case R.id.export_key:
-            	Intent exportKey = new Intent(this, ExportKey.class);
-                this.startActivity(exportKey);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+    	        	   			}
+    	        	   		})
+    	        	   		.show();
+            		}
+            		break;
+            	case R.id.import_key:
+            		Intent importKey = new Intent(this, ImportKey.class);
+                	this.startActivity(importKey);
+                	break;
+            	case R.id.export_key:
+            		Intent exportKey = new Intent(this, ExportKey.class);
+            		this.startActivity(exportKey);
+            		break;
+            	default:
+            		return super.onOptionsItemSelected(item);
+			}
         }
+		
         return true;
     }
 	
@@ -157,14 +162,21 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void createPressed(View v){
-		if (scroll.getIdCounter() > 0)	{
-			Intent toReceiver = new Intent(this,EncryptEncode.class);
-			toReceiver.putExtra("Data", scroll.getInput());
-			startService(toReceiver);
+		
+		if (!isLoading) {
+		
+			if (scroll.getIdCounter() > 0)	{
 			
-		}
-		else {
-			Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
+				loading(true);
+			
+				Intent toReceiver = new Intent(this,EncryptEncode.class);
+				toReceiver.putExtra("Data", scroll.getInput());
+				startService(toReceiver);
+			
+			}
+			else {
+				Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 	
@@ -214,8 +226,11 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			boolean executed = intent.getBooleanExtra("Executed", false);
-			if (executed) System.out.println("Received successfully");
-			else System.out.println("Received not successfully");
+			if (executed) {
+				loading(false);
+				encryptionEncodingFinished(true);
+			}
+			abortBroadcast();
 			
 		}
 		
