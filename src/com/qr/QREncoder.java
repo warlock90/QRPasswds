@@ -15,8 +15,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 public class QREncoder {
 
-	private final int WIDTH = 1600;
-	private final int HEIGHT = 1600;
+	private final int WIDTH = 900;
+	private final int HEIGHT = 900;
 	private final String FOLDER = "QRPasswds";
 	private final String FILENAME = "QR_passwords.png";
 	
