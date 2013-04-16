@@ -1,13 +1,14 @@
 package com.qrpasswds;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -17,19 +18,22 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.zxing.WriterException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.qr.QREncoder;
 
 public class MainActivity extends FragmentActivity {
 	
 	private final String FILENAME = "QRPass.key";
+	public static final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
+	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
 	private LinearLayout main = null;
 	private LinearLayout loadingView = null;
 	private boolean isLoading;
+	
+	private EncryptEncodeReceiver receiver = null;
+	private IntentFilter filter = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,9 @@ public class MainActivity extends FragmentActivity {
 		if (savedInstanceState!=null && savedInstanceState.getBoolean("isLoading")){
 			loading(true);
 		}
+		
+		filter = new IntentFilter(ACTION_RESP);
+		receiver = new EncryptEncodeReceiver();
 		
 	}
 	
@@ -70,7 +77,15 @@ public class MainActivity extends FragmentActivity {
 	               .setCancelable(false)
 	               .show();
 		}
-		//scrollToBottom();
+		
+		
+		registerReceiver(receiver,filter);
+		
+	}
+	
+	public void onPause(){
+		super.onPause();
+		unregisterReceiver(receiver);
 	}
 	
 	@Override
@@ -143,7 +158,10 @@ public class MainActivity extends FragmentActivity {
 	
 	public void createPressed(View v){
 		if (scroll.getIdCounter() > 0)	{
-			new EncryptEncode().execute();
+			Intent toReceiver = new Intent(this,EncryptEncode.class);
+			toReceiver.putExtra("Data", scroll.getInput());
+			startService(toReceiver);
+			
 		}
 		else {
 			Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
@@ -190,33 +208,16 @@ public class MainActivity extends FragmentActivity {
 			isLoading = false;
 		}
 	}
-		
-	private class EncryptEncode extends AsyncTask<Void, Void, Boolean >{
+	
+	private class EncryptEncodeReceiver extends BroadcastReceiver{
 
-		protected void onPreExecute() {
-			loading(true);
-	     }
-
-		
 		@Override
-		protected Boolean doInBackground(Void... params) {
-
-			QREncoder encoder = new QREncoder();
-			
-			try {
-				encoder.createQR(encoder.encode(scroll.getInput()));
-				return true;
-			} catch (IOException e) {
-				return false;
-			} catch (WriterException e) {
-				return false;
-			}
+		public void onReceive(Context context, Intent intent) {
+			boolean executed = intent.getBooleanExtra("Executed", false);
+			if (executed) System.out.println("Received successfully");
+			else System.out.println("Received not successfully");
 			
 		}
 		
-		public void onPostExecute(Boolean result){
-			loading(false);
-			encryptionEncodingFinished(result);
-		}
 	}
 }
