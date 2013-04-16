@@ -1,36 +1,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
    android:layout_width="fill_parent"
    android:layout_height="fill_parent"
    android:layout_marginLeft="8dp"
    android:layout_marginRight="8dp"
    android:orientation="vertical"
    android:id="@+id/activity_layout">
- 
-<ScrollView 
-    android:id="@+id/scroll_view"
-    android:layout_width="match_parent"
-    android:layout_height="0dip"
-    android:layout_weight="1" >
-    
-    
-<fragment class="com.qrpasswds.CredentialsFragment"
-    android:id="@+id/scroll_fragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+   
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+            
+    	<LinearLayout 
+			android:id="@+id/loading"
+	    	android:layout_width="fill_parent"
+	   		android:layout_height="fill_parent"
+	   		android:gravity="center"
+	   		android:visibility="invisible" >
+	   	
+	   	 	<ProgressBar	    
+	    		style="?android:attr/progressBarStyleLarge"
+	    		android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content" />
+	
+		</LinearLayout>
+		
+		<ScrollView
+    			android:id="@+id/scroll_view"
+    			android:layout_width="match_parent"
+    			android:layout_height="fill_parent" >
 
-</ScrollView>
+			<fragment class="com.qrpasswds.CredentialsFragment"
+    			android:id="@+id/scroll_fragment"
+    			android:layout_width="match_parent"
+    			android:layout_height="wrap_content" />
 
-<LinearLayout
+		</ScrollView>
+
+	</FrameLayout>
+
+	<LinearLayout
         android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" 
-    android:id="@+id/button_wrapper"
-    android:layout_marginBottom="8dp"
-    style="@style/QRButtonBar"
-    android:clickable="true"
-    android:onClick="createPressed" >
+    	android:layout_height="wrap_content"
+   	 	android:orientation="horizontal" 
+    	android:id="@+id/button_wrapper"
+    	android:layout_marginBottom="8dp"
+    	style="@style/QRButtonBar"
+    	android:clickable="true"
+    	android:onClick="createPressed" >
     
-    <Button
+   		 <Button
             android:id="@+id/create_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,8 +59,6 @@
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/ic_navigation_accept" />
     
-</LinearLayout>
-
-
+	</LinearLayout>
 
 </LinearLayout>

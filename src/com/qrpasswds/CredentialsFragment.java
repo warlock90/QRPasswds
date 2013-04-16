@@ -18,7 +18,7 @@ public class CredentialsFragment extends Fragment {
 	private Button addButton = null;
 	private MainActivity mAc = null;
 		
-	public int idCounter = 0;
+	private int idCounter = 0;
 			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class CredentialsFragment extends Fragment {
 		main = (LinearLayout) fragView.findViewById(R.id.main);
 		
 		mAc = (MainActivity) getActivity();
-		mAc.main = main;
+		mAc.setMain(main);
 		
 		addButton = (Button) fragView.findViewById(R.id.add_button);
 		addButton.setOnClickListener(new OnClickListener() {
@@ -41,7 +41,6 @@ public class CredentialsFragment extends Fragment {
 	     });
 		
 		if (savedInstanceState!=null && savedInstanceState.getInt("idCounter")>0){
-			
 			String[] retainedData = savedInstanceState.getString("data").split("\n");
 			for (int f=0;f<retainedData.length;f+=3) {
 				addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
@@ -52,7 +51,7 @@ public class CredentialsFragment extends Fragment {
 	}
 	
 	 @Override
-	    public void onSaveInstanceState(Bundle outState) {
+	 public void onSaveInstanceState(Bundle outState) {
 	        super.onSaveInstanceState(outState);
 	        outState.putString("data", getInput());
 	        outState.putInt("idCounter", idCounter);
@@ -98,6 +97,14 @@ public class CredentialsFragment extends Fragment {
 		return input;
 	}
 	
+	public void setIdCounter(int value){
+		idCounter = value;
+	}
+	
+	public int getIdCounter(){
+		return idCounter;
+	}
+	
 	private class Credential extends LinearLayout{
 		
 		public Credential(Context context, int viewId, String type, String user, String pass) {
@@ -120,4 +127,5 @@ public class CredentialsFragment extends Fragment {
 		}
 	}
 
+	
 }

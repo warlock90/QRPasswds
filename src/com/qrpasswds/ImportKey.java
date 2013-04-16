@@ -26,6 +26,11 @@ public class ImportKey extends Activity {
         startActivityForResult(intent, FIND_FILE);
 	}
 	
+	public void onResume(){
+		super.onResume();
+		finish();
+	}
+	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
 		
 		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){

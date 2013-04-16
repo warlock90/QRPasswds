@@ -27,7 +27,9 @@ public class MainActivity extends FragmentActivity {
 	private final String FILENAME = "QRPass.key";
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
-	public LinearLayout main;
+	private LinearLayout main = null;
+	private LinearLayout loadingView = null;
+	private boolean isLoading;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,11 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
+		loadingView = (LinearLayout) findViewById(R.id.loading);
+		
+		if (savedInstanceState!=null && savedInstanceState.getBoolean("isLoading")){
+			loading(true);
+		}
 		
 	}
 	
@@ -67,6 +74,12 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@Override
+	 public void onSaveInstanceState(Bundle outState) {
+	        super.onSaveInstanceState(outState);
+	        outState.putBoolean("isLoading", isLoading);
+	    }
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -85,11 +98,13 @@ public class MainActivity extends FragmentActivity {
             	createPressed(new View(this));
             	break;
             case R.id.clear:
-            	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	        builder.setTitle(R.string.clear_dialog_title)
-    	        	   .setMessage(R.string.clear_message)
-    	               .setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
+            	if (scroll.getIdCounter()>0){
+            		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            		builder.setTitle(R.string.clear_dialog_title)
+    	        	   	.setMessage(R.string.clear_message)
+    	        	   	.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
     	                   public void onClick(DialogInterface dialog, int id) {
+    	                	   scroll.setIdCounter(0);
     	                	   main.removeAllViews();
     	                   }
     	               })
@@ -99,6 +114,7 @@ public class MainActivity extends FragmentActivity {
     	                   }
     	               })
     	               .show();
+    	        }
             	break;
             case R.id.import_key:
             	Intent importKey = new Intent(this, ImportKey.class);
@@ -117,7 +133,7 @@ public class MainActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) {
-			  scroll.idCounter = 0;
+			  scroll.setIdCounter(0);
 			  String[] retainedData = scanResult.getContents().split("\n");
 			
 			  for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
@@ -126,7 +142,9 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void createPressed(View v){
-		if (scroll.idCounter > 0)	new EncryptEncode().execute();
+		if (scroll.getIdCounter() > 0)	{
+			new EncryptEncode().execute();
+		}
 		else {
 			Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
 		}
@@ -145,7 +163,7 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void encryptionEncodingFinished(boolean success){
-		
+				
 		if (success){		
 			Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT).show();
 			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
@@ -154,9 +172,32 @@ public class MainActivity extends FragmentActivity {
 			Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG).show();
 		}
 	}
+	
+	public void setMain(LinearLayout in){
+		main = in;
+	}
+	
+	public void loading(boolean flag){
+		
+		if (flag) {
+			scrollView.setVisibility(View.INVISIBLE);
+			loadingView.setVisibility(View.VISIBLE);
+			isLoading = true;
+		}
+		else {
+			scrollView.setVisibility(View.VISIBLE);
+			loadingView.setVisibility(View.INVISIBLE);
+			isLoading = false;
+		}
+	}
 		
 	private class EncryptEncode extends AsyncTask<Void, Void, Boolean >{
 
+		protected void onPreExecute() {
+			loading(true);
+	     }
+
+		
 		@Override
 		protected Boolean doInBackground(Void... params) {
 
@@ -174,6 +215,7 @@ public class MainActivity extends FragmentActivity {
 		}
 		
 		public void onPostExecute(Boolean result){
+			loading(false);
 			encryptionEncodingFinished(result);
 		}
 	}
