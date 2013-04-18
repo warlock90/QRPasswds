@@ -24,7 +24,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class MainActivity extends FragmentActivity {
 	
 	private final String FILENAME = "QRPass.key";
-	public static final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
+	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;

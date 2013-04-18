@@ -86,9 +86,9 @@ public class CredentialsFragment extends Fragment {
 			String user = credUser.getText().toString().trim();
 			String pass = credPass.getText().toString().trim();
 			
-			if (type.length()==0) type = "empty";
-			if (user.length()==0) user = "empty";
-			if (pass.length()==0) pass = "empty";			
+			if (type.length()==0) type = "<QR3mpty/>";
+			if (user.length()==0) user = "<QR3mpty/>";
+			if (pass.length()==0) pass = "<QR3mpty/>";			
 			
 			input += type+"\n"+user+"\n"+pass+"\n";
 						
@@ -119,9 +119,9 @@ public class CredentialsFragment extends Fragment {
 			EditText credUser = (EditText) this.findViewById(R.id.user);
 			EditText credPass = (EditText) this.findViewById(R.id.pass);
 			
-			credType.setText(type);
-			credUser.setText(user);
-			credPass.setText(pass);
+			if (type!=null && !type.equals("<QR3mpty/>")) credType.setText(type);
+			if (user!=null && !user.equals("<QR3mpty/>")) credUser.setText(user);
+			if (pass!=null && !pass.equals("<QR3mpty/>")) credPass.setText(pass);
 	
 			
 		}
