@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import com.aes.AESRandomKey;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -23,7 +24,12 @@ public class ImportKey extends Activity {
 		Intent intent = new Intent();
         intent.setType("file/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, FIND_FILE);
+        try {
+        	startActivityForResult(intent, FIND_FILE);
+        }
+        catch(ActivityNotFoundException e){
+        	Toast.makeText(this, R.string.file_manager_not_found, Toast.LENGTH_LONG).show();
+        }
 	}
 	
 	public void onResume(){
