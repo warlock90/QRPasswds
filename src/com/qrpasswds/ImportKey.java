@@ -34,7 +34,6 @@ public class ImportKey extends Activity {
 	
 	public void onResume(){
 		super.onResume();
-		finish();
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
@@ -51,23 +50,20 @@ public class ImportKey extends Activity {
 				if (flag) {
 					ranKey.importKey(resultFile, this);
 					Toast.makeText(this, R.string.key_imported, Toast.LENGTH_LONG).show();
-					finish();
 				}
 				else {
 					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
-					finish();
 				}
 				
 			} catch(IOException e){ 
 				Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG).show();
-				finish();
 			} catch (SAXException e) {
 					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
-					finish();
 			} catch (ParserConfigurationException e) {
 				Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
-				finish();
 			}
 		}
+		
+		finish();
 	}
 }

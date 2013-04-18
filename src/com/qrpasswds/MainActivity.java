@@ -1,6 +1,16 @@
 package com.qrpasswds;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -18,6 +28,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.aes.AESEncryption;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -154,10 +165,36 @@ public class MainActivity extends FragmentActivity {
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) {
 			  scroll.setIdCounter(0);
-			  String[] retainedData = scanResult.getContents().split("\n");
+			  AESEncryption aes = new AESEncryption(this);
+			  loading(true);
+			  
+			  String[] retainedData = null;
 			
-			  for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
-		    //System.out.println(scanResult.getContents());
+			  try {
+				  
+				retainedData = aes.aes_decrypt(scanResult.getContents()).split("\n");
+				for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+				
+			  } catch (InvalidKeyException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (NoSuchAlgorithmException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (NoSuchPaddingException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (IllegalBlockSizeException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (BadPaddingException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (IOException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (ParserConfigurationException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  } catch (SAXException e) {
+				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
+			  }
+			
+			  loading(false);
+		   
 		  }
 	}
 	
@@ -228,7 +265,7 @@ public class MainActivity extends FragmentActivity {
 			boolean executed = intent.getBooleanExtra("Executed", false);
 			if (executed) {
 				loading(false);
-				encryptionEncodingFinished(true);
+				encryptionEncodingFinished(intent.getBooleanExtra("Success", false));
 			}
 			abortBroadcast();
 			

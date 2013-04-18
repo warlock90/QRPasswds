@@ -43,6 +43,7 @@
     <string name="clear_message">All inserted credentials will be lost</string>
     <string name="clear_dialog_title">Clear screen?</string>
     <string name="file_manager_not_found">Please install a file browser to import key</string>
+    <string name="error_scanning">There was an error scanning the QR, please try again</string>
 
 
 </resources>
