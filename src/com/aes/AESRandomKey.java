@@ -28,9 +28,6 @@ public class AESRandomKey {
     private final int KEYSIZE_BITS = 128;
     private final int KEYSIZE_BYTES = KEYSIZE_BITS / 8;
     private final String FILENAME = "QRPass.key";
-    private final byte[] VALIDATE_DATA = "QRPassKey".getBytes();
-    private final int MAX_KEYSIZE_BYTES = VALIDATE_DATA.length + 32;
-    
     
     private Context context;
     
@@ -65,14 +62,18 @@ public class AESRandomKey {
 		fos.close();
 	}
 	
-	public byte[] getKey() throws IOException{
+	public byte[] getKey() throws IOException, ParserConfigurationException, SAXException{
 		
 		FileInputStream fis = context.openFileInput(FILENAME);
-		byte[] buffer = new byte[MAX_KEYSIZE_BYTES];
-		fis.skip(VALIDATE_DATA.length);
-		fis.read(buffer);
-		fis.close();
-				
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		Document dom = db.parse(fis);
+		
+		String pass = dom.getElementsByTagName(FOLDER).item(0).getTextContent();
+		
+		byte[] buffer = Base64.decode(pass, Base64.DEFAULT);
+						
 		return buffer;	
 	}
 	
@@ -98,8 +99,6 @@ public class AESRandomKey {
 		
 	public void exportKey() throws IOException{
 		
-		byte[] data = new byte[VALIDATE_DATA.length+KEYSIZE_BYTES];
-		
 		FileInputStream in = context.openFileInput(FILENAME);
 		
 		File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
@@ -107,8 +106,9 @@ public class AESRandomKey {
 		
 		FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+FILENAME);
 		
-		in.read(data);
-		out.write(data);
+		byte[] buffer = new byte[256];
+		
+		while (in.read(buffer)>0) out.write(buffer);
 		
 		in.close();
 		out.close();

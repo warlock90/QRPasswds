@@ -9,6 +9,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import android.content.Context;
 import android.util.Base64;
@@ -23,7 +26,7 @@ public class AESEncryption {
     	ranKey = new AESRandomKey(refContext);
     }
 	
-	public String aes_encrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException{
+	public String aes_encrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, ParserConfigurationException, SAXException{
         
         SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
         byte[] encryptedBytes;
@@ -38,7 +41,7 @@ public class AESEncryption {
         return encryptedData;
 	}
 
-	public String aes_decrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException {
+	public String aes_decrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, ParserConfigurationException, SAXException {
     
 		String decryptedData = "";
    
