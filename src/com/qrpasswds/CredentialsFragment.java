@@ -115,13 +115,20 @@ public class CredentialsFragment extends Fragment {
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	
 
-			EditText credType = (EditText) this.findViewById(R.id.credential_type);
-			EditText credUser = (EditText) this.findViewById(R.id.user);
-			EditText credPass = (EditText) this.findViewById(R.id.pass);
+			if (type!=null && !type.equals("<QR3mpty/>")) {
+				EditText credType = (EditText) this.findViewById(R.id.credential_type);
+				credType.setText(type);
+			}
 			
-			if (type!=null && !type.equals("<QR3mpty/>")) credType.setText(type);
-			if (user!=null && !user.equals("<QR3mpty/>")) credUser.setText(user);
-			if (pass!=null && !pass.equals("<QR3mpty/>")) credPass.setText(pass);
+			if (user!=null && !user.equals("<QR3mpty/>")) {
+				EditText credUser = (EditText) this.findViewById(R.id.user);
+				credUser.setText(user);
+			}
+			
+			if (pass!=null && !pass.equals("<QR3mpty/>")) {
+				EditText credPass = (EditText) this.findViewById(R.id.pass);
+				credPass.setText(pass);
+			}
 	
 			
 		}
