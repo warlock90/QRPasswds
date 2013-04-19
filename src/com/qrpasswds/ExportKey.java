@@ -2,13 +2,13 @@ package com.qrpasswds;
 
 import java.io.IOException;
 
-import com.aes.AESRandomKey;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
+
+import com.aes.AESRandomKey;
 
 public class ExportKey extends FragmentActivity {
 	
@@ -29,7 +29,17 @@ public class ExportKey extends FragmentActivity {
                 		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
                 		   
                        } catch (IOException e) {
-                    	   Toast.makeText(ExportKey.this, R.string.error_exporting_key, Toast.LENGTH_LONG).show();
+                    	                       	   
+                    	   AlertDialog.Builder builder = new AlertDialog.Builder(ExportKey.this);
+               	        	builder.setTitle(R.string.error)
+               	        	   .setMessage(R.string.error_exporting_key)
+               	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+               	                   public void onClick(DialogInterface dialog, int id) {
+               	                      
+               	                   }
+               	               })
+               	               .show();
+                    	   
                        }
                 	   finish();
                 	   

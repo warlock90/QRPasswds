@@ -3,6 +3,8 @@ package com.qrpasswds;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -24,7 +26,16 @@ public class GenerateKey extends FragmentActivity {
 		} catch (NoSuchAlgorithmException e) {
 			
 		} catch (IOException e) {
-			Toast.makeText(this, R.string.error_creating_file, Toast.LENGTH_LONG).show();
+			
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        	builder.setTitle(R.string.error)
+	        	   .setMessage(R.string.error_creating_file)
+	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      
+	                   }
+	               })
+	               .show();
 		}
 		finish();
 		

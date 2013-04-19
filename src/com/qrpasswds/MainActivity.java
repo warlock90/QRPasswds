@@ -1,16 +1,6 @@
 package com.qrpasswds;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -175,23 +165,19 @@ public class MainActivity extends FragmentActivity {
 				retainedData = aes.aes_decrypt(scanResult.getContents()).split("\n");
 				for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
 				
-			  } catch (InvalidKeyException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (NoSuchAlgorithmException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (NoSuchPaddingException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (IllegalBlockSizeException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (BadPaddingException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (IOException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (ParserConfigurationException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  } catch (SAXException e) {
-				  Toast.makeText(this, R.string.error_scanning, Toast.LENGTH_LONG).show();
-			  }
+			  } catch (Exception e) {
+				  
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setTitle(R.string.error)
+	   	        	   .setMessage(R.string.error_scanning)
+	   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                      
+	   	                   }
+	   	               })
+	   	               .show();
+				  
+			  } 
 			
 			  loading(false);
 		   
@@ -212,7 +198,16 @@ public class MainActivity extends FragmentActivity {
 			
 			}
 			else {
-				Toast.makeText(this, R.string.no_credential_error , Toast.LENGTH_LONG).show();
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   	        	builder.setTitle(R.string.error)
+   	        	   .setMessage(R.string.no_credential_error)
+   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	                   public void onClick(DialogInterface dialog, int id) {
+   	                      
+   	                   }
+   	               })
+   	               .show();
 			}
 		}
 	}
@@ -236,7 +231,16 @@ public class MainActivity extends FragmentActivity {
 			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
 		}
 		else {
-			Toast.makeText(this, R.string.error_creating_qr, Toast.LENGTH_LONG).show();
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        	builder.setTitle(R.string.error)
+	        	   .setMessage(R.string.error_creating_file)
+	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      
+	                   }
+	               })
+	               .show();
 		}
 	}
 	

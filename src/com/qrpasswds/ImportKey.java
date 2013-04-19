@@ -9,7 +9,9 @@ import org.xml.sax.SAXException;
 import com.aes.AESRandomKey;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -28,7 +30,17 @@ public class ImportKey extends Activity {
         	startActivityForResult(intent, FIND_FILE);
         }
         catch(ActivityNotFoundException e){
-        	Toast.makeText(this, R.string.file_manager_not_found, Toast.LENGTH_LONG).show();
+        
+        	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	        	builder.setTitle(R.string.error)
+	        	   .setMessage(R.string.file_manager_not_found)
+	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	                   public void onClick(DialogInterface dialog, int id) {
+	                      
+	                   }
+	               })
+	               .show();
+        	
         }
 	}
 	
@@ -52,15 +64,54 @@ public class ImportKey extends Activity {
 					Toast.makeText(this, R.string.key_imported, Toast.LENGTH_LONG).show();
 				}
 				else {
-					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+       	        	builder.setTitle(R.string.error)
+       	        	   .setMessage(R.string.not_valid_file)
+       	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+       	                   public void onClick(DialogInterface dialog, int id) {
+       	                      
+       	                   }
+       	               })
+       	               .show();
 				}
 				
 			} catch(IOException e){ 
-				Toast.makeText(this, R.string.error_reading_file, Toast.LENGTH_LONG).show();
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   	        	builder.setTitle(R.string.error)
+   	        	   .setMessage(R.string.error_reading_file)
+   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	                   public void onClick(DialogInterface dialog, int id) {
+   	                      
+   	                   }
+   	               })
+   	               .show();
+   	        	
 			} catch (SAXException e) {
-					Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   	        	builder.setTitle(R.string.error)
+   	        	   .setMessage(R.string.not_valid_file)
+   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	                   public void onClick(DialogInterface dialog, int id) {
+   	                      
+   	                   }
+   	               })
+   	               .show();
+   	        	
 			} catch (ParserConfigurationException e) {
-				Toast.makeText(this, R.string.not_valid_file, Toast.LENGTH_LONG ).show();
+
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+   	        	builder.setTitle(R.string.error)
+   	        	   .setMessage(R.string.not_valid_file)
+   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	                   public void onClick(DialogInterface dialog, int id) {
+   	                      
+   	                   }
+   	               })
+   	               .show();
+
 			}
 		}
 		
