@@ -26,10 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.qrpasswds.Preferences"
-            android:label="@string/settings">
-        </activity>
-        <activity
             android:name="com.qrpasswds.ExportKey" 
             android:theme="@style/QRTheme">
         </activity>

@@ -45,13 +45,8 @@ public class ImportKey extends Activity {
         }
 	}
 	
-	public void onResume(){
-		super.onResume();
-		System.out.println("Resume");
-	}
-	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
-		System.out.println("Activity Result");
+		
 		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			
 			AESRandomKey ranKey = new AESRandomKey(this);
