@@ -36,7 +36,7 @@ public class ImportKey extends Activity {
 	        	   .setMessage(R.string.file_manager_not_found)
 	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
-	                      
+	                      finish();
 	                   }
 	               })
 	               .show();
@@ -62,6 +62,7 @@ public class ImportKey extends Activity {
 				if (flag) {
 					ranKey.importKey(resultFile, this);
 					Toast.makeText(this, R.string.key_imported, Toast.LENGTH_LONG).show();
+					finish();
 				}
 				else {
 
@@ -70,7 +71,7 @@ public class ImportKey extends Activity {
        	        	   .setMessage(R.string.not_valid_file)
        	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
        	                   public void onClick(DialogInterface dialog, int id) {
-       	                      
+       	                	finish();  
        	                   }
        	               })
        	               .show();
@@ -83,7 +84,7 @@ public class ImportKey extends Activity {
    	        	   .setMessage(R.string.error_reading_file)
    	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
-   	                      
+   	                	finish();
    	                   }
    	               })
    	               .show();
@@ -95,7 +96,7 @@ public class ImportKey extends Activity {
    	        	   .setMessage(R.string.not_valid_file)
    	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
-   	                      
+   	                	finish();
    	                   }
    	               })
    	               .show();
@@ -107,7 +108,7 @@ public class ImportKey extends Activity {
    	        	   .setMessage(R.string.not_valid_file)
    	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
-   	                      
+   	                	finish();
    	                   }
    	               })
    	               .show();
@@ -115,6 +116,6 @@ public class ImportKey extends Activity {
 			}
 		}
 		
-		finish();
+		
 	}
 }

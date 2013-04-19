@@ -27,6 +27,7 @@ public class ExportKey extends FragmentActivity {
                 	   try {
                 		   ran_key.exportKey();
                 		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
+                		   finish();
                 		   
                        } catch (IOException e) {
                     	                       	   
@@ -35,13 +36,13 @@ public class ExportKey extends FragmentActivity {
                	        	   .setMessage(R.string.error_exporting_key)
                	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
                	                   public void onClick(DialogInterface dialog, int id) {
-               	                      
+               	                	   finish();
                	                   }
                	               })
                	               .show();
                     	   
                        }
-                	   finish();
+                	   
                 	   
                    }
                })
