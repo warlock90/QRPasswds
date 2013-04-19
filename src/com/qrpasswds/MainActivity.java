@@ -121,6 +121,7 @@ public class MainActivity extends FragmentActivity {
             		if (scroll.getIdCounter()>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
             			builder.setTitle(R.string.clear_dialog_title)
+            			.setIcon(R.drawable.ic_alerts_and_states_warning)
     	        	   		.setMessage(R.string.clear_message)
     	        	   		.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
     	        	   			public void onClick(DialogInterface dialog, int id) {

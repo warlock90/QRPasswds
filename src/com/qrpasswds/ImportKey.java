@@ -19,6 +19,7 @@ import android.widget.Toast;
 public class ImportKey extends Activity {
 
 	private final int FIND_FILE = 1;
+	private boolean error = false;
 	
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -31,6 +32,8 @@ public class ImportKey extends Activity {
         }
         catch(ActivityNotFoundException e){
         
+        	error = true;
+        	
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	        	builder.setTitle(R.string.error)
 	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
@@ -40,13 +43,18 @@ public class ImportKey extends Activity {
 	                      finish();
 	                   }
 	               })
+	               .setOnCancelListener(new DialogInterface.OnCancelListener() {         
+            	   		@Override
+            	   		public void onCancel(DialogInterface dialog) {
+            	   			finish();
+            	   	}})
 	               .show();
         	
         }
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent result){
-		
+		System.out.println("Result");
 		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			
 			AESRandomKey ranKey = new AESRandomKey(this);
@@ -116,11 +124,9 @@ public class ImportKey extends Activity {
 
 			}
 		}
-		else
-		{
+		else if ( requestCode == FIND_FILE && resultCode != RESULT_OK && !error){
 			finish();
 		}
-		
 		
 	}
 }
