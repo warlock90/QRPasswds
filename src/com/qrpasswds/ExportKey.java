@@ -33,6 +33,7 @@ public class ExportKey extends FragmentActivity {
                     	                       	   
                     	   AlertDialog.Builder builder = new AlertDialog.Builder(ExportKey.this);
                	        	builder.setTitle(R.string.error)
+               	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
                	        	   .setMessage(R.string.error_exporting_key)
                	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
                	                   public void onClick(DialogInterface dialog, int id) {
