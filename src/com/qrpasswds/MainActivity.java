@@ -63,6 +63,7 @@ public class MainActivity extends FragmentActivity {
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	        builder.setTitle(R.string.key_file_missing_title)
+	        	   .setIcon(R.drawable.ic_alerts_and_states_warning)
 	        	   .setMessage(R.string.key_file_missing_message)
 	               .setPositiveButton(R.string.generate, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {

@@ -18,6 +18,7 @@ public class ExportKey extends FragmentActivity {
         
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.export_key_title)
+        	   .setIcon(R.drawable.ic_alerts_and_states_warning)
         	   .setMessage(R.string.export_key_message)
                .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
                    public void onClick(DialogInterface dialog, int id) {
