@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity {
 	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
-	private LinearLayout main = null;
+	public LinearLayout main = null;
 	private LinearLayout loadingView = null;
 	private boolean isLoading;
 	
@@ -118,14 +118,14 @@ public class MainActivity extends FragmentActivity {
             		createPressed(new View(this));
             		break;
             	case R.id.clear:
-            		if (scroll.getIdCounter()>0){
+            		if (scroll.idCounter>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
             			builder.setTitle(R.string.clear_dialog_title)
             			.setIcon(R.drawable.ic_alerts_and_states_warning)
     	        	   		.setMessage(R.string.clear_message)
     	        	   		.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
     	        	   			public void onClick(DialogInterface dialog, int id) {
-    	        	   				scroll.setIdCounter(0);
+    	        	   				scroll.idCounter = 0;
     	        	   				main.removeAllViews();
     	        	   			}
     	        	   		})
@@ -156,7 +156,7 @@ public class MainActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) {
-			  scroll.setIdCounter(0);
+			  scroll.idCounter = 0;
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
 			  
@@ -191,7 +191,7 @@ public class MainActivity extends FragmentActivity {
 		
 		if (!isLoading) {
 		
-			if (scroll.getIdCounter() > 0)	{
+			if (scroll.idCounter > 0)	{
 			
 				loading(true);
 			
@@ -247,10 +247,6 @@ public class MainActivity extends FragmentActivity {
 	               })
 	               .show();
 		}
-	}
-	
-	public void setMain(LinearLayout in){
-		main = in;
 	}
 	
 	public void loading(boolean flag){

@@ -18,7 +18,7 @@ public class CredentialsFragment extends Fragment {
 	private Button addButton = null;
 	private MainActivity mAc = null;
 		
-	private int idCounter = 0;
+	public int idCounter = 0;
 			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class CredentialsFragment extends Fragment {
 		main = (LinearLayout) fragView.findViewById(R.id.main);
 		
 		mAc = (MainActivity) getActivity();
-		mAc.setMain(main);
+		mAc.main = main;
 		
 		addButton = (Button) fragView.findViewById(R.id.add_button);
 		addButton.setOnClickListener(new OnClickListener() {
@@ -95,14 +95,6 @@ public class CredentialsFragment extends Fragment {
 		}
 		
 		return input;
-	}
-	
-	public void setIdCounter(int value){
-		idCounter = value;
-	}
-	
-	public int getIdCounter(){
-		return idCounter;
 	}
 	
 	private class Credential extends LinearLayout{

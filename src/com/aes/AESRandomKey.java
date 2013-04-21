@@ -71,10 +71,8 @@ public class AESRandomKey {
 		Document dom = db.parse(fis);
 		
 		String pass = dom.getElementsByTagName(FOLDER).item(0).getTextContent();
-		
-		byte[] buffer = Base64.decode(pass, Base64.DEFAULT);
 						
-		return buffer;	
+		return Base64.decode(pass, Base64.DEFAULT);
 	}
 	
 	public boolean validateKey(String key_file) throws IOException, SAXException, ParserConfigurationException {

@@ -29,30 +29,26 @@ public class AESEncryption {
 	public String aes_encrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, ParserConfigurationException, SAXException{
         
         SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
-        byte[] encryptedBytes;
-        String encryptedData = "";
-        Cipher aes;
         
-        aes = Cipher.getInstance(ALGORITHM);
+        Cipher aes = Cipher.getInstance(ALGORITHM);
         aes.init(Cipher.ENCRYPT_MODE,key);
-        encryptedBytes = aes.doFinal(Data.getBytes(CHARSET));
-        encryptedData = Base64.encodeToString(encryptedBytes, Base64.DEFAULT);
         
-        return encryptedData;
+        byte[] encryptedBytes = aes.doFinal(Data.getBytes(CHARSET));
+
+        return Base64.encodeToString(encryptedBytes, Base64.DEFAULT);
 	}
 
 	public String aes_decrypt(String Data) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException, IOException, ParserConfigurationException, SAXException {
-    
-		String decryptedData = "";
-   
+
 		SecretKeySpec key = new SecretKeySpec(ranKey.getKey(),ALGORITHM);
+		
 		Cipher aes = Cipher.getInstance(ALGORITHM);
 		aes.init(Cipher.DECRYPT_MODE, key);
+		
 		byte[] decordedValue = Base64.decode(Data, Base64.DEFAULT);
 		byte[] decryptedBytes = aes.doFinal(decordedValue);
-    	decryptedData = new String(decryptedBytes,CHARSET); 
-    	
-    	return decryptedData;    
+
+    	return new String(decryptedBytes,CHARSET);    
 	}
 
 }
