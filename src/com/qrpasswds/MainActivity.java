@@ -12,9 +12,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,9 +32,13 @@ public class MainActivity extends FragmentActivity {
 	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
+	
 	public LinearLayout main = null;
 	private LinearLayout loadingView = null;
+	private LinearLayout activityLayout = null;
+	
 	private boolean isLoading;
+	private Display display = null;
 	
 	private EncryptEncodeReceiver receiver = null;
 	private IntentFilter filter = null;
@@ -40,19 +47,23 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
 		loadingView = (LinearLayout) findViewById(R.id.loading);
+		activityLayout = (LinearLayout) findViewById(R.id.activity_layout);
 				
 		if (savedInstanceState!=null && savedInstanceState.getBoolean("isLoading")){
 			loading(true);
 		}
 		
-		System.out.println("Main children: "+main.getChildCount());
-		
 		filter = new IntentFilter(ACTION_RESP);
 		filter.setPriority(1);
 		receiver = new EncryptEncodeReceiver();
+		
+		
 		
 	}
 	
@@ -190,8 +201,6 @@ public class MainActivity extends FragmentActivity {
 	
 	public void createPressed(View v){
 		
-		if (!isLoading) {
-		
 			if (main.getChildCount() > 0)	{
 			
 				loading(true);
@@ -215,7 +224,6 @@ public class MainActivity extends FragmentActivity {
    	               .show();
 			}
 		}
-	}
 	
 	public void scrollToBottom(){
 
@@ -253,12 +261,17 @@ public class MainActivity extends FragmentActivity {
 	public void loading(boolean flag){
 		
 		if (flag) {
-			scrollView.setVisibility(View.INVISIBLE);
+
+			if (display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180) activityLayout.setVisibility(View.INVISIBLE);
+			else scrollView.setVisibility(View.INVISIBLE);
+
 			loadingView.setVisibility(View.VISIBLE);
 			isLoading = true;
 		}
 		else {
-			scrollView.setVisibility(View.VISIBLE);
+			if (display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180) activityLayout.setVisibility(View.VISIBLE);
+			else scrollView.setVisibility(View.VISIBLE);
+			
 			loadingView.setVisibility(View.INVISIBLE);
 			isLoading = false;
 		}

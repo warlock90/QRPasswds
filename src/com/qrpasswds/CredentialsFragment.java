@@ -61,8 +61,6 @@ public class CredentialsFragment extends Fragment {
 		Credential cred = new Credential(this.getActivity(),main.getChildCount(),type,user,pass);
 
 		main.addView(cred);
-
-		System.out.println("Main children: "+main.getChildCount());
 		
 		if(type==null){		
 			mAc.scrollToBottom();
