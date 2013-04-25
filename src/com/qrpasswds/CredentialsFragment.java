@@ -17,8 +17,6 @@ public class CredentialsFragment extends Fragment {
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
 	private MainActivity mAc = null;
-		
-	public int idCounter = 0;
 			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,15 +52,17 @@ public class CredentialsFragment extends Fragment {
 	 public void onSaveInstanceState(Bundle outState) {
 	        super.onSaveInstanceState(outState);
 	        outState.putString("data", getInput());
-	        outState.putInt("idCounter", idCounter);
+	        outState.putInt("idCounter", main.getChildCount());
 	    }
 
 	
 	public void addCredential(String type, String user, String pass){
 
-		Credential cred = new Credential(this.getActivity(),idCounter,type,user,pass);
+		Credential cred = new Credential(this.getActivity(),main.getChildCount(),type,user,pass);
 
 		main.addView(cred);
+
+		System.out.println("Main children: "+main.getChildCount());
 		
 		if(type==null){		
 			mAc.scrollToBottom();
@@ -73,7 +73,7 @@ public class CredentialsFragment extends Fragment {
 		
 		String input = "";
 		
-		for (int f=0;f<idCounter;f++){
+		for (int f=0;f<main.getChildCount();f++){
 			
 			LinearLayout credView = (LinearLayout)main.findViewWithTag("cred"+f);
 			
@@ -102,7 +102,7 @@ public class CredentialsFragment extends Fragment {
 		public Credential(Context context, int viewId, String type, String user, String pass) {
 			super(context);
 			this.setTag("cred"+viewId);
-			idCounter++;
+	
 
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	

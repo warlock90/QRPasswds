@@ -48,6 +48,8 @@ public class MainActivity extends FragmentActivity {
 			loading(true);
 		}
 		
+		System.out.println("Main children: "+main.getChildCount());
+		
 		filter = new IntentFilter(ACTION_RESP);
 		filter.setPriority(1);
 		receiver = new EncryptEncodeReceiver();
@@ -118,14 +120,13 @@ public class MainActivity extends FragmentActivity {
             		createPressed(new View(this));
             		break;
             	case R.id.clear:
-            		if (scroll.idCounter>0){
+            		if (main.getChildCount()>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
             			builder.setTitle(R.string.clear_dialog_title)
             			.setIcon(R.drawable.ic_alerts_and_states_warning)
     	        	   		.setMessage(R.string.clear_message)
     	        	   		.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
     	        	   			public void onClick(DialogInterface dialog, int id) {
-    	        	   				scroll.idCounter = 0;
     	        	   				main.removeAllViews();
     	        	   			}
     	        	   		})
@@ -156,7 +157,7 @@ public class MainActivity extends FragmentActivity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 		  if (scanResult != null) {
-			  scroll.idCounter = 0;
+
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
 			  
@@ -191,7 +192,7 @@ public class MainActivity extends FragmentActivity {
 		
 		if (!isLoading) {
 		
-			if (scroll.idCounter > 0)	{
+			if (main.getChildCount() > 0)	{
 			
 				loading(true);
 			
