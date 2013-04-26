@@ -35,10 +35,8 @@ public class ImportKey extends Activity {
         	error = true;
         	
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	        	builder.setTitle(R.string.error)
-	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-	        	   .setMessage(R.string.file_manager_not_found)
-	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+        	builder.setMessage(R.string.file_manager_not_found).setMessage(R.string.file_manager_not_found)
+	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                      finish();
 	                   }
@@ -72,10 +70,8 @@ public class ImportKey extends Activity {
 				else {
 
 					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-       	        	builder.setTitle(R.string.error)
-       	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-       	        	   .setMessage(R.string.not_valid_file)
-       	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+       	        	builder.setMessage(R.string.not_valid_file)
+       	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
        	                   public void onClick(DialogInterface dialog, int id) {
        	                	finish();  
        	                   }
@@ -86,10 +82,8 @@ public class ImportKey extends Activity {
 			} catch(IOException e){ 
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setTitle(R.string.error)
-   	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-   	        	   .setMessage(R.string.error_reading_file)
-   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	        	builder.setMessage(R.string.error_reading_file)
+   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
    	                	finish();
    	                   }
@@ -99,10 +93,8 @@ public class ImportKey extends Activity {
 			} catch (SAXException e) {
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setTitle(R.string.error)
-   	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-   	        	   .setMessage(R.string.not_valid_file)
-   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	        	builder.setMessage(R.string.not_valid_file)
+   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
    	                	finish();
    	                   }
@@ -112,10 +104,8 @@ public class ImportKey extends Activity {
 			} catch (ParserConfigurationException e) {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setTitle(R.string.error)
-   	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-   	        	   .setMessage(R.string.not_valid_file)
-   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	        	builder.setMessage(R.string.not_valid_file)
+   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
    	                	finish();
    	                   }

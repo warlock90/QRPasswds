@@ -62,9 +62,7 @@ public class MainActivity extends FragmentActivity {
 		filter = new IntentFilter(ACTION_RESP);
 		filter.setPriority(1);
 		receiver = new EncryptEncodeReceiver();
-		
-		
-		
+	
 	}
 	
 	public void onResume(){
@@ -130,7 +128,7 @@ public class MainActivity extends FragmentActivity {
             	case R.id.actionbar_create_qr:
             		createPressed(new View(this));
             		break;
-            	case R.id.clear:
+            	case R.id.delete:
             		if (main.getChildCount()>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
             			builder.setTitle(R.string.clear_dialog_title)
@@ -182,10 +180,8 @@ public class MainActivity extends FragmentActivity {
 			  } catch (Exception e) {
 				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	   	        	builder.setTitle(R.string.error)
-	   	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-	   	        	   .setMessage(R.string.error_scanning)
-	   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	   	        	builder.setMessage(R.string.error_scanning)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	   	                   public void onClick(DialogInterface dialog, int id) {
 	   	                      
 	   	                   }
@@ -213,10 +209,8 @@ public class MainActivity extends FragmentActivity {
 			else {
 				
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setTitle(R.string.error)
-   	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-   	        	   .setMessage(R.string.no_credential_error)
-   	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+   	        	builder.setMessage(R.string.no_credential_error)
+   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
    	                   public void onClick(DialogInterface dialog, int id) {
    	                      
    	                   }
@@ -246,10 +240,8 @@ public class MainActivity extends FragmentActivity {
 		else {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	        	builder.setTitle(R.string.error)
-	        	   .setIcon(R.drawable.ic_alerts_and_states_error)
-	        	   .setMessage(R.string.error_creating_file)
-	               .setNeutralButton(R.string.close, new DialogInterface.OnClickListener() {
+	        	builder.setMessage(R.string.error_creating_file)
+	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                      
 	                   }
