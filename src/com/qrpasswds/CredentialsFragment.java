@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 public class CredentialsFragment extends Fragment {
@@ -73,7 +74,7 @@ public class CredentialsFragment extends Fragment {
 		
 		for (int f=0;f<main.getChildCount();f++){
 			
-			LinearLayout credView = (LinearLayout)main.findViewWithTag("cred"+f);
+			LinearLayout credView = (LinearLayout)main.getChildAt(f);
 			
 			EditText credType = (EditText)credView.findViewById(R.id.credential_type);
 			
@@ -99,11 +100,21 @@ public class CredentialsFragment extends Fragment {
 		
 		public Credential(Context context, int viewId, String type, String user, String pass) {
 			super(context);
-			this.setTag("cred"+viewId);
-	
-
+			
 			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			inflater.inflate(R.layout.credentials, this);	
+	
+			ImageButton removeThis = (ImageButton) findViewById(R.id.delete_cred);
+			removeThis.setOnClickListener(new OnClickListener() {
+				public void onClick(View v){
+					
+					LinearLayout credential = (LinearLayout) v.getParent().getParent();
+					System.out.println(credential.toString());
+					LinearLayout wrapper = (LinearLayout) credential.getParent();
+					System.out.println(wrapper.toString());
+					wrapper.removeView(credential);
+				}
+		     });
 
 			if (type!=null && !type.equals("<QR3mpty/>")) {
 				EditText credType = (EditText) this.findViewById(R.id.credential_type);
