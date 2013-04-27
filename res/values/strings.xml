@@ -10,6 +10,7 @@
     <string name="key_file_missing_message">Generate a new key file or import an existing one</string>
     <string name="error_reading_file">There was an error reading the file, please try again</string>
     <string name="not_valid_file">The file you selected does not contain a valid QRPasswords key file</string>
+    <string name="not_valid_qr">The file you selected does not contain a valid QR image</string>
     <string name="error_creating_file">There was an error creating the key file, please try again</string>
     <string name="key_file_created">The key file has been successfully created</string>
     <string name="error_creating_qr">There was an error creating the QR image, please try again</string>
@@ -33,5 +34,7 @@
     <string name="error_scanning">There was an error scanning the QR, please try again</string>
     <string name="ok">OK</string>
     <string name="error">Error</string>
+    <string name="scan_file">Scan from file</string>
+    <string name="not_your_key">The selected QR image is not encrypted with your QRPasswds key</string>
 
 </resources>

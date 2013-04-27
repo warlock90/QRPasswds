@@ -3,6 +3,7 @@ package com.qrpasswds;
 import java.io.File;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,13 +23,18 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.aes.AESEncryption;
+import com.google.zxing.ChecksumException;
+import com.google.zxing.FormatException;
+import com.google.zxing.NotFoundException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.qr.QRDecoder;
 
 public class MainActivity extends FragmentActivity {
 	
 	private final String FILENAME = "QRPass.key";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
+	private final int FIND_FILE = 1;
 	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
@@ -121,13 +127,16 @@ public class MainActivity extends FragmentActivity {
 		if (!isLoading){
 		
 			switch (item.getItemId()) {
+			
             	case R.id.scan:
             		IntentIntegrator integrator = new IntentIntegrator(this);
             		integrator.initiateScan();
             		break;
+            		
             	case R.id.actionbar_create_qr:
             		createPressed(new View(this));
             		break;
+            		
             	case R.id.delete:
             		if (main.getChildCount()>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -147,14 +156,37 @@ public class MainActivity extends FragmentActivity {
     	        	   		.show();
             		}
             		break;
+            		
             	case R.id.import_key:
             		Intent importKey = new Intent(this, ImportKey.class);
                 	this.startActivity(importKey);
                 	break;
+                	
             	case R.id.export_key:
             		Intent exportKey = new Intent(this, ExportKey.class);
             		this.startActivity(exportKey);
             		break;
+            		
+            	case R.id.scan_file:
+            		Intent intent = new Intent();
+                    intent.setType("file/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    try {
+                    	startActivityForResult(intent, FIND_FILE);
+                    }
+                    catch(ActivityNotFoundException e){
+
+                    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    	builder.setMessage(R.string.file_manager_not_found).setMessage(R.string.file_manager_not_found)
+            	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+            	                   public void onClick(DialogInterface dialog, int id) {
+            	                      
+            	                   }
+            	               })
+            	               .show();
+                    }
+            		break;
+            		
             	default:
             		return super.onOptionsItemSelected(item);
 			}
@@ -163,9 +195,38 @@ public class MainActivity extends FragmentActivity {
         return true;
     }
 	
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		  if (scanResult != null) {
+	public void onActivityResult(int requestCode, int resultCode, Intent result) {
+	   	        	
+		String data = null;
+		boolean error = false;
+		
+		  if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
+			  
+			  QRDecoder decoder = new QRDecoder();
+			  
+			  try {
+				  
+				data = decoder.decode(result.getData().getPath());
+				
+			  }catch (Exception e) {
+				  
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setMessage(R.string.not_valid_file)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                	
+	   	                   }
+	   	               })
+	   	               .show();
+
+	   	        	error = true;
+			  }			  
+		  }
+		  
+		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, result);
+		  
+		  
+		  if (scanResult != null || (requestCode == FIND_FILE && resultCode == RESULT_OK) && !error) {
 
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
@@ -174,9 +235,22 @@ public class MainActivity extends FragmentActivity {
 			
 			  try {
 				  
-				retainedData = aes.aes_decrypt(scanResult.getContents()).split("\n");
-				for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+				if (scanResult != null) retainedData = aes.aes_decrypt(scanResult.getContents()).split("\n");
+				else retainedData = aes.aes_decrypt(data).split("\n");
 				
+				for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+			  
+			  } catch (IllegalArgumentException e) {
+				  
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setMessage(R.string.not_your_key)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                      
+	   	                   }
+	   	               })
+	   	               .show();
+			 
 			  } catch (Exception e) {
 				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
