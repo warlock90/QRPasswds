@@ -225,20 +225,19 @@ public class MainActivity extends FragmentActivity {
 		  
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, result);
 		  
+		  if (scanResult != null) data = scanResult.getContents();
 		  
-		  if (scanResult != null || (requestCode == FIND_FILE && resultCode == RESULT_OK) && !error) {
+		  
+		  if (data!=null && !error) {
 
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
-			  
-			  String[] retainedData = null;
 			
 			  try {
 				  
-				if (scanResult != null) retainedData = aes.aes_decrypt(scanResult.getContents()).split("\n");
-				else retainedData = aes.aes_decrypt(data).split("\n");
+				  String[] retainedData = aes.aes_decrypt(data).split("\n");
 				
-				for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+				  for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
 			  
 			  } catch (IllegalArgumentException e) {
 				  
