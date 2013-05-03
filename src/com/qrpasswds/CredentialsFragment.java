@@ -109,9 +109,8 @@ public class CredentialsFragment extends Fragment {
 				public void onClick(View v){
 					
 					LinearLayout credential = (LinearLayout) v.getParent().getParent();
-					System.out.println(credential.toString());
 					LinearLayout wrapper = (LinearLayout) credential.getParent();
-					System.out.println(wrapper.toString());
+					
 					wrapper.removeView(credential);
 				}
 		     });

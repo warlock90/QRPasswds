@@ -17,6 +17,7 @@
     <string name="qr_created">QR image has been successfully created</string>
     <string name="export_key_title">Export key</string>
     <string name="import_key_title">Import key</string>
+    <string name="export_key_warning">Export key to SDCard?</string>
     <string name="export_key_message">The exported key file will be public, move it in a safe place</string>
     <string name="export">Export</string>
     <string name="cancel">Cancel</string>
@@ -31,10 +32,10 @@
     <string name="clear_message">All inserted credentials will be lost</string>
     <string name="clear_dialog_title">Clear screen?</string>
     <string name="file_manager_not_found">Please install a file browser to import key</string>
+    <string name="file_manager_not_found_file">Please install a file browser to scan from file</string>
     <string name="error_scanning">There was an error scanning the QR, please try again</string>
     <string name="ok">OK</string>
-    <string name="error">Error</string>
     <string name="scan_file">Scan from file</string>
-    <string name="not_your_key">The selected QR image is not encrypted with your QRPasswds key</string>
+    <string name="not_your_key">This QR image is not encrypted with your QRPasswds key</string>
 
 </resources>

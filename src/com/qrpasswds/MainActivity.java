@@ -13,19 +13,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Surface;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.aes.AESEncryption;
-import com.google.zxing.ChecksumException;
-import com.google.zxing.FormatException;
-import com.google.zxing.NotFoundException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.qr.QRDecoder;
@@ -44,7 +38,6 @@ public class MainActivity extends FragmentActivity {
 	private LinearLayout activityLayout = null;
 	
 	private boolean isLoading;
-	private Display display = null;
 	
 	private EncryptEncodeReceiver receiver = null;
 	private IntentFilter filter = null;
@@ -53,8 +46,6 @@ public class MainActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
 		scrollView = findViewById(R.id.scroll_view);
@@ -177,7 +168,7 @@ public class MainActivity extends FragmentActivity {
                     catch(ActivityNotFoundException e){
 
                     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    	builder.setMessage(R.string.file_manager_not_found).setMessage(R.string.file_manager_not_found)
+                    	builder.setMessage(R.string.file_manager_not_found_file)
             	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             	                   public void onClick(DialogInterface dialog, int id) {
             	                      
@@ -211,7 +202,7 @@ public class MainActivity extends FragmentActivity {
 			  }catch (Exception e) {
 				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	   	        	builder.setMessage(R.string.not_valid_file)
+	   	        	builder.setMessage(R.string.not_valid_qr)
 	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	   	                   public void onClick(DialogInterface dialog, int id) {
 	   	                	
@@ -232,6 +223,8 @@ public class MainActivity extends FragmentActivity {
 
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
+			  
+			  main.removeAllViews();
 			
 			  try {
 				  
@@ -313,7 +306,7 @@ public class MainActivity extends FragmentActivity {
 		else {
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	        	builder.setMessage(R.string.error_creating_file)
+	        	builder.setMessage(R.string.error_creating_qr)
 	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                      
@@ -327,14 +320,14 @@ public class MainActivity extends FragmentActivity {
 		
 		if (flag) {
 
-			if (display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180) activityLayout.setVisibility(View.INVISIBLE);
+			if (activityLayout != null) activityLayout.setVisibility(View.INVISIBLE);
 			else scrollView.setVisibility(View.INVISIBLE);
 
 			loadingView.setVisibility(View.VISIBLE);
 			isLoading = true;
 		}
 		else {
-			if (display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180) activityLayout.setVisibility(View.VISIBLE);
+			if (activityLayout != null) activityLayout.setVisibility(View.VISIBLE);
 			else scrollView.setVisibility(View.VISIBLE);
 			
 			loadingView.setVisibility(View.INVISIBLE);

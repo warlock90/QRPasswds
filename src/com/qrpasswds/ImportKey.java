@@ -35,7 +35,7 @@ public class ImportKey extends Activity {
         	error = true;
         	
         	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        	builder.setMessage(R.string.file_manager_not_found).setMessage(R.string.file_manager_not_found)
+        	builder.setMessage(R.string.file_manager_not_found)
 	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
 	                   public void onClick(DialogInterface dialog, int id) {
 	                      finish();
