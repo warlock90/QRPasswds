@@ -12,14 +12,30 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name">
+        android:label="@string/app_name" >
+        
+        <service android:name="EncryptEncode" />
+        
         <activity
             android:name="com.qrpasswds.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.qrpasswds.ExportKey" 
+            android:theme="@style/QRTheme">
+        </activity>
+        <activity
+            android:name="com.qrpasswds.ImportKey"
+            android:theme="@style/QRTheme">
+        </activity>
+        <activity
+            android:name="com.qrpasswds.GenerateKey"
+            android:theme="@style/QRTheme">
         </activity>
     </application>
 
