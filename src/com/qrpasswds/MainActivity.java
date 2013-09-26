@@ -1,6 +1,17 @@
 package com.qrpasswds;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -87,6 +98,9 @@ public class MainActivity extends FragmentActivity {
 	               })
 	               .setCancelable(false)
 	               .show();
+		}
+		else {
+			//handle convert to xml
 		}
 		
 		
@@ -228,9 +242,39 @@ public class MainActivity extends FragmentActivity {
 			
 			  try {
 				  
-				  String[] retainedData = aes.aes_decrypt(data).split("\n");
+				  String retainedData = aes.aes_decrypt(data);
 				
-				  for (int f=0;f<retainedData.length;f+=3) scroll.addCredential(retainedData[f],retainedData[f+1],retainedData[f+2]);
+				  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+					
+					try {
+						
+						DocumentBuilder	db = dbf.newDocumentBuilder();
+						Document dom = db.parse(new InputSource(new StringReader(retainedData)));
+						
+						NodeList nodes = dom.getElementsByTagName(scroll.CHILD_XML);
+						
+						for (int f=0;f<nodes.getLength();f++) {
+						
+							String type = "", user = "", pass = "";
+								
+								try { type = nodes.item(f).getAttributes().getNamedItem(scroll.TYPE_ATTRIBUTE).getNodeValue();
+								} catch(NullPointerException e) {}
+								try { user = nodes.item(f).getAttributes().getNamedItem(scroll.USER_ATTRIBUTE).getNodeValue();
+								} catch(NullPointerException e) {}
+								try { pass = nodes.item(f).getAttributes().getNamedItem(scroll.PASS_ATTRIBUTE).getNodeValue();
+								} catch(NullPointerException e) {}
+								
+								scroll.addCredential(type,user,pass);
+
+						}
+					
+					} catch (ParserConfigurationException e) {
+						// handle exception
+					} catch (SAXException e) {
+						throw new Exception();
+					} catch (IOException e) {
+						throw new Exception();
+					}
 			  
 			  } catch (IllegalArgumentException e) {
 				  
@@ -349,4 +393,6 @@ public class MainActivity extends FragmentActivity {
 		}
 		
 	}
+	
+	
 }
