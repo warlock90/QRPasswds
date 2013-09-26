@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity {
 	private final String FILENAME = "QRPass.key";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	private final int FIND_FILE = 1;
+	private final int OLD_FILE = 2;
 	
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
@@ -129,18 +130,16 @@ public class MainActivity extends FragmentActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         
-		if (!isLoading){
-		
 			switch (item.getItemId()) {
 			
             	case R.id.scan:
             		IntentIntegrator integrator = new IntentIntegrator(this);
             		integrator.initiateScan();
-            		break;
+            		return true;
             		
             	case R.id.actionbar_create_qr:
             		createPressed(new View(this));
-            		break;
+            		return true;
             		
             	case R.id.delete:
             		if (main.getChildCount()>0){
@@ -160,17 +159,17 @@ public class MainActivity extends FragmentActivity {
     	        	   		})
     	        	   		.show();
             		}
-            		break;
+            		return true;
             		
             	case R.id.import_key:
             		Intent importKey = new Intent(this, ImportKey.class);
                 	this.startActivity(importKey);
-                	break;
+                	return true;
                 	
             	case R.id.export_key:
             		Intent exportKey = new Intent(this, ExportKey.class);
             		this.startActivity(exportKey);
-            		break;
+            		return true;
             		
             	case R.id.scan_file:
             		Intent intent = new Intent();
@@ -190,14 +189,32 @@ public class MainActivity extends FragmentActivity {
             	               })
             	               .show();
                     }
-            		break;
-            		
+                    return true;
+                    
+            	case R.id.old_scan:
+            		Intent intentOld = new Intent();
+                    intentOld.setType("file/*");
+                    intentOld.setAction(Intent.ACTION_GET_CONTENT);
+                    try {
+                    	startActivityForResult(intentOld, OLD_FILE);
+                    }
+                    catch(ActivityNotFoundException e){
+
+                    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    	builder.setMessage(R.string.file_manager_not_found_file)
+            	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+            	                   public void onClick(DialogInterface dialog, int id) {
+            	                      
+            	                   }
+            	               })
+            	               .show();
+                    }
+                    return true;
+                    
             	default:
             		return super.onOptionsItemSelected(item);
-			}
         }
 		
-        return true;
     }
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -208,13 +225,14 @@ public class MainActivity extends FragmentActivity {
 		  if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			  
 			  QRDecoder decoder = new QRDecoder();
-			  
+
 			  try {
-				  
+
 				data = decoder.decode(result.getData().getPath());
 				
 			  }catch (Exception e) {
-				  
+
+
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.not_valid_qr)
 	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -234,7 +252,7 @@ public class MainActivity extends FragmentActivity {
 		  
 		  
 		  if (data!=null && !error) {
-
+			  
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
 			  
@@ -243,7 +261,8 @@ public class MainActivity extends FragmentActivity {
 			  try {
 				  
 				  String retainedData = aes.aes_decrypt(data);
-				
+				  System.out.println("loaded new");
+				  System.out.println(retainedData);
 				  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 					
 					try {
@@ -252,7 +271,7 @@ public class MainActivity extends FragmentActivity {
 						Document dom = db.parse(new InputSource(new StringReader(retainedData)));
 						
 						NodeList nodes = dom.getElementsByTagName(scroll.CHILD_XML);
-						
+
 						for (int f=0;f<nodes.getLength();f++) {
 						
 							String type = "", user = "", pass = "";
@@ -263,9 +282,8 @@ public class MainActivity extends FragmentActivity {
 								} catch(NullPointerException e) {}
 								try { pass = nodes.item(f).getAttributes().getNamedItem(scroll.PASS_ATTRIBUTE).getNodeValue();
 								} catch(NullPointerException e) {}
-								
-								scroll.addCredential(type,user,pass);
 
+								scroll.addCredential(type,user,pass);
 						}
 					
 					} catch (ParserConfigurationException e) {
@@ -288,7 +306,7 @@ public class MainActivity extends FragmentActivity {
 	   	               .show();
 			 
 			  } catch (Exception e) {
-				  
+
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.error_scanning)
 	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -299,10 +317,78 @@ public class MainActivity extends FragmentActivity {
 	   	               .show();
 				  
 			  } 
-			
-			  loading(false);
 		   
 		  }
+		  
+		  String oldData = null;
+		  Boolean oldError = false;
+		  
+		  if ( requestCode == OLD_FILE && resultCode == RESULT_OK ){
+			  
+			  QRDecoder decoder = new QRDecoder();
+			  
+			  try {
+				  
+				oldData = decoder.decode(result.getData().getPath());
+				
+			  }catch (Exception e) {
+				  
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setMessage(R.string.not_valid_qr)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                	
+	   	                   }
+	   	               })
+	   	               .show();
+
+	   	        	oldError = true;
+			  }			  
+		  }
+		  
+		  if ( oldData != null && !oldError) {
+			  
+			  AESEncryption aes = new AESEncryption(this);
+			  loading(true);
+			  
+			  main.removeAllViews();
+			  
+			  try {
+				  System.out.println("loaded old");
+				  System.out.println(aes.aes_decrypt(oldData));
+				  String[] retainedData = aes.aes_decrypt(oldData).split("\n");
+				  
+				  for (int f=0;f<retainedData.length;f+=3){
+					  scroll.addCredential(retainedData[f], retainedData[f+1], retainedData[f+2]);
+				  }
+					  
+			  
+			  } catch (IllegalArgumentException e) {
+				  
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setMessage(R.string.not_your_key)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                      
+	   	                   }
+	   	               })
+	   	               .show();
+			 
+			  } catch (Exception e) {
+
+				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
+	   	        	builder.setMessage(R.string.error_scanning)
+	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
+	   	                   public void onClick(DialogInterface dialog, int id) {
+	   	                      
+	   	                   }
+	   	               })
+	   	               .show();
+				  
+			  } 
+		  }
+		  
+		  loading(false);
 	}
 	
 	public void createPressed(View v){

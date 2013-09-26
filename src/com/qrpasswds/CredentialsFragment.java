@@ -164,6 +164,9 @@ public class CredentialsFragment extends Fragment {
 			//handle exception
 		}
 		
+		System.out.println("Get String "+writer.toString());
+		
+		
 		return writer.toString();
 	}
 	
@@ -186,17 +189,17 @@ public class CredentialsFragment extends Fragment {
 				}
 		     });
 
-			if (type!=null) {
+			if (type!=null && !type.equals("<QR3mpty/>")) {
 				EditText credType = (EditText) this.findViewById(R.id.credential_type);
 				credType.setText(type);
 			}
 			
-			if (user!=null) {
+			if (user!=null && !user.equals("<QR3mpty/>")) {
 				EditText credUser = (EditText) this.findViewById(R.id.user);
 				credUser.setText(user);
 			}
 			
-			if (pass!=null) {
+			if (pass!=null && !pass.equals("<QR3mpty/>")) {
 				EditText credPass = (EditText) this.findViewById(R.id.pass);
 				credPass.setText(pass);
 			}
