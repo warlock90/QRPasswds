@@ -172,11 +172,11 @@ public class MainActivity extends FragmentActivity {
             		return true;
             		
             	case R.id.scan_file:
-            		Intent intent = new Intent();
-                    intent.setType("file/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
+            		Intent scan = new Intent();
+            		scan.setType("file/*");
+            		scan.setAction(Intent.ACTION_GET_CONTENT);
                     try {
-                    	startActivityForResult(intent, FIND_FILE);
+                    	startActivityForResult(scan, FIND_FILE);
                     }
                     catch(ActivityNotFoundException e){
 
@@ -192,11 +192,11 @@ public class MainActivity extends FragmentActivity {
                     return true;
                     
             	case R.id.old_scan:
-            		Intent intentOld = new Intent();
-                    intentOld.setType("file/*");
-                    intentOld.setAction(Intent.ACTION_GET_CONTENT);
+            		Intent scanOld = new Intent();
+            		scanOld.setType("file/*");
+            		scanOld.setAction(Intent.ACTION_GET_CONTENT);
                     try {
-                    	startActivityForResult(intentOld, OLD_FILE);
+                    	startActivityForResult(scanOld, OLD_FILE);
                     }
                     catch(ActivityNotFoundException e){
 
