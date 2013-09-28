@@ -1,7 +1,13 @@
 package com.qr;
 
+import java.util.Hashtable;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.FormatException;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.NotFoundException;
@@ -9,9 +15,6 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 
 public class QRDecoder {
@@ -33,8 +36,10 @@ public class QRDecoder {
 		bitmap.recycle();
 		
 		QRCodeReader reader = new QRCodeReader();
+		Hashtable<DecodeHintType, String> hints = new Hashtable<DecodeHintType, String>();
+		hints.put(DecodeHintType.CHARACTER_SET, "UTF-8");
 		
-		Result result = reader.decode(binary);
+		Result result = reader.decode(binary,hints);
 		
 		return result.toString();
 		

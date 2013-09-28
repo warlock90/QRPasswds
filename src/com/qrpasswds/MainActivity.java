@@ -261,8 +261,7 @@ public class MainActivity extends FragmentActivity {
 			  try {
 				  
 				  String retainedData = aes.aes_decrypt(data);
-				  System.out.println("loaded new");
-				  System.out.println(retainedData);
+
 				  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 					
 					try {
@@ -354,8 +353,7 @@ public class MainActivity extends FragmentActivity {
 			  main.removeAllViews();
 			  
 			  try {
-				  System.out.println("loaded old");
-				  System.out.println(aes.aes_decrypt(oldData));
+				  
 				  String[] retainedData = aes.aes_decrypt(oldData).split("\n");
 				  
 				  for (int f=0;f<retainedData.length;f+=3){
