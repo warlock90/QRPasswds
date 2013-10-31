@@ -3,6 +3,12 @@ package com.qrpasswds;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,16 +24,21 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aes.AESEncryption;
@@ -37,7 +48,7 @@ import com.qr.QRDecoder;
 
 public class MainActivity extends FragmentActivity {
 	
-	private final String FILENAME = "QRPass.key";
+	private final String KEY_FILENAME = "QRPass.key";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	private final int FIND_FILE = 1;
 	private final int OLD_FILE = 2;
@@ -77,7 +88,7 @@ public class MainActivity extends FragmentActivity {
 	public void onResume(){
 		super.onResume();
 
-		File keyfile = this.getFileStreamPath(FILENAME);
+		File keyfile = this.getFileStreamPath(KEY_FILENAME);
 		
 		if (!keyfile.exists()){
 			
@@ -392,12 +403,74 @@ public class MainActivity extends FragmentActivity {
 	public void createPressed(View v){
 		
 			if (main.getChildCount() > 0)	{
+				
+				LayoutInflater inflater = this.getLayoutInflater();
+				View inflaterView = inflater.inflate(R.layout.filename, null);
+				
+				SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault());
+				sd.setTimeZone(TimeZone.getDefault());
+				String formatted_sd = sd.format(new Date());
+				
+				final RadioButton fdefault = (RadioButton) inflaterView.findViewById(R.id.filename_default);
+				
+				final RadioButton fcustom = (RadioButton) inflaterView.findViewById(R.id.filename_custom);
+				fcustom.setText(formatted_sd+"_");
+				
+				final EditText fcustomPart = (EditText) inflaterView.findViewById(R.id.filename_custom_part);
+				final TextView fextention = (TextView) inflaterView.findViewById(R.id.file_extention);
+				
+				fdefault.setOnClickListener(new android.view.View.OnClickListener(){
+
+					@Override
+					public void onClick(View v) {
+						
+						fcustom.setChecked(false);
+						fdefault.setChecked(true);
+						fcustomPart.setEnabled(false);
+						
+					}});
+				
+				fcustom.setOnClickListener(new android.view.View.OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						
+						fcustom.setChecked(true);
+						fdefault.setChecked(false);
+						fcustomPart.setEnabled(true);
+						
+					}
+				});
+				
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle(R.string.qr_filename)
+					.setView(inflaterView)
+					.setPositiveButton(R.string.ok, new OnClickListener(){
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							
+							String qrFilename;
+							if (fdefault.isChecked()) {
+								qrFilename = fdefault.getText().toString().split(" ")[0];
+							}
+							else {
+								qrFilename = fcustom.getText().toString() + fcustomPart.getText().toString().replace(" ", "") + fextention.getText().toString();
+							}
+							
+							System.out.println(qrFilename);
+							/*
+							loading(true);
+							
+							Intent toReceiver = new Intent(getApplicationContext(),EncryptEncode.class);
+							toReceiver.putExtra("Data", scroll.getInput());
+							startService(toReceiver);
+							*/
+						}})
+					.setNegativeButton(R.string.cancel, null)
+					.show();				
 			
-				loading(true);
-			
-				Intent toReceiver = new Intent(this,EncryptEncode.class);
-				toReceiver.putExtra("Data", scroll.getInput());
-				startService(toReceiver);
+				
 			
 			}
 			else {
