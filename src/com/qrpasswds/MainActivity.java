@@ -59,6 +59,7 @@ public class MainActivity extends FragmentActivity {
 	private LinearLayout activityLayout = null;
 	
 	private boolean isLoading;
+	private String scannedFilename;
 	
 	private EncryptEncodeReceiver receiver = null;
 	private IntentFilter filter = null;
@@ -167,6 +168,8 @@ public class MainActivity extends FragmentActivity {
     	        	   			}
     	        	   		})
     	        	   		.show();
+            			
+            			scannedFilename = null;
             		}
             		return true;
             		
@@ -236,8 +239,13 @@ public class MainActivity extends FragmentActivity {
 			  QRDecoder decoder = new QRDecoder();
 
 			  try {
-
-				data = decoder.decode(result.getData().getPath());
+				  
+				String filePath = result.getData().getPath();   
+				
+				data = decoder.decode(filePath);
+				scannedFilename = filePath.split("/")[filePath.split("/").length - 1];
+				System.out.println("Read "+scannedFilename);
+				
 				
 			  }catch (Exception e) {
 
@@ -416,6 +424,22 @@ public class MainActivity extends FragmentActivity {
 				
 				final EditText fcustomPart = (EditText) inflaterView.findViewById(R.id.filename_custom_part);
 				final TextView fextention = (TextView) inflaterView.findViewById(R.id.file_extention);
+				
+				if (scannedFilename != null && !scannedFilename.startsWith("Q")) {
+					
+					String fcustomPartRecovered = "";
+					
+					for (int f=1;f<scannedFilename.split("_").length;f++) {
+						
+						fcustomPartRecovered += scannedFilename.split("_")[f];
+					}
+					
+					fcustomPart.setText(fcustomPartRecovered.substring(0, fcustomPartRecovered.length()-4));
+					fcustom.setChecked(true);
+					fdefault.setChecked(false);
+					fcustomPart.setEnabled(true);
+					
+				}
 				
 				fdefault.setOnClickListener(new android.view.View.OnClickListener(){
 
