@@ -20,7 +20,8 @@ import android.content.Intent;
 
 public class EncryptEncode extends IntentService {
 
-	private String input = "";
+	private String input;
+	private String filename;
 	
 	public EncryptEncode() {
 		super("EncryptEncode");
@@ -41,6 +42,7 @@ public class EncryptEncode extends IntentService {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 	    input = intent.getStringExtra("Data");
+	    filename = intent.getStringExtra("Filename");
 		return super.onStartCommand(intent,flags,startId);
 	}
 
@@ -50,7 +52,7 @@ public class EncryptEncode extends IntentService {
 		AESEncryption aes = new AESEncryption(this);
 		
 		try {
-			encoder.createQR(encoder.encode(aes.aes_encrypt(data)));
+			encoder.createQR(encoder.encode(aes.aes_encrypt(data)), filename);
 			return true;
 		} catch (IOException e) {
 			return false;

@@ -3,9 +3,7 @@ package com.qrpasswds;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -458,14 +456,14 @@ public class MainActivity extends FragmentActivity {
 								qrFilename = fcustom.getText().toString() + fcustomPart.getText().toString().replace(" ", "") + fextention.getText().toString();
 							}
 							
-							System.out.println(qrFilename);
-							/*
+							
 							loading(true);
 							
 							Intent toReceiver = new Intent(getApplicationContext(),EncryptEncode.class);
 							toReceiver.putExtra("Data", scroll.getInput());
+							toReceiver.putExtra("Filename", qrFilename);
 							startService(toReceiver);
-							*/
+							
 						}})
 					.setNegativeButton(R.string.cancel, null)
 					.show();				

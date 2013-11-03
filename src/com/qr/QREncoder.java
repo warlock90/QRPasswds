@@ -20,8 +20,7 @@ public class QREncoder {
 	private final int WIDTH = 900;
 	private final int HEIGHT = 900;
 	private final String FOLDER = "QRPasswds";
-	private final String FILENAME = "QR_passwords.png";
-	
+		
 	public Bitmap encode(String text) throws WriterException{
 		
 		QRCodeWriter writer = new QRCodeWriter();
@@ -44,14 +43,14 @@ public class QREncoder {
         return bm;
 	}
 	
-	public void createQR(Bitmap qr) throws IOException{
+	public void createQR(Bitmap qr, String filename) throws IOException{
 		
 		String state = Environment.getExternalStorageState();
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 			File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
 			QRDirectory.mkdir();
-			FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+FILENAME);
+			FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+filename);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
 		} else {
 		    throw new IOException();
