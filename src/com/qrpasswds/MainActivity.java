@@ -431,10 +431,11 @@ public class MainActivity extends FragmentActivity {
 					
 					for (int f=1;f<scannedFilename.split("_").length;f++) {
 						
-						fcustomPartRecovered += scannedFilename.split("_")[f];
+						fcustomPartRecovered += scannedFilename.split("_")[f] + "_";
 					}
 					
-					fcustomPart.setText(fcustomPartRecovered.substring(0, fcustomPartRecovered.length()-4));
+					fcustom.setText(scannedFilename.split("_")[0]+"_");
+					fcustomPart.setText(fcustomPartRecovered.substring(0, fcustomPartRecovered.length()-5));
 					fcustom.setChecked(true);
 					fdefault.setChecked(false);
 					fcustomPart.setEnabled(true);
