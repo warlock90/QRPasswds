@@ -26,7 +26,7 @@ public class ExportKey extends FragmentActivity {
                 	   AESRandomKey ran_key = new AESRandomKey(ExportKey.this);
                        
                 	   try {
-                		   ran_key.exportKey();
+                		   ran_key.exportKey(null);
                 		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
                 		   finish();
                 		   

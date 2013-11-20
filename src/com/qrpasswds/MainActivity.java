@@ -1,6 +1,8 @@
 package com.qrpasswds;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -26,6 +28,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aes.AESEncryption;
+import com.aes.AESRandomKey;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.qr.QRDecoder;
@@ -45,6 +49,8 @@ import com.qr.QRDecoder;
 public class MainActivity extends FragmentActivity {
 	
 	private final String KEY_FILENAME = "QRPass.key";
+	private final String OLD_FOLDER_NAME = "QRPasswds";
+	private final String OLD_QR_FILE_NAME = "QR_passwords.png";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	private final int FIND_FILE = 1;
 	private final int OLD_FILE = 2;
@@ -109,7 +115,31 @@ public class MainActivity extends FragmentActivity {
 	               .show();
 		}
 		else {
-			//handle convert to xml
+			
+			File folder = new File(Environment.getExternalStorageDirectory()+File.separator+OLD_FOLDER_NAME);
+			
+			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && folder.exists()) {
+				try {
+					moveAndDeleteFolder(folder);
+					
+					AlertDialog.Builder builder = new AlertDialog.Builder(this);
+					builder.setIcon(R.drawable.ic_alerts_and_states_warning)
+						.setTitle(R.string.save_path_changed_title)
+						.setMessage(R.string.save_path_changed)
+						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								// TODO Auto-generated method stub
+								
+							}
+						})
+						.show();
+					
+				} catch (IOException e) {
+					
+				}
+			}
 		}
 		
 		
@@ -554,6 +584,43 @@ public class MainActivity extends FragmentActivity {
 			loadingView.setVisibility(View.INVISIBLE);
 			isLoading = false;
 		}
+	}
+	
+	private void moveAndDeleteFolder(File folder) throws IOException{
+		
+		File key = new File(folder+File.separator+KEY_FILENAME);
+
+		if (key.exists()){
+
+			AESRandomKey ran_key = new AESRandomKey(this);
+			ran_key.exportKey(key.getAbsolutePath());
+			
+			key.delete();
+
+		}
+		
+		File qr = new File(folder+File.separator+OLD_QR_FILE_NAME);
+
+		if (qr.exists()) {
+
+			FileInputStream in = new FileInputStream(new File(qr.getAbsolutePath()));
+				
+			File QRDirectory = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), OLD_QR_FILE_NAME);		
+			FileOutputStream out = new FileOutputStream(QRDirectory);
+			
+			byte[] buffer = new byte[1024];
+			
+			while (in.read(buffer)>0) out.write(buffer);
+			
+			in.close();
+			out.close();
+			
+			qr.delete();
+
+		}
+		
+		folder.delete();
+		
 	}
 	
 	private class EncryptEncodeReceiver extends BroadcastReceiver{
