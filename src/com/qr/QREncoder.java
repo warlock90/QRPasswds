@@ -8,8 +8,6 @@ import java.util.Hashtable;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
 import android.os.Environment;
 
 import com.google.zxing.BarcodeFormat;
@@ -59,12 +57,6 @@ public class QREncoder {
 			File QRDirectory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename);
 			FileOutputStream out = new FileOutputStream(QRDirectory);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
-		    
-		    MediaScannerConnection.scanFile(context, new String[] {QRDirectory.toString()}, null, new MediaScannerConnection.OnScanCompletedListener() {
-
-				@Override
-				public void onScanCompleted(String path, Uri uri) {	/* Nothing to do here */ }
-			});
 
 		    
 		} else {

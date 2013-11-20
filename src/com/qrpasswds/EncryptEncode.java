@@ -1,5 +1,6 @@
 package com.qrpasswds;
 
+import java.io.File;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -17,6 +18,8 @@ import com.qr.QREncoder;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 
 public class EncryptEncode extends IntentService {
 
@@ -48,11 +51,19 @@ public class EncryptEncode extends IntentService {
 
 	private boolean executeService(String data){
 		
-		QREncoder encoder = new QREncoder(this);
-		AESEncryption aes = new AESEncryption(this);
+		QREncoder encoder = new QREncoder(getApplicationContext());
+		AESEncryption aes = new AESEncryption(getApplicationContext());
 		
 		try {
 			encoder.createQR(encoder.encode(aes.aes_encrypt(data)), filename);
+			File QRDirectory = this.getExternalFilesDir(null);
+			MediaScannerConnection.scanFile(getApplicationContext(), new String[] {QRDirectory.toString()}, null, new MediaScannerConnection.OnScanCompletedListener() {
+
+				@Override
+				public void onScanCompleted(String path, Uri uri) {	/* Nothing to do here */ }
+			});
+			
+			
 			return true;
 		} catch (IOException e) {
 			return false;
