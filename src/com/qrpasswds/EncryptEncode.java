@@ -48,7 +48,7 @@ public class EncryptEncode extends IntentService {
 
 	private boolean executeService(String data){
 		
-		QREncoder encoder = new QREncoder();
+		QREncoder encoder = new QREncoder(this);
 		AESEncryption aes = new AESEncryption(this);
 		
 		try {

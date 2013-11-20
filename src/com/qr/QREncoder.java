@@ -5,8 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
 
 import com.google.zxing.BarcodeFormat;
@@ -19,7 +22,12 @@ public class QREncoder {
 
 	private final int WIDTH = 900;
 	private final int HEIGHT = 900;
-	private final String FOLDER = "QRPasswds";
+	
+	private Context context;
+	    
+    public QREncoder(Context refContext) {
+    	context = refContext;	
+    }
 		
 	public Bitmap encode(String text) throws WriterException{
 		
@@ -48,10 +56,17 @@ public class QREncoder {
 		String state = Environment.getExternalStorageState();
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
-			QRDirectory.mkdir();
-			FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+filename);
+			File QRDirectory = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename);
+			FileOutputStream out = new FileOutputStream(QRDirectory);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
+		    
+		    MediaScannerConnection.scanFile(context, new String[] {QRDirectory.toString()}, null, new MediaScannerConnection.OnScanCompletedListener() {
+
+				@Override
+				public void onScanCompleted(String path, Uri uri) {	/* Nothing to do here */ }
+			});
+
+		    
 		} else {
 		    throw new IOException();
 		}	

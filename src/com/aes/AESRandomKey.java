@@ -16,7 +16,6 @@ import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Xml;
 
@@ -99,10 +98,8 @@ public class AESRandomKey {
 		
 		FileInputStream in = context.openFileInput(FILENAME);
 		
-		File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
-		QRDirectory.mkdir();
-		
-		FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+FILENAME);
+		File QRDirectory = new File(context.getExternalFilesDir(null), FILENAME);		
+		FileOutputStream out = new FileOutputStream(QRDirectory);
 		
 		byte[] buffer = new byte[256];
 		
