@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aes.AESRandomKey;
@@ -26,6 +27,8 @@ public class GenerateKey extends FragmentActivity {
 		} catch (NoSuchAlgorithmException e) {
 			
 		} catch (IOException e) {
+			
+			Log.e(this.getClass().getSimpleName(), e.toString());
 			
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	        	builder.setMessage(R.string.error_creating_file)

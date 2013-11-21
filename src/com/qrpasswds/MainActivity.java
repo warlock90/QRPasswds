@@ -30,6 +30,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -138,6 +139,8 @@ public class MainActivity extends FragmentActivity {
 					
 				} catch (IOException e) {
 					
+					Log.e(this.getClass().getSimpleName(), e.toString());
+					
 				}
 			}
 		}
@@ -219,6 +222,8 @@ public class MainActivity extends FragmentActivity {
                     	startActivityForResult(scan, FIND_FILE);
                     }
                     catch(ActivityNotFoundException e){
+                    	
+                    	Log.e(this.getClass().getSimpleName(), e.toString());
 
                     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     	builder.setMessage(R.string.file_manager_not_found_file)
@@ -239,6 +244,8 @@ public class MainActivity extends FragmentActivity {
                     	startActivityForResult(scanOld, OLD_FILE);
                     }
                     catch(ActivityNotFoundException e){
+                    	
+                    	Log.e(this.getClass().getSimpleName(), e.toString());
 
                     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     	builder.setMessage(R.string.file_manager_not_found_file)
@@ -277,7 +284,8 @@ public class MainActivity extends FragmentActivity {
 				
 			  }catch (Exception e) {
 
-
+				  Log.e(this.getClass().getSimpleName(), e.toString());
+				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.not_valid_qr)
 	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -331,14 +339,18 @@ public class MainActivity extends FragmentActivity {
 						}
 					
 					} catch (ParserConfigurationException e) {
-						// handle exception
+						Log.e(this.getClass().getSimpleName(), e.toString());
 					} catch (SAXException e) {
+						Log.e(this.getClass().getSimpleName(), e.toString());
 						throw new Exception();
 					} catch (IOException e) {
+						Log.e(this.getClass().getSimpleName(), e.toString());
 						throw new Exception();
 					}
 			  
 			  } catch (IllegalArgumentException e) {
+				  
+				  Log.e(this.getClass().getSimpleName(), e.toString());
 				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.not_your_key)
@@ -350,6 +362,8 @@ public class MainActivity extends FragmentActivity {
 	   	               .show();
 			 
 			  } catch (Exception e) {
+				  
+				  Log.e(this.getClass().getSimpleName(), e.toString());
 
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.error_scanning)
@@ -376,6 +390,8 @@ public class MainActivity extends FragmentActivity {
 				oldData = decoder.decode(result.getData().getPath());
 				
 			  }catch (Exception e) {
+				  
+				  Log.e(this.getClass().getSimpleName(), e.toString());
 				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.not_valid_qr)
@@ -408,6 +424,8 @@ public class MainActivity extends FragmentActivity {
 			  
 			  } catch (IllegalArgumentException e) {
 				  
+				  Log.e(this.getClass().getSimpleName(), e.toString());
+				  
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.not_your_key)
 	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -418,6 +436,8 @@ public class MainActivity extends FragmentActivity {
 	   	               .show();
 			 
 			  } catch (Exception e) {
+				  
+				  Log.e(this.getClass().getSimpleName(), e.toString());
 
 				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
 	   	        	builder.setMessage(R.string.error_scanning)

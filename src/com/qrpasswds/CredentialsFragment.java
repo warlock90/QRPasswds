@@ -17,6 +17,7 @@ import org.xmlpull.v1.XmlSerializer;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,11 +91,11 @@ public class CredentialsFragment extends Fragment {
 				}
 			
 			} catch (ParserConfigurationException e) {
-				// handle exception
+				Log.e(this.getClass().getSimpleName(), e.toString());
 			} catch (SAXException e) {
-				// handle exception
+				Log.e(this.getClass().getSimpleName(), e.toString());
 			} catch (IOException e) {
-				// handle exception
+				Log.e(this.getClass().getSimpleName(), e.toString());
 			}
 
 		}
@@ -161,7 +162,7 @@ public class CredentialsFragment extends Fragment {
 			serial.flush();
 		
 		} catch(IOException e) {
-			//handle exception
+			Log.e(this.getClass().getSimpleName(), e.toString());
 		}
 		
 		System.out.println("Get String "+writer.toString());

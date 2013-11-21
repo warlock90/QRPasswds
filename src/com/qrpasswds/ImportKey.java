@@ -14,6 +14,7 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 public class ImportKey extends Activity {
@@ -80,6 +81,8 @@ public class ImportKey extends Activity {
 				}
 				
 			} catch(IOException e){ 
+				
+				Log.e(this.getClass().getSimpleName(), e.toString());
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
    	        	builder.setMessage(R.string.error_reading_file)
@@ -92,6 +95,8 @@ public class ImportKey extends Activity {
    	        	
 			} catch (SAXException e) {
 				
+				Log.e(this.getClass().getSimpleName(), e.toString());
+				
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
    	        	builder.setMessage(R.string.not_valid_file)
    	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -102,6 +107,8 @@ public class ImportKey extends Activity {
    	               .show();
    	        	
 			} catch (ParserConfigurationException e) {
+				
+				Log.e(this.getClass().getSimpleName(), e.toString());
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
    	        	builder.setMessage(R.string.not_valid_file)

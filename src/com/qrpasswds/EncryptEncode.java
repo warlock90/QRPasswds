@@ -12,14 +12,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.aes.AESEncryption;
-import com.google.zxing.WriterException;
-import com.qr.QREncoder;
-
 import android.app.IntentService;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
-import android.net.Uri;
+import android.os.Environment;
+import android.util.Log;
+
+import com.aes.AESEncryption;
+import com.google.zxing.WriterException;
+import com.qr.QREncoder;
 
 public class EncryptEncode extends IntentService {
 
@@ -57,28 +58,37 @@ public class EncryptEncode extends IntentService {
 		try {
 			encoder.createQR(encoder.encode(aes.aes_encrypt(data)), filename);
 			
-			File QRDirectory = new File(this.getExternalFilesDir(Enivronment.DIRECTORY_PICTURES), filename);
+			File QRDirectory = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), filename);
 			MediaScannerConnection.scanFile(getApplicationContext(), new String[] {QRDirectory.getAbsolutePath()},null, null);
 			
 			return true;
 			
 		} catch (IOException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (WriterException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (InvalidKeyException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (NoSuchAlgorithmException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (NoSuchPaddingException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (IllegalBlockSizeException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (BadPaddingException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (ParserConfigurationException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		} catch (SAXException e) {
+			Log.e(this.getClass().getSimpleName(),e.toString());
 			return false;
 		}	
 	}
