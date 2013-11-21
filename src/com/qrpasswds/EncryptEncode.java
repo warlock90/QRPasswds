@@ -56,15 +56,12 @@ public class EncryptEncode extends IntentService {
 		
 		try {
 			encoder.createQR(encoder.encode(aes.aes_encrypt(data)), filename);
-			File QRDirectory = this.getExternalFilesDir(null);
-			MediaScannerConnection.scanFile(getApplicationContext(), new String[] {QRDirectory.toString()}, null, new MediaScannerConnection.OnScanCompletedListener() {
-
-				@Override
-				public void onScanCompleted(String path, Uri uri) {	/* Nothing to do here */ }
-			});
 			
+			File QRDirectory = new File(this.getExternalFilesDir(Enivronment.DIRECTORY_PICTURES), filename);
+			MediaScannerConnection.scanFile(getApplicationContext(), new String[] {QRDirectory.getAbsolutePath()},null, null);
 			
 			return true;
+			
 		} catch (IOException e) {
 			return false;
 		} catch (WriterException e) {
