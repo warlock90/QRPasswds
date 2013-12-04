@@ -27,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -216,7 +217,7 @@ public class MainActivity extends FragmentActivity {
             		
             	case R.id.scan_file:
             		Intent scan = new Intent();
-            		scan.setType("file/*");
+            		scan.setType("image/*");
             		scan.setAction(Intent.ACTION_GET_CONTENT);
                     try {
                     	startActivityForResult(scan, FIND_FILE);
@@ -238,7 +239,7 @@ public class MainActivity extends FragmentActivity {
                     
             	case R.id.old_scan:
             		Intent scanOld = new Intent();
-            		scanOld.setType("file/*");
+            		scanOld.setType("image/*");
             		scanOld.setAction(Intent.ACTION_GET_CONTENT);
                     try {
                     	startActivityForResult(scanOld, OLD_FILE);
@@ -625,7 +626,7 @@ public class MainActivity extends FragmentActivity {
 
 			FileInputStream in = new FileInputStream(new File(qr.getAbsolutePath()));
 				
-			File QRDirectory = new File(this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), OLD_QR_FILE_NAME);		
+			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), OLD_QR_FILE_NAME);		
 			FileOutputStream out = new FileOutputStream(QRDirectory);
 			
 			byte[] buffer = new byte[1024];
@@ -636,6 +637,9 @@ public class MainActivity extends FragmentActivity {
 			out.close();
 			
 			qr.delete();
+			
+			MediaScannerConnection.scanFile(this, new String[] {QRDirectory.getAbsolutePath()},null, null);
+
 
 		}
 		
