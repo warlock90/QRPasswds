@@ -42,6 +42,6 @@
     <string name="filename_default">QR_passwords.png (default)</string>
     <string name="file_extention">.png</string>
     <string name="save_path_changed_title">Storage folder changed</string>
-    <string name="save_path_changed">QRPasswds folder in sdcard has been deleted. Files are now saved in /sdcard/Android/data/com.qrpasswds/files </string>
+    <string name="save_path_changed">QRPasswds folder in sdcard has been deleted. QR images are now saved in /sdcard/Pictures and the exported key in /sdcard folder </string>
 
 </resources>

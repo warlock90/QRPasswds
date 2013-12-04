@@ -106,7 +106,7 @@ public class AESRandomKey {
 			in = new FileInputStream(new File(inputFilename));
 		}
 				
-		File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(null), FILENAME);		
+		File QRDirectory = new File(Environment.getExternalStorageDirectory(), FILENAME);		
 		FileOutputStream out = new FileOutputStream(QRDirectory);
 		
 		byte[] buffer = new byte[256];
