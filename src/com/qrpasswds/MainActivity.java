@@ -27,9 +27,12 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -275,13 +278,17 @@ public class MainActivity extends FragmentActivity {
 			  QRDecoder decoder = new QRDecoder();
 
 			  try {
-				  
-				String filePath = result.getData().getPath();   
+				Uri fileUri = result.getData();
+				String filePath;
 				
+				if(!fileUri.getScheme().equals("file")){
+					filePath = getRealPathFromURI(this, fileUri);
+				}
+				else {
+					filePath = fileUri.getPath();
+				}
 				data = decoder.decode(filePath);
-				scannedFilename = filePath.split("/")[filePath.split("/").length - 1];
-				System.out.println("Read "+scannedFilename);
-				
+				scannedFilename = filePath.split("/")[filePath.split("/").length - 1];				
 				
 			  }catch (Exception e) {
 
@@ -387,8 +394,18 @@ public class MainActivity extends FragmentActivity {
 			  QRDecoder decoder = new QRDecoder();
 			  
 			  try {
+				
+				Uri fileUri = result.getData();
+				String filePath;
+				
+				if(!fileUri.getScheme().equals("file")){
+					filePath = getRealPathFromURI(this, fileUri);
+				}
+				else {
+					filePath = fileUri.getPath();
+				}
 				  
-				oldData = decoder.decode(result.getData().getPath());
+				oldData = decoder.decode(filePath);
 				
 			  }catch (Exception e) {
 				  
@@ -646,6 +663,23 @@ public class MainActivity extends FragmentActivity {
 		folder.delete();
 		
 	}
+	
+	public String getRealPathFromURI(Context context, Uri contentUri) {
+		  Cursor cursor = null;
+		  try { 
+		    String[] proj = { MediaStore.Images.Media.DATA };
+		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		    cursor.moveToFirst();
+		    return cursor.getString(column_index);
+		  } finally {
+		    if (cursor != null) {
+		      cursor.close();
+		    }
+		  }
+		}
+
+
 	
 	private class EncryptEncodeReceiver extends BroadcastReceiver{
 
