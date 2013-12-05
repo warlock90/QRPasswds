@@ -21,6 +21,7 @@ public class QREncoder {
 
 	private final int WIDTH = 900;
 	private final int HEIGHT = 900;
+	private final String FOLDER = "QRPasswds";
 	
 	private Context context;
 	    
@@ -55,7 +56,10 @@ public class QREncoder {
 		String state = Environment.getExternalStorageState();
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), filename);
+
+			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+FOLDER,filename);
+			QRDirectory.getParentFile().mkdirs();
+
 			FileOutputStream out = new FileOutputStream(QRDirectory);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
 		    
