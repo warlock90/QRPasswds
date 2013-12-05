@@ -643,7 +643,9 @@ public class MainActivity extends FragmentActivity {
 
 			FileInputStream in = new FileInputStream(new File(qr.getAbsolutePath()));
 				
-			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+OLD_FOLDER_NAME, OLD_QR_FILE_NAME);		
+			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+OLD_FOLDER_NAME, OLD_QR_FILE_NAME);
+			QRDirectory.getParentFile().mkdirs();
+			
 			FileOutputStream out = new FileOutputStream(QRDirectory);
 			
 			byte[] buffer = new byte[1024];
