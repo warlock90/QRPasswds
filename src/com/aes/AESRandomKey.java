@@ -95,14 +95,19 @@ public class AESRandomKey {
 		return false;		
 	}
 		
-	public void exportKey() throws IOException{
+	public void exportKey(String inputFilename) throws IOException{
 		
-		FileInputStream in = context.openFileInput(FILENAME);
+		FileInputStream in;
 		
-		File QRDirectory = new File(Environment.getExternalStorageDirectory().toString()+File.separator+FOLDER);
-		QRDirectory.mkdir();
-		
-		FileOutputStream out = new FileOutputStream(QRDirectory+File.separator+FILENAME);
+		if (inputFilename == null) {
+			in = context.openFileInput(FILENAME);
+		}
+		else {
+			in = new FileInputStream(new File(inputFilename));
+		}
+				
+		File QRDirectory = new File(Environment.getExternalStorageDirectory(), FILENAME);		
+		FileOutputStream out = new FileOutputStream(QRDirectory);
 		
 		byte[] buffer = new byte[256];
 		

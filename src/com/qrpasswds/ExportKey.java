@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.aes.AESRandomKey;
@@ -26,12 +27,14 @@ public class ExportKey extends FragmentActivity {
                 	   AESRandomKey ran_key = new AESRandomKey(ExportKey.this);
                        
                 	   try {
-                		   ran_key.exportKey();
+                		   ran_key.exportKey(null);
                 		   Toast.makeText(ExportKey.this, R.string.key_exported, Toast.LENGTH_LONG).show();
                 		   finish();
                 		   
                        } catch (IOException e) {
-                    	                       	   
+                    	   
+                    	   Log.e(this.getClass().getSimpleName(), e.toString());
+                    	   
                     	   AlertDialog.Builder builder = new AlertDialog.Builder(ExportKey.this);
                	        	builder.setMessage(R.string.error_exporting_key)
                	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {

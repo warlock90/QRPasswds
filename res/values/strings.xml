@@ -37,5 +37,11 @@
     <string name="ok">OK</string>
     <string name="scan_file">Scan from file</string>
     <string name="not_your_key">This QR image is not encrypted with your QRPasswds key</string>
+    <string name="old_scan_title">Scan old QR version</string>
+    <string name="qr_filename">QR Filename</string>
+    <string name="filename_default">QR_passwords.png (default)</string>
+    <string name="file_extention">.png</string>
+    <string name="save_path_changed_title">Storage folder changed</string>
+    <string name="save_path_changed">QRPasswds folder in sdcard has been deleted. QR images are now saved in /sdcard/Pictures and the exported key in /sdcard folder </string>
 
 </resources>
