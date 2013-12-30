@@ -1,5 +1,6 @@
 package com.qr;
 
+import java.io.InputStream;
 import java.util.Hashtable;
 
 import android.graphics.Bitmap;
@@ -20,12 +21,12 @@ import com.google.zxing.qrcode.QRCodeReader;
 public class QRDecoder {
 
 	
-	public String decode(String qrImagePath) throws NullPointerException, NotFoundException, ChecksumException, FormatException{
+	public String decode(InputStream qrImageStream) throws NullPointerException, NotFoundException, ChecksumException, FormatException{
 		
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		
-		Bitmap bitmap = BitmapFactory.decodeFile(qrImagePath,options);
+		Bitmap bitmap = BitmapFactory.decodeStream(qrImageStream, null, options);
+		//Bitmap bitmap = BitmapFactory.decodeFile(qrImagePath,options);
 		
 		int[] pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
 		bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
