@@ -32,7 +32,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -276,19 +276,12 @@ public class MainActivity extends FragmentActivity {
 		  if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			  
 			  QRDecoder decoder = new QRDecoder();
-
+			  
+			  
 			  try {
-				Uri fileUri = result.getData();
-				String filePath;
-				
-				if(!fileUri.getScheme().equals("file")){
-					filePath = getRealPathFromURI(this, fileUri);
-				}
-				else {
-					filePath = fileUri.getPath();
-				}
-				data = decoder.decode(filePath);
-				scannedFilename = filePath.split("/")[filePath.split("/").length - 1];				
+				  data = decoder.decode(getContentResolver().openInputStream(result.getData()));
+				  scannedFilename = getTitleFromUri(this, result.getData());
+							
 				
 			  }catch (Exception e) {
 
@@ -304,7 +297,7 @@ public class MainActivity extends FragmentActivity {
 	   	               .show();
 
 	   	        	error = true;
-			  }			  
+			  }		  
 		  }
 		  
 		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, result);
@@ -394,18 +387,8 @@ public class MainActivity extends FragmentActivity {
 			  QRDecoder decoder = new QRDecoder();
 			  
 			  try {
-				
-				Uri fileUri = result.getData();
-				String filePath;
-				
-				if(!fileUri.getScheme().equals("file")){
-					filePath = getRealPathFromURI(this, fileUri);
-				}
-				else {
-					filePath = fileUri.getPath();
-				}
-				  
-				oldData = decoder.decode(filePath);
+								  
+				oldData = decoder.decode(getContentResolver().openInputStream(result.getData()));
 				
 			  }catch (Exception e) {
 				  
@@ -666,12 +649,17 @@ public class MainActivity extends FragmentActivity {
 		
 	}
 	
-	public String getRealPathFromURI(Context context, Uri contentUri) {
+	public String getTitleFromUri(Context context, Uri contentUri) {
+			
+		if(contentUri.getScheme().equals("file")) {
+			return contentUri.getLastPathSegment();
+		}
+		else {
 		  Cursor cursor = null;
 		  try { 
-		    String[] proj = { MediaStore.Images.Media.DATA };
+		    String[] proj = { OpenableColumns.DISPLAY_NAME};
 		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+		    int column_index = cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME);
 		    cursor.moveToFirst();
 		    return cursor.getString(column_index);
 		  } finally {
@@ -680,6 +668,8 @@ public class MainActivity extends FragmentActivity {
 		    }
 		  }
 		}
+	}
+		
 
 
 	
