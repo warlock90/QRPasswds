@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.KeyGenerator;
@@ -75,22 +76,20 @@ public class AESRandomKey {
 		return Base64.decode(pass, Base64.DEFAULT);
 	}
 	
-	public boolean validateKey(String key_file) throws IOException, SAXException, ParserConfigurationException {
-		
-		File key = new File(key_file);
+	public boolean validateKey(InputStream keyStream) throws IOException, SAXException, ParserConfigurationException {
 				
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder db = dbf.newDocumentBuilder();
-		Document dom = db.parse(key);
+		Document dom = db.parse(keyStream);
 		String pass = dom.getElementsByTagName(FOLDER).item(0).getTextContent();
 		
 		int byteLength = Base64.decode(pass, Base64.DEFAULT).length;
 		
+		keyStream.close();
 		
 		if(byteLength == 16 || byteLength == 24 || byteLength == 32){
 			return true;
 		}
-		
 		
 		return false;		
 	}
@@ -118,16 +117,15 @@ public class AESRandomKey {
 		
 	}
 	
-	public void importKey(String filepath, Context ctx) throws IOException{
+	public void importKey(InputStream filepath, Context ctx) throws IOException{
 		
-		FileInputStream in = new FileInputStream(filepath);
 		FileOutputStream out = ctx.openFileOutput(FILENAME, Context.MODE_PRIVATE);
 		
 		byte[] buffer = new byte[256];
+	
+		while (filepath.read(buffer)>0) out.write(buffer);
 		
-		while (in.read(buffer)>0) out.write(buffer);
-		
-		in.close();
+		filepath.close();
 		out.close();
 		
 		

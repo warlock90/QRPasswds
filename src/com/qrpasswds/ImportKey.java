@@ -6,8 +6,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import com.aes.AESRandomKey;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -16,6 +14,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.aes.AESRandomKey;
 
 public class ImportKey extends Activity {
 
@@ -57,14 +57,12 @@ public class ImportKey extends Activity {
 		if ( requestCode == FIND_FILE && resultCode == RESULT_OK ){
 			
 			AESRandomKey ranKey = new AESRandomKey(this);
-			String resultFile = result.getData().getPath();
 			
 			try{
 				
-				boolean flag = ranKey.validateKey(resultFile);
-				
+				boolean flag = ranKey.validateKey(getContentResolver().openInputStream(result.getData()));
 				if (flag) {
-					ranKey.importKey(resultFile, this);
+					ranKey.importKey(getContentResolver().openInputStream(result.getData()), this);
 					Toast.makeText(this, R.string.key_imported, Toast.LENGTH_LONG).show();
 					finish();
 				}

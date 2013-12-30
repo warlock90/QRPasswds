@@ -281,7 +281,7 @@ public class MainActivity extends FragmentActivity {
 			  try {
 				  data = decoder.decode(getContentResolver().openInputStream(result.getData()));
 				  scannedFilename = getTitleFromUri(this, result.getData());
-				// = filePath.split("/")[filePath.split("/").length - 1];				
+							
 				
 			  }catch (Exception e) {
 
