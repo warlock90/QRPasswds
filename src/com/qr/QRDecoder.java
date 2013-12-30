@@ -26,7 +26,6 @@ public class QRDecoder {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 		Bitmap bitmap = BitmapFactory.decodeStream(qrImageStream, null, options);
-		//Bitmap bitmap = BitmapFactory.decodeFile(qrImagePath,options);
 		
 		int[] pixels = new int[bitmap.getWidth() * bitmap.getHeight()];
 		bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
