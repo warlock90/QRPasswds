@@ -32,7 +32,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -280,8 +280,8 @@ public class MainActivity extends FragmentActivity {
 			  
 			  try {
 				  data = decoder.decode(getContentResolver().openInputStream(result.getData()));
-			  
-				//scannedFilename = filePath.split("/")[filePath.split("/").length - 1];				
+				  scannedFilename = getTitleFromUri(this, result.getData());
+				// = filePath.split("/")[filePath.split("/").length - 1];				
 				
 			  }catch (Exception e) {
 
@@ -657,9 +657,9 @@ public class MainActivity extends FragmentActivity {
 		else {
 		  Cursor cursor = null;
 		  try { 
-		    String[] proj = { MediaStore.Images.Media.DATA};
+		    String[] proj = { OpenableColumns.DISPLAY_NAME};
 		    cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-		    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.TITLE);
+		    int column_index = cursor.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME);
 		    cursor.moveToFirst();
 		    return cursor.getString(column_index);
 		  } finally {
