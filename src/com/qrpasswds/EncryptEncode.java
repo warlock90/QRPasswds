@@ -51,7 +51,7 @@ public class EncryptEncode extends IntentService {
 		
 		QREncoder encoder = new QREncoder(getApplicationContext());
 		AESEncryption aes = new AESEncryption(getApplicationContext());
-		System.out.println(filename);
+
 		try {
 			encoder.createQR(encoder.encode(aes.aes_encrypt(data)), filename);
 			return true;

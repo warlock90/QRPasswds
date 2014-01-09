@@ -120,6 +120,7 @@ public class CredentialsFragment extends Fragment {
 		if(type==null){		
 			mAc.scrollToBottom();
 		}
+		
 	}
 	
 	public String getInput(){
@@ -163,12 +164,13 @@ public class CredentialsFragment extends Fragment {
 		
 		} catch(IOException e) {
 			Log.e(this.getClass().getSimpleName(), e.toString());
-		}
-		
-		System.out.println("Get String "+writer.toString());
-		
+		}		
 		
 		return writer.toString();
+	}
+	
+	public int getInputLength(){
+		return 0;
 	}
 	
 	private class Credential extends LinearLayout{

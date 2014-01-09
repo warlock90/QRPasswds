@@ -18,7 +18,7 @@ import android.util.Base64;
 
 public class AESEncryption {
 
-	private final String ALGORITHM = "AES";
+	private final String ALGORITHM = "AES/ECB/PKCS5Padding";
     private final String CHARSET = "utf-8";        
     private AESRandomKey ranKey = null;
     
