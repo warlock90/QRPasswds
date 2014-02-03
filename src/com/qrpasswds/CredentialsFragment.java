@@ -40,11 +40,13 @@ import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class CredentialsFragment extends Fragment {
 	
@@ -59,10 +61,38 @@ public class CredentialsFragment extends Fragment {
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
 	private MainActivity mAc = null;
+	
+	private OnLongClickListener copyToClip;
 			
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		copyToClip = new OnLongClickListener(){
+
+			@Override
+			public boolean onLongClick(View v) {
+				EditText view = (EditText)v;
+				
+				if(view.getText().toString().trim().length()>0) {
+					
+					int sdk = android.os.Build.VERSION.SDK_INT;
+					
+					if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+					    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE);
+					    clipboard.setText(view.getText().toString().trim());
+					} else {
+					    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE); 
+					    android.content.ClipData clip = android.content.ClipData.newPlainText("copied",view.getText().toString().trim());
+					    clipboard.setPrimaryClip(clip);
+					}
+					
+					Toast.makeText(mAc, "Copied to clipboard", Toast.LENGTH_LONG).show();
+					return true;
+				}
+				return false;
+			}};
+		
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
@@ -209,19 +239,24 @@ public class CredentialsFragment extends Fragment {
 					wrapper.removeView(credential);
 				}
 		     });
+			
+			EditText credType = (EditText) this.findViewById(R.id.credential_type);
+			EditText credUser = (EditText) this.findViewById(R.id.user);
+			EditText credPass = (EditText) this.findViewById(R.id.pass);
+			
+			credType.setOnLongClickListener(copyToClip);
+			credUser.setOnLongClickListener(copyToClip);
+			credPass.setOnLongClickListener(copyToClip);
 
 			if (type!=null && !type.equals("<QR3mpty/>")) {
-				EditText credType = (EditText) this.findViewById(R.id.credential_type);
 				credType.setText(type);
 			}
 			
 			if (user!=null && !user.equals("<QR3mpty/>")) {
-				EditText credUser = (EditText) this.findViewById(R.id.user);
 				credUser.setText(user);
 			}
 			
 			if (pass!=null && !pass.equals("<QR3mpty/>")) {
-				EditText credPass = (EditText) this.findViewById(R.id.pass);
 				credPass.setText(pass);
 			}
 	
