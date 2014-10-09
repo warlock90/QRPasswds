@@ -1,6 +1,4 @@
 <resources>
-	<!-- API 10 theme customizations can go here. -->
-    <style name="QRTheme" parent="android:Theme.Dialog"></style>
-        
-    <style name="QRButtonBar" parent="android:Widget.Button"></style>
+	<style name="QRTheme" parent="android:Theme.Holo.Dialog"></style>
+	<style name="QRButtonBar" parent="android:Widget.Holo.Button"></style>
 </resources>

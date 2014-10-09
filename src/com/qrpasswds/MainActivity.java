@@ -76,8 +76,7 @@ public class MainActivity extends FragmentActivity {
 	private final String OLD_QR_FILE_NAME = "QR_passwords.png";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	private final int FIND_FILE = 1;
-	private final int OLD_FILE = 2;
-	
+
 	private CredentialsFragment scroll = null;
 	private View scrollView = null;
 	
@@ -258,28 +257,6 @@ public class MainActivity extends FragmentActivity {
                     }
                     return true;
                     
-            	case R.id.old_scan:
-            		Intent scanOld = new Intent();
-            		scanOld.setType("image/*");
-            		scanOld.setAction(Intent.ACTION_GET_CONTENT);
-                    try {
-                    	startActivityForResult(scanOld, OLD_FILE);
-                    }
-                    catch(ActivityNotFoundException e){
-                    	
-                    	Log.e(this.getClass().getSimpleName(), e.toString());
-
-                    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    	builder.setMessage(R.string.file_manager_not_found_file)
-            	                .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-            	                   public void onClick(DialogInterface dialog, int id) {
-            	                      
-            	                   }
-            	               })
-            	               .show();
-                    }
-                    return true;
-                    
             	default:
             		return super.onOptionsItemSelected(item);
         }
@@ -395,79 +372,6 @@ public class MainActivity extends FragmentActivity {
 				  
 			  } 
 		   
-		  }
-		  
-		  String oldData = null;
-		  Boolean oldError = false;
-		  
-		  if ( requestCode == OLD_FILE && resultCode == RESULT_OK ){
-			  
-			  QRDecoder decoder = new QRDecoder();
-			  
-			  try {
-								  
-				oldData = decoder.decode(getContentResolver().openInputStream(result.getData()));
-				
-			  }catch (Exception e) {
-				  
-				  Log.e(this.getClass().getSimpleName(), e.toString());
-				  
-				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	   	        	builder.setMessage(R.string.not_valid_qr)
-	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-	   	                   public void onClick(DialogInterface dialog, int id) {
-	   	                	
-	   	                   }
-	   	               })
-	   	               .show();
-
-	   	        	oldError = true;
-			  }			  
-		  }
-		  
-		  if ( oldData != null && !oldError) {
-			  
-			  AESEncryption aes = new AESEncryption(this);
-			  loading(true);
-			  
-			  main.removeAllViews();
-			  
-			  try {
-				  
-				  String[] retainedData = aes.aes_decrypt(oldData).split("\n");
-				  
-				  for (int f=0;f<retainedData.length;f+=3){
-					  scroll.addCredential(retainedData[f], retainedData[f+1], retainedData[f+2]);
-				  }
-					  
-			  
-			  } catch (IllegalArgumentException e) {
-				  
-				  Log.e(this.getClass().getSimpleName(), e.toString());
-				  
-				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	   	        	builder.setMessage(R.string.not_your_key)
-	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-	   	                   public void onClick(DialogInterface dialog, int id) {
-	   	                      
-	   	                   }
-	   	               })
-	   	               .show();
-			 
-			  } catch (Exception e) {
-				  
-				  Log.e(this.getClass().getSimpleName(), e.toString());
-
-				  AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	   	        	builder.setMessage(R.string.error_scanning)
-	   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-	   	                   public void onClick(DialogInterface dialog, int id) {
-	   	                      
-	   	                   }
-	   	               })
-	   	               .show();
-				  
-			  } 
 		  }
 		  
 		  loading(false);
