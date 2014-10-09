@@ -35,9 +35,4 @@
         android:showAsAction="never"
         android:title="@string/export_key_title" />
     
-    <item android:id="@+id/old_scan"
-        android:orderInCategory="101"
-        android:showAsAction="never"
-        android:title="@string/old_scan_title" />
-    
 </menu>

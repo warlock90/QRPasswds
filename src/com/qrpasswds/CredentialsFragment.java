@@ -76,17 +76,10 @@ public class CredentialsFragment extends Fragment {
 				
 				if(view.getText().toString().trim().length()>0) {
 					
-					int sdk = android.os.Build.VERSION.SDK_INT;
-					
-					if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
-					    android.text.ClipboardManager clipboard = (android.text.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE);
-					    clipboard.setText(view.getText().toString().trim());
-					} else {
-					    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE); 
-					    android.content.ClipData clip = android.content.ClipData.newPlainText("copied",view.getText().toString().trim());
-					    clipboard.setPrimaryClip(clip);
-					}
-					
+				    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE); 
+				    android.content.ClipData clip = android.content.ClipData.newPlainText("copied",view.getText().toString().trim());
+				    clipboard.setPrimaryClip(clip);
+
 					Toast.makeText(mAc, "Copied to clipboard", Toast.LENGTH_LONG).show();
 					return true;
 				}
