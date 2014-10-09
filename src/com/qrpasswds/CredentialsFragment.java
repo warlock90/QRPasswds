@@ -34,7 +34,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
@@ -42,13 +42,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class CredentialsFragment extends Fragment {
+public class CredentialsFragment extends ListFragment {
 	
 	public final String CHARSET = "utf-8";
 	public final String ROOT_XML = "q";
@@ -63,7 +64,16 @@ public class CredentialsFragment extends Fragment {
 	private MainActivity mAc = null;
 	
 	private OnLongClickListener copyToClip;
-			
+	
+	@Override
+	  public void onActivityCreated(Bundle savedInstanceState) {
+	    super.onActivityCreated(savedInstanceState);
+	    String[] values = new String[] { "testing","and", "shit" };
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+	        android.R.layout.simple_list_item_1, values);
+	    setListAdapter(adapter);
+	  }
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,7 +97,7 @@ public class CredentialsFragment extends Fragment {
 			}};
 		
 	}
-	
+	/*
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
 		
 		View fragView = inflater.inflate(R.layout.scroll, container, false);
@@ -142,7 +152,7 @@ public class CredentialsFragment extends Fragment {
 		}
 		
 		return fragView;
-	}
+	}*/
 	
 	 @Override
 	 public void onSaveInstanceState(Bundle outState) {

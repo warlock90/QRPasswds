@@ -1,5 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+	<item 
+        android:id="@+id/add_button"
+        android:orderInCategory="85"
+        android:showAsAction="ifRoom"
+        android:title="@string/add_button"
+        android:icon="@drawable/ic_menu_add" />
+        
     <item 
         android:id="@+id/scan"
         android:orderInCategory="90"

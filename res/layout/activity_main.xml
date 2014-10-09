@@ -23,19 +23,13 @@
    		android:layout_height="fill_parent"
    		android:layout_width="fill_parent"
    		android:id="@+id/activity_layout">
-	   	 	
-		<ScrollView
-    			android:id="@+id/scroll_view"
-    			android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_weight="1" >
-
-			<fragment class="com.qrpasswds.CredentialsFragment"
-    			android:id="@+id/scroll_fragment"
-    			android:layout_width="match_parent"
-    			android:layout_height="wrap_content" />
-
-		</ScrollView>
+	    	
+		<fragment
+		    android:id="@+id/scroll_fragment"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dp"
+		    android:layout_weight="1"
+		    class="com.qrpasswds.CredentialsFragment" />
 
 		<LinearLayout
         	android:layout_width="match_parent"
