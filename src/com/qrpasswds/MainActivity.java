@@ -96,7 +96,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
-		scrollView = findViewById(R.id.scroll_view);
+		//scrollView = findViewById(R.id.scroll_view);
 		loadingView = (LinearLayout) findViewById(R.id.loading);
 		activityLayout = (LinearLayout) findViewById(R.id.activity_layout);
 				
