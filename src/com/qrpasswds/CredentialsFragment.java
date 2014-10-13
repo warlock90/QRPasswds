@@ -21,6 +21,7 @@ package com.qrpasswds;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -65,14 +66,6 @@ public class CredentialsFragment extends ListFragment {
 	
 	private OnLongClickListener copyToClip;
 	
-	@Override
-	  public void onActivityCreated(Bundle savedInstanceState) {
-	    super.onActivityCreated(savedInstanceState);
-	    String[] values = new String[] { "testing","and", "shit" };
-	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-	        android.R.layout.simple_list_item_1, values);
-	    setListAdapter(adapter);
-	  }
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -95,8 +88,17 @@ public class CredentialsFragment extends ListFragment {
 				}
 				return false;
 			}};
+
+		ArrayList<Credential> credentials = new ArrayList<Credential>();
+		credentials.add(new Credential("a","b","c"));
+		credentials.add(new Credential("ab","bc","ca"));
+		credentials.add(new Credential("ac","ba","cb"));
+		credentials.add(new Credential("aa","bb","cc"));
+		CredentialsAdapter adapter = new CredentialsAdapter(this.getActivity(),android.R.layout.simple_list_item_multiple_choice,credentials);
+		setListAdapter(adapter);
 		
 	}
+
 	/*
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
 		
@@ -152,7 +154,7 @@ public class CredentialsFragment extends ListFragment {
 		}
 		
 		return fragView;
-	}*/
+	}
 	
 	 @Override
 	 public void onSaveInstanceState(Bundle outState) {
@@ -265,7 +267,7 @@ public class CredentialsFragment extends ListFragment {
 	
 			
 		}
-	}
+	}*/
 
 	
 }
