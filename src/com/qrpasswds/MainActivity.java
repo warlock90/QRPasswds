@@ -200,7 +200,7 @@ public class MainActivity extends FragmentActivity {
             		return true;
             		
             	case R.id.actionbar_create_qr:
-            		createPressed(new View(this));
+            		//createPressed(new View(this));
             		return true;
             		
             	case R.id.delete:
@@ -262,7 +262,7 @@ public class MainActivity extends FragmentActivity {
         }
 		
     }
-	
+	/*
 	public void onActivityResult(int requestCode, int resultCode, Intent result) {
 	   	        	
 		String data = null;
@@ -491,7 +491,7 @@ public class MainActivity extends FragmentActivity {
         });
 		} 
 	}
-	
+	*/
 	public void encryptionEncodingFinished(boolean success){
 				
 		if (success){		
