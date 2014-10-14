@@ -78,9 +78,7 @@ public class MainActivity extends FragmentActivity {
 	private final int FIND_FILE = 1;
 
 	private CredentialsFragment scroll = null;
-	private View scrollView = null;
 	
-	public LinearLayout main = null;
 	private LinearLayout loadingView = null;
 	private LinearLayout activityLayout = null;
 	
@@ -96,7 +94,7 @@ public class MainActivity extends FragmentActivity {
 		setContentView(R.layout.activity_main);
 		
 		scroll = (CredentialsFragment) getSupportFragmentManager().findFragmentById(R.id.scroll_fragment);
-		//scrollView = findViewById(R.id.scroll_view);
+
 		loadingView = (LinearLayout) findViewById(R.id.loading);
 		activityLayout = (LinearLayout) findViewById(R.id.activity_layout);
 				
@@ -200,18 +198,19 @@ public class MainActivity extends FragmentActivity {
             		return true;
             		
             	case R.id.actionbar_create_qr:
-            		//createPressed(new View(this));
+            		createPressed(new View(this));
             		return true;
             		
             	case R.id.delete:
-            		if (main.getChildCount()>0){
+            		if (scroll.credentials.size()>0){
             			AlertDialog.Builder builder = new AlertDialog.Builder(this);
             			builder.setTitle(R.string.clear_dialog_title)
             			.setIcon(R.drawable.ic_alerts_and_states_warning)
     	        	   		.setMessage(R.string.clear_message)
     	        	   		.setPositiveButton(R.string.clear, new DialogInterface.OnClickListener() {
     	        	   			public void onClick(DialogInterface dialog, int id) {
-    	        	   				main.removeAllViews();
+    	        	   				scroll.credentials.clear();
+    	        	   				scroll.adapter.notifyDataSetChanged();
     	        	   			}
     	        	   		})
     	        	   		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -262,7 +261,7 @@ public class MainActivity extends FragmentActivity {
         }
 		
     }
-	/*
+	
 	public void onActivityResult(int requestCode, int resultCode, Intent result) {
 	   	        	
 		String data = null;
@@ -304,9 +303,7 @@ public class MainActivity extends FragmentActivity {
 			  
 			  AESEncryption aes = new AESEncryption(this);
 			  loading(true);
-			  
-			  main.removeAllViews();
-			
+			  			
 			  try {
 				  
 				  String retainedData = aes.aes_decrypt(data);
@@ -330,7 +327,7 @@ public class MainActivity extends FragmentActivity {
 								} catch(NullPointerException e) {}
 								try { pass = nodes.item(f).getAttributes().getNamedItem(scroll.PASS_ATTRIBUTE).getNodeValue();
 								} catch(NullPointerException e) {}
-
+								System.out.println(type+"@"+user+"@"+pass);
 								scroll.addCredential(type,user,pass);
 						}
 					
@@ -374,15 +371,16 @@ public class MainActivity extends FragmentActivity {
 		   
 		  }
 		  
+		  scroll.adapter.notifyDataSetChanged();
 		  loading(false);
 	}
 	
 	public void createPressed(View v){
 		
-			if (main.getChildCount() > 0)	{
+			if (scroll.credentials.size() > 0)	{
 				
 				LayoutInflater inflater = this.getLayoutInflater();
-				View inflaterView = inflater.inflate(R.layout.filename, null);
+				View inflaterView = inflater.inflate(R.layout.filename, activityLayout, false);
 				
 				SimpleDateFormat sd = new SimpleDateFormat("ddMMyyyyHHmmss", Locale.getDefault());
 				sd.setTimeZone(TimeZone.getDefault());
@@ -456,6 +454,7 @@ public class MainActivity extends FragmentActivity {
 							loading(true);
 							
 							Intent toReceiver = new Intent(getApplicationContext(),EncryptEncode.class);
+							System.out.println(scroll.getInput());
 							toReceiver.putExtra("Data", scroll.getInput());
 							toReceiver.putExtra("Filename", qrFilename);
 							startService(toReceiver);
@@ -469,29 +468,11 @@ public class MainActivity extends FragmentActivity {
 			}
 			else {
 				
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setMessage(R.string.no_credential_error)
-   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-   	                   public void onClick(DialogInterface dialog, int id) {
-   	                      
-   	                   }
-   	               })
-   	               .show();
+				Toast.makeText(this, R.string.no_credential_error, Toast.LENGTH_LONG).show();
 			}
 		}
-	
-	public void scrollToBottom(){
 
-		if(main!=null){
-			scrollView.post(new Runnable() {            
-            @Override
-            public void run() {
-            	scrollView.scrollTo(0, main.getBottom());
-            }
-        });
-		} 
-	}
-	*/
+	
 	public void encryptionEncodingFinished(boolean success){
 				
 		if (success){		
@@ -515,14 +496,12 @@ public class MainActivity extends FragmentActivity {
 		if (flag) {
 
 			if (activityLayout != null) activityLayout.setVisibility(View.INVISIBLE);
-			else scrollView.setVisibility(View.INVISIBLE);
 
 			loadingView.setVisibility(View.VISIBLE);
 			isLoading = true;
 		}
 		else {
 			if (activityLayout != null) activityLayout.setVisibility(View.VISIBLE);
-			else scrollView.setVisibility(View.VISIBLE);
 			
 			loadingView.setVisibility(View.INVISIBLE);
 			isLoading = false;
@@ -592,9 +571,6 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 		
-
-
-	
 	private class EncryptEncodeReceiver extends BroadcastReceiver{
 
 		@Override
