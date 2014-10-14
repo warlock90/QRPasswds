@@ -63,38 +63,17 @@ public class CredentialsFragment extends ListFragment {
 	private LayoutInflater inflater = null;
 	private Button addButton = null;
 	private MainActivity mAc = null;
-	
-	private OnLongClickListener copyToClip;
-	
+		
+	public ArrayList<Credential> credentials;
+	public CredentialsAdapter adapter;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		credentials = new ArrayList<Credential>();
 		
-		copyToClip = new OnLongClickListener(){
-
-			@Override
-			public boolean onLongClick(View v) {
-				EditText view = (EditText)v;
-				
-				if(view.getText().toString().trim().length()>0) {
-					
-				    android.content.ClipboardManager clipboard = (android.content.ClipboardManager) mAc.getSystemService(Context.CLIPBOARD_SERVICE); 
-				    android.content.ClipData clip = android.content.ClipData.newPlainText("copied",view.getText().toString().trim());
-				    clipboard.setPrimaryClip(clip);
-
-					Toast.makeText(mAc, "Copied to clipboard", Toast.LENGTH_LONG).show();
-					return true;
-				}
-				return false;
-			}};
-
-		ArrayList<Credential> credentials = new ArrayList<Credential>();
-		credentials.add(new Credential("a","b","c"));
-		credentials.add(new Credential("ab","bc","ca"));
-		credentials.add(new Credential("ac","ba","cb"));
-		credentials.add(new Credential("aa","bb","cc"));
-		CredentialsAdapter adapter = new CredentialsAdapter(this.getActivity(),android.R.layout.simple_list_item_multiple_choice,credentials);
+		adapter = new CredentialsAdapter(this.getActivity(),android.R.layout.simple_list_item_multiple_choice,credentials);
 		setListAdapter(adapter);
 		
 	}
@@ -163,16 +142,11 @@ public class CredentialsFragment extends ListFragment {
 	        outState.putInt("idCounter", main.getChildCount());
 	    }
 
-	
+	*/
 	public void addCredential(String type, String user, String pass) {
 
-		Credential cred = new Credential(this.getActivity(),main.getChildCount(),type,user,pass);
-
-		main.addView(cred);
-		
-		if(type==null){		
-			mAc.scrollToBottom();
-		}
+		Credential cred = new Credential(type, user, pass);
+		credentials.add(cred);
 		
 	}
 	
@@ -188,18 +162,11 @@ public class CredentialsFragment extends ListFragment {
 			serial.startTag(null, ROOT_XML);
 	
 			
-			for (int f=0;f<main.getChildCount();f++){
+			for (int f=0;f<credentials.size();f++){
 				
-				LinearLayout credView = (LinearLayout)main.getChildAt(f);
-				
-				EditText credType = (EditText)credView.findViewById(R.id.credential_type);
-				
-				EditText credUser = (EditText)credView.findViewById(R.id.user);
-				EditText credPass = (EditText)credView.findViewById(R.id.pass);
-				
-				String type = credType.getText().toString().trim();
-				String user = credUser.getText().toString().trim();
-				String pass = credPass.getText().toString().trim();
+				String type = ((Credential)getListView().getItemAtPosition(f)).type.trim();
+				String user = ((Credential)getListView().getItemAtPosition(f)).user.trim();
+				String pass = ((Credential)getListView().getItemAtPosition(f)).pass.trim();
 				
 				serial.startTag(null, CHILD_XML);
 				
@@ -225,7 +192,7 @@ public class CredentialsFragment extends ListFragment {
 	public int getInputLength(){
 		return 0;
 	}
-	
+	/*
 	private class Credential extends LinearLayout{
 		
 		public Credential(Context context, int viewId, String type, String user, String pass) {
@@ -249,10 +216,6 @@ public class CredentialsFragment extends ListFragment {
 			EditText credUser = (EditText) this.findViewById(R.id.user);
 			EditText credPass = (EditText) this.findViewById(R.id.pass);
 			
-			credType.setOnLongClickListener(copyToClip);
-			credUser.setOnLongClickListener(copyToClip);
-			credPass.setOnLongClickListener(copyToClip);
-
 			if (type!=null && !type.equals("<QR3mpty/>")) {
 				credType.setText(type);
 			}
