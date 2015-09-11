@@ -43,6 +43,7 @@ public class GenerateKey extends FragmentActivity {
 			Toast.makeText(this, R.string.key_file_created, Toast.LENGTH_LONG).show();
 			
 		} catch (NoSuchAlgorithmException e) {
+			//cannot happen
 			
 		} catch (IOException e) {
 			

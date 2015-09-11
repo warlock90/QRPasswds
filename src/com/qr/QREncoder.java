@@ -75,13 +75,14 @@ public class QREncoder {
 		
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 
-			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+FOLDER,filename);
-			QRDirectory.getParentFile().mkdirs();
+			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+FOLDER);
+			System.out.println("Printing parent levels " + QRDirectory.mkdirs());
+			File QRFile = new File(QRDirectory,filename);
 
-			FileOutputStream out = new FileOutputStream(QRDirectory);
+			FileOutputStream out = new FileOutputStream(QRFile);
 		    qr.compress(Bitmap.CompressFormat.PNG, 100, out);
 		    
-			MediaScannerConnection.scanFile(context, new String[] {QRDirectory.getAbsolutePath()},null, null);
+			MediaScannerConnection.scanFile(context, new String[] {QRFile.getAbsolutePath()},null, null);
 		    
 		} else {
 		    throw new IOException();

@@ -18,37 +18,16 @@
  ******************************************************************************/
 package com.qrpasswds;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlSerializer;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.Xml;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
 
 public class CredentialsFragment extends ListFragment {
 	
@@ -58,11 +37,6 @@ public class CredentialsFragment extends ListFragment {
 	public final String TYPE_ATTRIBUTE = "t";
 	public final String USER_ATTRIBUTE = "u";
 	public final String PASS_ATTRIBUTE = "p";
-	
-	private LinearLayout main = null;
-	private LayoutInflater inflater = null;
-	private Button addButton = null;
-	private MainActivity mAc = null;
 		
 	public ArrayList<Credential> credentials;
 	public CredentialsAdapter adapter;
@@ -71,78 +45,13 @@ public class CredentialsFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		credentials = new ArrayList<Credential>();
+		credentials = new ArrayList<>();
 		
 		adapter = new CredentialsAdapter(this.getActivity(),android.R.layout.simple_list_item_multiple_choice,credentials);
 		setListAdapter(adapter);
 		
 	}
 
-	/*
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){	
-		
-		View fragView = inflater.inflate(R.layout.scroll, container, false);
-		main = (LinearLayout) fragView.findViewById(R.id.main);
-		
-		mAc = (MainActivity) getActivity();
-		mAc.main = main;
-		
-		addButton = (Button) fragView.findViewById(R.id.add_button);
-		addButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v){
-				addCredential(null,null,null);
-			}
-	     });
-		
-		if (savedInstanceState!=null && savedInstanceState.getInt("idCounter")>0){
-			
-			String retainedData = savedInstanceState.getString("data");
-			
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			
-			try {
-				
-				DocumentBuilder	db = dbf.newDocumentBuilder();
-				Document dom = db.parse(new InputSource(new StringReader(retainedData)));
-				
-				NodeList nodes = dom.getElementsByTagName(CHILD_XML);
-				
-				for (int f=0;f<nodes.getLength();f++) {
-				
-					String type = "", user = "", pass = "";
-						
-						try { type = nodes.item(f).getAttributes().getNamedItem(TYPE_ATTRIBUTE).getNodeValue();
-						} catch(NullPointerException e) {}
-						try { user = nodes.item(f).getAttributes().getNamedItem(USER_ATTRIBUTE).getNodeValue();
-						} catch(NullPointerException e) {}
-						try { pass = nodes.item(f).getAttributes().getNamedItem(PASS_ATTRIBUTE).getNodeValue();
-						} catch(NullPointerException e) {}
-						
-						addCredential(type,user,pass);
-
-				}
-			
-			} catch (ParserConfigurationException e) {
-				Log.e(this.getClass().getSimpleName(), e.toString());
-			} catch (SAXException e) {
-				Log.e(this.getClass().getSimpleName(), e.toString());
-			} catch (IOException e) {
-				Log.e(this.getClass().getSimpleName(), e.toString());
-			}
-
-		}
-		
-		return fragView;
-	}
-	
-	 @Override
-	 public void onSaveInstanceState(Bundle outState) {
-	        super.onSaveInstanceState(outState);
-	        outState.putString("data", getInput());
-	        outState.putInt("idCounter", main.getChildCount());
-	    }
-
-	*/
 	public void addCredential(String type, String user, String pass) {
 
 		Credential cred = new Credential(type, user, pass);
@@ -188,49 +97,5 @@ public class CredentialsFragment extends ListFragment {
 		
 		return writer.toString();
 	}
-	
-	public int getInputLength(){
-		return 0;
-	}
-	/*
-	private class Credential extends LinearLayout{
-		
-		public Credential(Context context, int viewId, String type, String user, String pass) {
-			super(context);
-			
-			inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			inflater.inflate(R.layout.credentials, this);	
-	
-			ImageButton removeThis = (ImageButton) findViewById(R.id.delete_cred);
-			removeThis.setOnClickListener(new OnClickListener() {
-				public void onClick(View v){
-					
-					LinearLayout credential = (LinearLayout) v.getParent().getParent();
-					LinearLayout wrapper = (LinearLayout) credential.getParent();
-					
-					wrapper.removeView(credential);
-				}
-		     });
-			
-			EditText credType = (EditText) this.findViewById(R.id.credential_type);
-			EditText credUser = (EditText) this.findViewById(R.id.user);
-			EditText credPass = (EditText) this.findViewById(R.id.pass);
-			
-			if (type!=null && !type.equals("<QR3mpty/>")) {
-				credType.setText(type);
-			}
-			
-			if (user!=null && !user.equals("<QR3mpty/>")) {
-				credUser.setText(user);
-			}
-			
-			if (pass!=null && !pass.equals("<QR3mpty/>")) {
-				credPass.setText(pass);
-			}
-	
-			
-		}
-	}*/
-
 	
 }

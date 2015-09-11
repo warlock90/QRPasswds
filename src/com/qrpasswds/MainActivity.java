@@ -18,25 +18,6 @@
  ******************************************************************************/
 package com.qrpasswds;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -46,10 +27,8 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.OpenableColumns;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -64,16 +43,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aes.AESEncryption;
-import com.aes.AESRandomKey;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.qr.QRDecoder;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 public class MainActivity extends FragmentActivity {
 	
 	private final String KEY_FILENAME = "QRPass.key";
-	private final String OLD_FOLDER_NAME = "QRPasswds";
-	private final String OLD_QR_FILE_NAME = "QR_passwords.png";
 	private final String ACTION_RESP = "com.QRPasswds.MESSAGE_PROCESSED";
 	private final int FIND_FILE = 1;
 
@@ -134,37 +127,7 @@ public class MainActivity extends FragmentActivity {
 	               .setCancelable(false)
 	               .show();
 		}
-		else {
-			
-			File folder = new File(Environment.getExternalStorageDirectory()+File.separator+OLD_FOLDER_NAME);
-			
-			if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && folder.exists()) {
-				try {
-					moveAndDeleteFolder(folder);
-					
-					AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.setIcon(R.drawable.ic_alerts_and_states_warning)
-						.setTitle(R.string.save_path_changed_title)
-						.setMessage(R.string.save_path_changed)
-						.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								/*nothing to do here*/
-								
-							}
-						})
-						.show();
-					
-				} catch (IOException e) {
-					
-					Log.e(this.getClass().getSimpleName(), e.toString());
-					
-				}
-			}
-		}
-		
-		
+
 		registerReceiver(receiver,filter);
 		
 	}
@@ -255,6 +218,10 @@ public class MainActivity extends FragmentActivity {
             	               .show();
                     }
                     return true;
+
+				case R.id.add_button:
+                    addCredentialDialog();
+					return true;
                     
             	default:
             		return super.onOptionsItemSelected(item);
@@ -319,29 +286,32 @@ public class MainActivity extends FragmentActivity {
 
 						for (int f=0;f<nodes.getLength();f++) {
 						
-							String type = "", user = "", pass = "";
+							String type, user, pass;
 								
 								try { type = nodes.item(f).getAttributes().getNamedItem(scroll.TYPE_ATTRIBUTE).getNodeValue();
-								} catch(NullPointerException e) {}
+								} catch(NullPointerException e) {
+                                    type = "";
+                                }
 								try { user = nodes.item(f).getAttributes().getNamedItem(scroll.USER_ATTRIBUTE).getNodeValue();
-								} catch(NullPointerException e) {}
+								} catch(NullPointerException e) {
+                                    user = "";
+                                }
 								try { pass = nodes.item(f).getAttributes().getNamedItem(scroll.PASS_ATTRIBUTE).getNodeValue();
-								} catch(NullPointerException e) {}
-								System.out.println(type+"@"+user+"@"+pass);
+								} catch(NullPointerException e) {
+                                    pass = "";
+                                }
+
 								scroll.addCredential(type,user,pass);
 						}
 					
 					} catch (ParserConfigurationException e) {
 						Log.e(this.getClass().getSimpleName(), e.toString());
-					} catch (SAXException e) {
-						Log.e(this.getClass().getSimpleName(), e.toString());
-						throw new Exception();
-					} catch (IOException e) {
+					} catch (SAXException | IOException e) {
 						Log.e(this.getClass().getSimpleName(), e.toString());
 						throw new Exception();
 					}
-			  
-			  } catch (IllegalArgumentException e) {
+
+              } catch (IllegalArgumentException e) {
 				  
 				  Log.e(this.getClass().getSimpleName(), e.toString());
 				  
@@ -374,6 +344,12 @@ public class MainActivity extends FragmentActivity {
 		  scroll.adapter.notifyDataSetChanged();
 		  loading(false);
 	}
+
+    private void addCredentialDialog(){
+
+        scroll.addCredential("","","");
+        scroll.adapter.notifyDataSetChanged();
+    }
 	
 	public void createPressed(View v){
 		
@@ -473,7 +449,7 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	
-	public void encryptionEncodingFinished(boolean success){
+	private void encryptionEncodingFinished(boolean success){
 				
 		if (success){		
 			Toast.makeText(this, R.string.qr_created, Toast.LENGTH_SHORT).show();
@@ -491,7 +467,7 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
-	public void loading(boolean flag){
+	private void loading(boolean flag){
 		
 		if (flag) {
 
@@ -508,49 +484,7 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
-	private void moveAndDeleteFolder(File folder) throws IOException{
-		
-		File key = new File(folder+File.separator+KEY_FILENAME);
-
-		if (key.exists()){
-
-			AESRandomKey ran_key = new AESRandomKey(this);
-			ran_key.exportKey(key.getAbsolutePath());
-			
-			key.delete();
-
-		}
-		
-		File qr = new File(folder+File.separator+OLD_QR_FILE_NAME);
-
-		if (qr.exists()) {
-
-			FileInputStream in = new FileInputStream(new File(qr.getAbsolutePath()));
-				
-			File QRDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)+File.separator+OLD_FOLDER_NAME, OLD_QR_FILE_NAME);
-			QRDirectory.getParentFile().mkdirs();
-			
-			FileOutputStream out = new FileOutputStream(QRDirectory);
-			
-			byte[] buffer = new byte[1024];
-			
-			while (in.read(buffer)>0) out.write(buffer);
-			
-			in.close();
-			out.close();
-			
-			qr.delete();
-			
-			MediaScannerConnection.scanFile(this, new String[] {QRDirectory.getAbsolutePath()},null, null);
-
-
-		}
-		
-		folder.delete();
-		
-	}
-	
-	public String getTitleFromUri(Context context, Uri contentUri) {
+	private String getTitleFromUri(Context context, Uri contentUri) {
 			
 		if(contentUri.getScheme().equals("file")) {
 			return contentUri.getLastPathSegment();

@@ -1,17 +1,17 @@
 package com.qrpasswds;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
-import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class CredentialsAdapter extends ArrayAdapter<Credential> {
 	
@@ -45,18 +45,69 @@ public class CredentialsAdapter extends ArrayAdapter<Credential> {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		
 		LayoutInflater inflater = (LayoutInflater) CONTEXT.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    View row = inflater.inflate(R.layout.credentials, parent, false);
 	    
-	    EditText credType = (EditText) row.findViewById(R.id.credential_type);
+	    final EditText credType = (EditText) row.findViewById(R.id.credential_type);
 		EditText credUser = (EditText) row.findViewById(R.id.user);
 		EditText credPass = (EditText) row.findViewById(R.id.pass);
 		
 		credType.setText(creds.get(position).type);
 		credUser.setText(creds.get(position).user);
 		credPass.setText(creds.get(position).pass);
+
+		credType.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                creds.get(position).type = s.toString();
+            }
+        });
+
+        credUser.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                creds.get(position).user = s.toString();
+            }
+        });
+
+        credPass.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                creds.get(position).pass = s.toString();
+            }
+        });
 		
 		credType.setOnLongClickListener(copyToClip);
 		credUser.setOnLongClickListener(copyToClip);

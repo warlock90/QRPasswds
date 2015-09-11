@@ -109,7 +109,7 @@ public class ImportKey extends Activity {
    	               })
    	               .show();
    	        	
-			} catch (SAXException e) {
+			} catch (SAXException | ParserConfigurationException e) {
 				
 				Log.e(this.getClass().getSimpleName(), e.toString());
 				
@@ -122,19 +122,6 @@ public class ImportKey extends Activity {
    	               })
    	               .show();
    	        	
-			} catch (ParserConfigurationException e) {
-				
-				Log.e(this.getClass().getSimpleName(), e.toString());
-
-				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-   	        	builder.setMessage(R.string.not_valid_file)
-   	               .setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
-   	                   public void onClick(DialogInterface dialog, int id) {
-   	                	finish();
-   	                   }
-   	               })
-   	               .show();
-
 			}
 		}
 		else if ( requestCode == FIND_FILE && resultCode != RESULT_OK && !error){
