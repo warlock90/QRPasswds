@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -50,7 +52,7 @@ public class CredentialsAdapter extends ArrayAdapter<Credential> {
 		LayoutInflater inflater = (LayoutInflater) CONTEXT.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	    View row = inflater.inflate(R.layout.credentials, parent, false);
 	    
-	    final EditText credType = (EditText) row.findViewById(R.id.credential_type);
+	    EditText credType = (EditText) row.findViewById(R.id.credential_type);
 		EditText credUser = (EditText) row.findViewById(R.id.user);
 		EditText credPass = (EditText) row.findViewById(R.id.pass);
 		
@@ -111,7 +113,18 @@ public class CredentialsAdapter extends ArrayAdapter<Credential> {
 		
 		credType.setOnLongClickListener(copyToClip);
 		credUser.setOnLongClickListener(copyToClip);
-		credPass.setOnLongClickListener(copyToClip);		
+		credPass.setOnLongClickListener(copyToClip);
+
+        CheckBox isSelected = (CheckBox) row.findViewById(R.id.delete_cred);
+        isSelected.setChecked(creds.get(position).isSelected);
+        isSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked) creds.get(position).isSelected = true;
+                else creds.get(position).isSelected = false;
+            }
+        });
+
 
 		return row;
 	}

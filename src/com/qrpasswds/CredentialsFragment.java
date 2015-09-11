@@ -22,6 +22,9 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.Xml;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -40,16 +43,26 @@ public class CredentialsFragment extends ListFragment {
 		
 	public ArrayList<Credential> credentials;
 	public CredentialsAdapter adapter;
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 
-		credentials = new ArrayList<>();
-		
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		if(savedInstanceState!=null) {
+			credentials = savedInstanceState.getParcelableArrayList("credentials");
+		} else {
+			credentials = new ArrayList<>();
+		}
+
 		adapter = new CredentialsAdapter(this.getActivity(),android.R.layout.simple_list_item_multiple_choice,credentials);
 		setListAdapter(adapter);
-		
+
+		return super.onCreateView(inflater, container, savedInstanceState);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelableArrayList("credentials", credentials);
 	}
 
 	public void addCredential(String type, String user, String pass) {
