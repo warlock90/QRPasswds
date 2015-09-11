@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/mnt/disk320GB/programming/android/QRPasswds/libs/android-support-v4.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="307c1cc532eabbf1d135b43e5c983c9da700449d">
+        <dex dex="/mnt/disk320GB/programming/android/QRPasswds/build/intermediates/pre-dexed/debug/android-support-v4-3ca016d6f758447e3317aec253939672a87f10c7.jar" />
+    </item>
+    <item
+        jar="/mnt/disk320GB/programming/android/QRPasswds/libs/core-2.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="cba0b93b0072105d808ef7a00a107a4eb97874e7">
+        <dex dex="/mnt/disk320GB/programming/android/QRPasswds/build/intermediates/pre-dexed/debug/core-2.2-8a25fbd1aa9a876eedd0e179eee184071ce5618e.jar" />
+    </item>
+
+</items>

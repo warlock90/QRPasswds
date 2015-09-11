@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RadioButton
+        android:id="@+id/filename_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:text="@string/filename_default"
+        android:checked="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dip" >
+
+        <RadioButton
+            android:id="@+id/filename_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false" />
+        
+        <EditText
+            android:id="@+id/filename_custom_part"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:ems="10" 
+            android:enabled="false" >
+
+        </EditText>
+
+        <TextView
+            android:id="@+id/file_extention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/file_extention"
+            android:layout_marginRight="10dip" />
+
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/mnt/disk320GB/programming/android/QRPasswds/res/layout/filename.xml -->
